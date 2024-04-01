@@ -3,6 +3,8 @@
 #include "../Arquivos-h/ULA.h"
 
 int ULA(char opc[5], char fc[4]){
+    
+    //Tipo R
     if (strcmp(opc, "0000") == 0 ) {
         if (strcmp(fc, "000") == 0 ){
             //printf("add");
@@ -17,6 +19,8 @@ int ULA(char opc[5], char fc[4]){
             //printf("or");
         }
     }
+
+    //Tipo I
     else if(strcmp(opc,"0100")){
         //printf("addi");
     }
@@ -26,6 +30,8 @@ int ULA(char opc[5], char fc[4]){
     else if(strcmp(opc,"1111")){
         //printf("sw");
     }
+
+    //Tipo J
     else if(strcmp(opc,"1000")){
         //printf("beq");
     }
