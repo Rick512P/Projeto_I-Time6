@@ -1,0 +1,1 @@
+int ULA(char opc[5], char fc[4]);
