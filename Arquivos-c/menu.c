@@ -4,9 +4,22 @@
 
 int main(){
     int escolha;
+    printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
+    printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
+    printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
     while(escolha != 0){
-        printf("\n 1 - Carregar memória\n 2 - Imprimir memória\n 3 - Imprimir registradores\n 4 - Imprimir todo o simulador\n 5 - Salvar .asm\n");
-        printf("6 - Salvar .mem\n 7 - Executa Programa (run)\n 8 - Executa instrucao (step)\n 9 - Volta uma instrucao (back)\n 0 - Sair\n\n");
+        printf("\n\n\n\n\n_____________________________________\n");
+        printf("|1 +       Carregar memória         +|\n");
+        printf("|2 +       Imprimir memória         +|\n)";
+        printf("|3 +    Imprimir registradores      +|\n)";
+        printf("|4 +  Imprimir todo o simulador     +|\n)";
+        printf("|5 +          Salvar .asm           +|\n");
+        printf("|6 +          Salvar .mem           +|\n)";
+        printf("|7 +      Executa Programa (run)    +|\n)";
+        printf("|8 +     Executa instrucao (step)   +|\n)";
+        printf("|9 +    Volta uma instrucao (back)  +|\n)";
+        printf("|0 +             Sair               +|\n");
+        printf("______________________________________\n\n");
         scanf("%d", &escolha);
 
         swtich(escolha)
