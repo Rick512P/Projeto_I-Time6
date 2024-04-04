@@ -28,7 +28,11 @@ void ULA(char opc[5], char fc[4], char Source[4], char Target[4], char Dest[4]) 
         }
     }
     else if(strcmp(opc,"0100") == 0){
-        //printf("addi");
+        // addi -> rs + immediate = rt
+        int rs, rt, immediate;
+        bin_dec(Source, Target, Dest, &rs, &immediate, &rt);
+        rt = rs + immediate;
+        dec_to_bin(rt, Dest);
     }
     else if(strcmp(opc,"1011") == 0){
         //printf("lw");
@@ -40,7 +44,11 @@ void ULA(char opc[5], char fc[4], char Source[4], char Target[4], char Dest[4]) 
         //printf("beq");
     }
     else if(strcmp(opc,"0010") == 0){
-        //printf("j");
+        // j -> jump to specified address
+        int address;
+        bin_dec(Source, Target, Dest, &address, NULL, NULL);
+        // Implementação da função jump
+        printf("Jumping to address: %d\n", address);
     }
     else{
         printf("OPCODE ERROR!");
