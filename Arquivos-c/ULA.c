@@ -2,54 +2,75 @@
 #include <string.h>
 #include "../Arquivos-h/ULA.h"
 
-void ULA(char opc[5], char fc[4], char Source[4], char Target[4], char Dest[4]) {
-    if (strcmp(opc, "0000") == 0 ) {
-        if (strcmp(fc, "000") == 0 ){
+void ULA(type_instruc *traduzido, int contador) {
+    char Target[4];
+    char Dest[4];
+    char Source[4];
+    strncpy(Source, traduzido[contador].rs, 4);
+    strncpy(Target, traduzido[contador].rt, 4);
+    strncpy(Dest, traduzido[contador].rd, 4);
+
+    //debugs de print
+    /*printf("\n%s\n", Dest);   //quando nao ha valor de dest em traduzido, ha um caracter estranho
+    printf("%s\n", Target);
+    printf("%s\n", Source);*/
+
+    if (strcmp(traduzido[contador].opcode, "0000") == 0 ) {
+    
+        if (strcmp(traduzido[contador].funct, "000") == 0 ){
             //"add -> rs + rt = rd";
             int rs, rt, rd;
-            bin_dec(Source, Target, Dest, &rs, &rt, &rd);
+            bin_dec(Source, Target, Dest, &rs, &rt, &rd);  
             rd = rs + rt;
-            dec_to_bin(rd, Dest);
+            dec_to_bin(rd, Dest); //converte o resultado em  binario
         }
-        else if (strcmp(fc, "010") == 0 ){
+
+        else if (strcmp(traduzido[contador].funct, "010") == 0 ){
             //"sub -> rs - rt = rd";
             int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
             dec_to_bin(rd, Dest);
         }
-        else if (strcmp(fc, "100") == 0 ){
+
+        else if (strcmp(traduzido[contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
         }
-        else if (strcmp(fc, "101") == 0 ){
+
+        else if (strcmp(traduzido[contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
         }
+
     }
-    else if(strcmp(opc,"0100") == 0){
+
+    else if(strcmp(traduzido[contador].opcode,"0100") == 0){
         // addi -> rs + immediate = rt
         int rs, rt, immediate;
         bin_dec(Source, Target, Dest, &rs, &immediate, &rt);
         rt = rs + immediate;
         dec_to_bin(rt, Dest);
     }
-    else if(strcmp(opc,"1011") == 0){
+
+    else if(strcmp(traduzido[contador].opcode,"1011") == 0){
         //printf("lw");
     }
-    else if(strcmp(opc,"1111") == 0){
+    else if(strcmp(traduzido[contador].opcode,"1111") == 0){
         //printf("sw");
     }
-    else if(strcmp(opc,"1000") == 0){
+    else if(strcmp(traduzido[contador].opcode,"1000") == 0){
         //printf("beq");
     }
-    else if(strcmp(opc,"0010") == 0){
+
+    else if(strcmp(traduzido[contador].opcode,"0010") == 0){
         // j -> jump to specified address
         int address;
         bin_dec(Source, Target, Dest, &address, NULL, NULL);
         // Implementação da função jump
         printf("Jumping to address: %d\n", address);
     }
+
     else{
         printf("OPCODE ERROR!");
     }
@@ -150,4 +171,4 @@ void OR(char Source[], char Target[], char Dest[]){
             Dest[i] = '0';
         }
     }
-}
+    }

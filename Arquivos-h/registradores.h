@@ -19,10 +19,4 @@ typedef struct{
 
 int Registradores (int valor, char posicao[]);
 
-
-
-
-
-
-
 #endif

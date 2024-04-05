@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./Arquivos-h/decode.h"
+#include "../Arquivos-h/decode.h"
 
 type_instruc decoder(instrucao *inst, int i){
     type_instruc traducao;
@@ -53,7 +53,7 @@ type_instruc decoder(instrucao *inst, int i){
     }
 
 
-    else if (strcmp(traducao.opcode, "0010") == 0){//SE NAO, SABEREMOS QUE SERÁ TIPO J, PORTANDO ADICIONAREMOS APENAS O ADDR
+    else if (strcmp(traducao.opcode, "0010") == 0 || strcmp(traducao.opcode, "1000") == 0){//SE NAO, SABEREMOS QUE SERÁ TIPO J, PORTANDO ADICIONAREMOS APENAS O ADDR
         strncpy(traducao.addr, inst[i].instruc + 9, 8); // Escreve o funct
         traducao.addr[7] = '\0';
 

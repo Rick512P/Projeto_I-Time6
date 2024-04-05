@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./Arquivos-h/parser.h"
+#include "../Arquivos-h/parser.h"
 
 
 void parser(instrucao **inst, int *tamanho_linhas){

@@ -5,7 +5,7 @@
 
 
 
-int Registradores (int valor, char posicao[]){
+int Registradores (int valor, char posicao[]){ //recebe do controle qual registrador usar e o valor a ser salvo
     registradores regs = {0, 0, 0, 0, 0, 0, 0, 0};
 
         if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
