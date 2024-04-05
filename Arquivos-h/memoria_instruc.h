@@ -1,5 +1,5 @@
-#ifndef __MEMORIA_H__
-#define __MEMORIA_H__
+#ifndef __MEMORIA_INSTRUC_H__
+#define __MEMORIA_INSTRUC_H__
 
 
 
@@ -9,7 +9,7 @@ typedef struct{
 }instrucao;
     
 
-int main(void);
+int memInstruc(void);
 
 
 #endif

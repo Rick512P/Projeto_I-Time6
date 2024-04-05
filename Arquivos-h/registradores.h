@@ -3,12 +3,21 @@
 
 #include "memoria_instruc.h"
 #include "decode.h"
+#include "ULA.h"
 
-enum{
-    r0,r1,r2,r3,r4,r5,r6,r7
-}quantia_reg;
 
-void reg(type_instruc traduzido);
+typedef struct{
+    int reg0;
+    int reg1;
+    int reg2;
+    int reg3;
+    int reg4;
+    int reg5;
+    int reg6;
+    int reg7;
+}registradores;
+
+int Registradores (int valor, char posicao[]);
 
 
 
