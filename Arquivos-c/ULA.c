@@ -10,21 +10,20 @@ void ULA(type_instruc *traduzido, int contador) {
     strncpy(Target, traduzido[contador].rt, 4);
     strncpy(Dest, traduzido[contador].rd, 4);
 
-    //debugs de print
+	//debugs de print
     /*printf("\n%s\n", Dest);   //quando nao ha valor de dest em traduzido, ha um caracter estranho
     printf("%s\n", Target);
     printf("%s\n", Source);*/
-
-    if (strcmp(traduzido[contador].opcode, "0000") == 0 ) {
     
+    if (strcmp(traduzido[contador].opcode, "0000") == 0 ) {
+		
         if (strcmp(traduzido[contador].funct, "000") == 0 ){
             //"add -> rs + rt = rd";
             int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);  
             rd = rs + rt;
-            dec_to_bin(rd, Dest); //converte o resultado em  binario
+            dec_to_bin(rd, Dest); //converte o resultado em binário
         }
-
         else if (strcmp(traduzido[contador].funct, "010") == 0 ){
             //"sub -> rs - rt = rd";
             int rs, rt, rd;
@@ -32,19 +31,15 @@ void ULA(type_instruc *traduzido, int contador) {
             rd = rs - rt;
             dec_to_bin(rd, Dest);
         }
-
         else if (strcmp(traduzido[contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
         }
-
         else if (strcmp(traduzido[contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
         }
-
     }
-
     else if(strcmp(traduzido[contador].opcode,"0100") == 0){
         // addi -> rs + immediate = rt
         int rs, rt, immediate;
@@ -52,17 +47,27 @@ void ULA(type_instruc *traduzido, int contador) {
         rt = rs + immediate;
         dec_to_bin(rt, Dest);
     }
-
     else if(strcmp(traduzido[contador].opcode,"1011") == 0){
-        //printf("lw");
+        // lw
+        lw_sw_offset(Source, Target, Dest, traduzido[contador].offset);
     }
     else if(strcmp(traduzido[contador].opcode,"1111") == 0){
-        //printf("sw");
+        // sw
+        lw_sw_offset(Source, Target, Dest, traduzido[contador].offset);
     }
     else if(strcmp(traduzido[contador].opcode,"1000") == 0){
-        //printf("beq");
+        // beq -> branch if equal
+        int rs, rt;
+        bin_dec(Source, Target, Dest, &rs, &rt, NULL);
+        if (rs == rt) {
+            printf("Branching to address: %d\n", traduzido[contador].offset);
+            // Implementação do salto para o endereço especificado
+            contador = traduzido[contador].offset; // Atualiza o contador de programa com o endereço especificado
+            printf("Jumped to address: %d\n", contador); // Exibe o novo endereço
+        } else {
+            printf("Branch not taken.\n");
+        }
     }
-
     else if(strcmp(traduzido[contador].opcode,"0010") == 0){
         // j -> jump to specified address
         int address;
@@ -70,10 +75,17 @@ void ULA(type_instruc *traduzido, int contador) {
         // Implementação da função jump
         printf("Jumping to address: %d\n", address);
     }
-
     else{
         printf("OPCODE ERROR!");
     }
+}
+
+void lw_sw_offset(char Source[], char Target[], char Dest[], int offset) {
+    // Implementação do deslocamento de memória para instruções lw e sw
+    int base_address;
+    bin_dec(Source, Target, Dest, &base_address, NULL, NULL);
+    int effective_address = base_address + offset;
+    printf("Accessing memory at address: %d\n", effective_address);
 }
 
 void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd) {
@@ -171,4 +183,4 @@ void OR(char Source[], char Target[], char Dest[]){
             Dest[i] = '0';
         }
     }
-    }
+}
