@@ -3,8 +3,14 @@
 int program_counter = 0;
 
 // Função para incrementar o contador de programa
-void increment_PC() {
-    program_counter++;
+void increment_PC(int op) {
+    switch (op)
+    {
+     case 1:
+        program_counter++;
+    case 2:
+        program_counter--;
+    }
 }
 
 // Função para retornar o valor atual do contador de programa

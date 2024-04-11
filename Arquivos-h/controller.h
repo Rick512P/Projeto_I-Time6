@@ -4,6 +4,6 @@
 #include "bibliotecas.h"
 #include "menu.h"
 
-int controller();
+int controller(int op);
 
 #endif

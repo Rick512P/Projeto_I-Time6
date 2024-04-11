@@ -27,5 +27,5 @@ int memInstruc(void){
     free(traduzido);
     free(inst);
     
-    return 0;
+    return contador;
 }

@@ -5,7 +5,7 @@ int main(){
     printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
     printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
-    while(escolha != 0){
+    do{
         printf("\n\n\n\n\n");
         printf("                              _____________________________________\n");
         printf("                              |1 +       Carregar memória         +|\n");
@@ -23,14 +23,43 @@ int main(){
 
         switch (escolha)
         {
-        case 01:
-            /* code */
+        case 0:
+            printf("Encerrando o programa!");
             break;
-        
+        case 1:
+            //chamar função responsável pelo carregamento do arquivo
+            break;
+        case 2:
+            //chamar função responsável por exibir a memória (Confirmar com se é a memória de dados ou de instruções)
+            break;
+        case 3:
+            //chamar função responsável por exibir valores salvos em todos os registradores e, caso não haja valor, exibir como vazio
+            break;
+        case 4:
+            //Imprimir todo o simulador (seja la o que for)
+            break;
+        case 5:
+            //Chamar função responsável por salvar o arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
+            break;
+        case 6:
+            //Chamar função responsável por salvar todos os dados de memória no arquivo DATA.mem
+            break;
+        case 7:
+            //Chamar função responsável pela execução do programa
+            controller(1);
+            break;
+        case 8:
+            //Chamar função responsável pela execução do programa passo a passo
+            controller(2);
+            break;
+        case 9:
+            //Chamar função responsável por retornar uma instrução (PC--)
+            controller(3);
+            break;
         default:
             break;
         }
-    }
+    }while(escolha != 0);
 
     return 0;
 }

@@ -1,6 +1,9 @@
 #include "../Arquivos-h/ULA.h"
 
-void ULA(type_instruc *traduzido, int contador) {
+void ULA(int contador) {
+    __DECODE_H__;
+    __MEMORIA_INSTRUC_H__;
+    type_instruc *traduzido;
     char Target[4];
     char Dest[4];
     char Source[4];
