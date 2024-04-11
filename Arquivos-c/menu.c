@@ -1,7 +1,9 @@
 #include "../Arquivos-h/menu.h"
+#include "RemoveData.c"
 
 int main(){
     int escolha;
+    removedata();
     printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
     printf("__________________________________________ =INSTRUCT.mem= __________________________________________");

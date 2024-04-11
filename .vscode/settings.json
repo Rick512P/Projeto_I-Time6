@@ -10,7 +10,8 @@
     "string.h": "c",
     "controller.h": "c",
     "bibliotecas.h": "c",
-    "pc.h": "c"
+    "pc.h": "c",
+    "menu.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
