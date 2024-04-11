@@ -7,7 +7,8 @@
     "stdio.h": "c",
     "memoria_instruc.h": "c",
     "parser.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "controller.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
