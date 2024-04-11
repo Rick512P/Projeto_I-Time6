@@ -1,19 +1,15 @@
 #include "../Arquivos-h/PC.h"
 
-int program_counter = 0;
-
 // Função para incrementar o contador de programa
-void increment_PC(int op) {
+int increment_PC(int op, int program_counter) {
     switch (op)
     {
      case 1:
         program_counter++;
     case 2:
         program_counter--;
+    default:
+        break;
     }
-}
-
-// Função para retornar o valor atual do contador de programa
-int get_PC() {
     return program_counter;
 }

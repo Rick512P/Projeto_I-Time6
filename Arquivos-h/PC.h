@@ -5,8 +5,7 @@
 
 extern int program_counter;
 
-void increment_PC(int op);
+int increment_PC(int op, int program_counter);
 
-int get_PC();
 
 #endif
