@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../Arquivos-h/decode.h"
 
 type_instruc decoder(instrucao *inst, int i){

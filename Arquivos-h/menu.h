@@ -5,6 +5,8 @@
 #include "parser.h"
 #include "decode.h"
 #include "registradores.h"
+#include "bibliotecas.h"
+
 
 
 #endif

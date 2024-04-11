@@ -4,6 +4,7 @@
 #include "memoria_instruc.h"
 #include "decode.h"
 #include "ULA.h"
+#include "bibliotecas.h"
 
 
 typedef struct{

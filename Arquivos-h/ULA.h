@@ -4,6 +4,8 @@
 #include "memoria_instruc.h"
 #include "decode.h"
 #include "parser.h"
+#include "bibliotecas.h"
+
 
 void ULA(type_instruc *traduzido, int contador);
 void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd);

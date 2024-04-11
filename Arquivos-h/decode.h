@@ -2,6 +2,7 @@
 #define __DECODE_H__
 
 #include "memoria_instruc.h"
+#include "bibliotecas.h"
 
 
 typedef struct{

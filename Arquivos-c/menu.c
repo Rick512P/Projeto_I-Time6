@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "../Arquivos-h/menu.h"
 
 int main(){

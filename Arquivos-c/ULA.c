@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 #include "../Arquivos-h/ULA.h"
 
 void ULA(type_instruc *traduzido, int contador) {
