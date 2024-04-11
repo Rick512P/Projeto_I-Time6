@@ -4,9 +4,7 @@
 #include "../Arquivos-h/registradores.h"
 #include "../Arquivos-h/ULA.h"
 
-
-
-int main(void){
+int memInstruc(void){
     int *tamanho_linhasV;
     int contador=0, tamanho_linhas;
     type_instruc *traduzido;
