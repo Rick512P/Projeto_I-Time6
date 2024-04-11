@@ -6,6 +6,13 @@
 #include "parser.h"
 #include "bibliotecas.h"
 
+typedef struct {
+    char opcode[5];
+    char rs[6];
+    char rt[6];
+    char rd[6];
+    int offset; 
+} type_instruc;
 
 void ULA(int contador);
 void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd);
@@ -15,3 +22,4 @@ void OR(char Source[], char Target[], char Dest[]);
 void lw_sw_offset(char Source[], char Target[], char Dest[], int offset);
 
 #endif
+
