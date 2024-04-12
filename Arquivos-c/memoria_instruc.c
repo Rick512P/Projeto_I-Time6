@@ -4,28 +4,36 @@
 #include "../Arquivos-h/registradores.h"
 #include "../Arquivos-h/ULA.h"
 
-int memInstruc(void){
-    int *tamanho_linhasV;
-    int contador=0, tamanho_linhas;
-    type_instruc *traduzido;
+type_instruc memInstruc(int contador){
+    int *tamanho_linhasP;
+    int tamanho_linhas;
+    instrucao *inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
 
-    instrucao *inst;
-    tamanho_linhasV = &tamanho_linhas;
-    parser(&inst, tamanho_linhasV); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
+    type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
+
     
+    tamanho_linhasV = &tamanho_linhas;
+    parser(&inst, tamanho_linhasP); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
+    //O INST TERÁ A INSTRUÇÃO E TAMANHO_LINHAS O TANTO DE INSTRUÇÕES QUE PRECISARÁ SEREM EXECUTADAS
+
+
     traduzido = (type_instruc*)malloc(tamanho_linhas * sizeof(type_instruc));
+
 
     //PC PASSA O ENDEREÇO, INCREMENTANDO +1
     for(contador=0; contador<(tamanho_linhas); contador++){
 
-        traduzido[contador] = decoder(inst, contador);
-        printf("%s\n", traduzido[contador].opcode);
-        ULA(traduzido, contador);
+        traduzido[contador] = decoder(inst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
+    //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
+
+        printf("%s\n", traduzido[contador].opcode); //DEBUG
+
+        return *traduzido; //retorna para o controller
         
     }
         
-    free(traduzido);
+    free(traduzido); //LIMPA A MEMORIA
     free(inst);
     
-    return contador;
+
 }

@@ -9,7 +9,7 @@ typedef struct{
 }instrucao;
     
 
-int memInstruc(void);
+type_instruc memInstruc(int contador);
 
 
 #endif

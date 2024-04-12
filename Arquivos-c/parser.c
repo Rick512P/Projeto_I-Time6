@@ -1,6 +1,6 @@
 #include "../Arquivos-h/parser.h"
 
-
+//RESPONSAVEL POR ABRIR O ARQUIVO E ENCHER A MEMORIA DE INSTRUÇÕES
 void parser(instrucao **inst, int *tamanho_linhas){
     char linha[100];
     int contador_de_linhas = 0;

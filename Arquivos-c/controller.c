@@ -5,11 +5,14 @@ int controller(int op){
     __MEMORIA_INSTRUC_H__;
     ULA_H
 
-    int numeroLinhas, i, address, program_counter = 0;
+    int numeroLinhas, RD, i, address, program_counter = 0;
+
     char rd[4];
-    type_instruc *traduzido;
+
+    type_instruc *tradu;
     
-    numeroLinhas=memInstruc();
+    tradu = memInstruc(program_counter); //COMEÇA COM 0 
+    numeroLinhas = sizeof(tradu);
 
     switch (op)
     {
@@ -17,87 +20,100 @@ int controller(int op){
         //Run   
         for (i = 0; i < numeroLinhas; i++)
         {
-            program_counter = increment_PC(program_counter, 0);   
-            if ((strcmp(traduzido[program_counter].opcode,"0000")))
+            program_counter = increment_PC(program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
+            if ((strcmp(tradu[program_counter].opcode,"0000")))
             {
-                strcpy(rd,ULA(program_counter));
+                /*strcpy(rd,ULA(tradu, program_counter)); ACREDITO QUE O RD PARA O REG POSSA SER UM INTEIRO QUE 
+                RECEBE O RETORNO DA FUNÇÃO ULA, COM ELA RETORNANDO OS RD'S INTEIROS*/
+                RD = ULA(tradu, program_counter);
+                Registradores(RD, tradu[program_counter].posicao);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"0100"))){
-                strcpy(rd,ULA(program_counter));
+            else if ((strcmp(tradu[program_counter].opcode,"0100"))){
+                /*strcpy(rd,ULA(tradu, program_counter));*/
+                RD = ULA(tradu, program_counter);
+                Registradores(RD, tradu[program_counter].posicao);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"1011"))){
+            else if ((strcmp(tradu[program_counter].opcode,"1011"))){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
-                address = ULA(program_counter);
+                address = ULA(tradu, program_counter);
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"1111"))){
+            else if ((strcmp(tradu[program_counter].opcode,"1111"))){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-                address = ULA(program_counter);
+                address = ULA(tradu, program_counter);
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"0010"))){
-                program_counter = ULA(program_counter);
+            else if ((strcmp(tradu[program_counter].opcode,"0010"))){
+                program_counter = ULA(tradu, program_counter);
             }
-            increment_PC(program_counter, 1);
+            increment_PC(&program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
+            //EM TODO O PROGRAMA
         }
         break;
     case 2:
         //Run by Step
         if (numeroLinhas < get_PC()){
             program_counter = increment_PC(program_counter, 0);   
-            if ((strcmp(traduzido[program_counter].opcode,"0000")))
+            if ((strcmp(tradu[program_counter].opcode,"0000")))
             {
-                strcpy(rd,ULA(program_counter));
+                /*strcpy(rd,ULA(tradu, program_counter));*/
+                RD = ULA(tradu, program_counter);
+                Registradores(RD, tradu[program_counter].posicao);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"0100"))){
-                strcpy(rd,ULA(program_counter));
+            else if ((strcmp(tradu[program_counter].opcode,"0100"))){
+                /*strcpy(rd,ULA(tradu, program_counter));*/
+                RD = ULA(tradu, program_counter);
+                Registradores(RD, tradu[program_counter].posicao);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"1011"))){
+            else if ((strcmp(tradu[program_counter].opcode,"1011"))){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
-                address = ULA(program_counter);
+                address = ULA(tradu, program_counter);
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"1111"))){
+            else if ((strcmp(tradu[program_counter].opcode,"1111"))){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-                address = ULA(program_counter);
+                address = ULA(tradu, program_counter);
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"0010"))){
-                program_counter = ULA(program_counter);
+            else if ((strcmp(tradu[program_counter].opcode,"0010"))){
+                program_counter = ULA(tradu, program_counter);
             }
-            increment_PC(program_counter, 1);
+            increment_PC(&program_counter, 1);
         }
-        main();
         break;
     case 3:
         //Return Run by Step
         if (numeroLinhas <= get_PC()){
             program_counter = increment_PC(program_counter, 0);   
-            if ((strcmp(traduzido[program_counter].opcode,"0000")))
+            if ((strcmp(tradu[program_counter].opcode,"0000")))
             {
-                strcpy(rd,ULA(program_counter));
+                /*strcpy(rd,ULA(tradu, program_counter));*/
+                RD = ULA(tradu, program_counter);
+                Registradores(RD, tradu[program_counter].posicao);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"0100"))){
-                strcpy(rd,ULA(program_counter));
+            else if ((strcmp(tradu[program_counter].opcode,"0100"))){
+                /*strcpy(rd,ULA(tradu, program_counter));*/
+                RD = ULA(tradu, program_counter);
+                Registradores(RD, tradu[program_counter].posicao);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"1011"))){
+            else if ((strcmp(tradu[program_counter].opcode,"1011"))){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
-                address = ULA(program_counter);
+                address = ULA(tradu, program_counter);
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"1111"))){
+            else if ((strcmp(tradu[program_counter].opcode,"1111"))){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-                address = ULA(program_counter);
+                address = ULA(tradu, program_counter);
             }
-            else if ((strcmp(traduzido[program_counter].opcode,"0010"))){
-                program_counter = ULA(program_counter);
+            else if ((strcmp(tradu[program_counter].opcode,"0010"))){
+                program_counter = ULA(tradu, program_counter);
             }
-            increment_PC(program_counter, 2);
+            increment_PC(&program_counter, 2);
         }
-        main();
         break;
     default:
         break;
     }
+    return 0;
 }

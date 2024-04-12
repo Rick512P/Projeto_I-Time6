@@ -2,8 +2,12 @@
 #include "RemoveData.c"
 
 int main(){
-    int escolha;
     removedata();
+    return 0;
+}
+
+int menu(){
+    int escolha;
     printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
     printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
@@ -57,6 +61,9 @@ int main(){
         case 9:
             //Chamar função responsável por retornar uma instrução (PC--)
             controller(3);
+            break;
+        case 10:
+            increment_PC(0, 0);
             break;
         default:
             break;

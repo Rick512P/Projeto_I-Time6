@@ -6,7 +6,8 @@ int Registradores (int valor, char posicao[]){ //recebe do controle qual registr
     registradores regs = {0, 0, 0, 0, 0, 0, 0, 0};
 
         if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
-            if (valor != 0){ //Se valor for diferente de 0, ele será armazenado no registrador, caso contrario só ira retornar o reg
+            if (valor != 0){ //FACILIDADE DE ACESSAR OS REGISTRADORES, BASTA ENTRAR COM O VALOR 0 NA FUNÇÃO E
+            //A RESPECTIVA POSIÇÃO DO REGISTRADOR QUE APENAS RETORNARÁ O CONTEUDO DO REGISTRADOR.
                 regs.reg0 = valor;
             }
             return regs.reg0;

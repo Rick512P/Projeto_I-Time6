@@ -17,7 +17,7 @@ typedef struct{
     char funct [4];
 
     //TIPO I
-    char imm [6];
+    char imm [7];
 
     //TIPO J
     char addr[8];
