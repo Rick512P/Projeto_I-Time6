@@ -1,6 +1,7 @@
 #include "../Arquivos-h/ULA.h"
 
-char ULA(type_instruc *traduzido, int contador) {
+
+int ULA(type_instruc *traduzido, int contador) {
     __DECODE_H__;
     __MEMORIA_INSTRUC_H__;
 
@@ -11,11 +12,6 @@ char ULA(type_instruc *traduzido, int contador) {
     strncpy(Source, traduzido[contador].rs, 4);
     strncpy(Target, traduzido[contador].rt, 4);
     strncpy(Dest, traduzido[contador].rd, 4);
-
-	//debugs de print
-    /*printf("\n%s\n", Dest);   //quando nao ha valor de dest em traduzido, ha um caracter estranho
-    printf("%s\n", Target);
-    printf("%s\n", Source);*/
     
     if (strcmp(traduzido[contador].opcode, "0000") == 0 ) {
 		
@@ -25,46 +21,61 @@ char ULA(type_instruc *traduzido, int contador) {
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);  
             rd = rs + rt;
             dec_to_bin(rd, Dest); //converte o resultado em binário
-            return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR (QUE É INTEIRO)
+
+            //memoriaDados(Dest); --> memoria de dados precisa receber o resultado em binario
+
+            return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
+
         else if (strcmp(traduzido[contador].funct, "010") == 0 ){
             //"sub -> rs - rt = rd";
             int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
             dec_to_bin(rd, Dest);
-            return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR (QUE É INTEIRO)
+
+            //memoriaDados(Dest); --> memoria de dados precisa receber o resultado em binario
+
+            return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
+
         else if (strcmp(traduzido[contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
             //E DEPOIS?
         }
+
         else if (strcmp(traduzido[contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
             //E DEPOIS?
         }
     }
+
     else if(strcmp(traduzido[contador].opcode,"0100") == 0){
         // addi -> rs + immediate = rt
         int rs, rt, immediate;
         bin_dec(Source, Target, Dest, &rs, &immediate, &rt);
         rt = rs + immediate;
         dec_to_bin(rt, Dest);
-        return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR (QUE É INTEIRO)
+
+        //memoriaDados(Dest); --> memoria de dados precisa receber o resultado em binario
+
+        return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
+
     else if(strcmp(traduzido[contador].opcode,"1011") == 0){
         // lw
-        lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
-        return address; //ADDRESS NAO TEVE VALOR MODIFICADO
+        address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
+        return address;
+
     else if(strcmp(traduzido[contador].opcode,"1111") == 0){
         // sw
-        lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
+        address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
         return address;
     }
-    else if(strcmp(traduzido[contador].opcode,"1000") == 0){
-        // beq -> branch if equal
+
+    else if(strcmp(traduzido[contador].opcode,"1000") == 0){// beq -> branch if equal 
         int rs, rt;
         bin_dec(Source, Target, Dest, &rs, &rt, NULL);
         if (rs == rt) {
@@ -76,16 +87,19 @@ char ULA(type_instruc *traduzido, int contador) {
             printf("Branch not taken.\n");
         }
     }
-    else if(strcmp(traduzido[contador].opcode,"0010") == 0){
-        // j -> jump to specified address
+
+    else if(strcmp(traduzido[contador].opcode,"0010") == 0){ // j -> jump to specified address
+        
         bin_dec(Source, Target, Dest, &address, NULL, NULL);
         // Implementação da função jump
         //printf("Jumping to address: %d\n", address);
         return address;
     }
+
     else{
         printf("OPCODE ERROR!");
     }
+}
 }
 
 int lw_sw_offset(char Source[], char Target[], char Dest[], char imm) {

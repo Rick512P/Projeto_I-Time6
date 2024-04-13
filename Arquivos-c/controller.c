@@ -1,4 +1,5 @@
-#include"controller.h"
+
+#include "../Arquivos.h/controller.h"
 
 int controller(int op){
     __DECODE_H__;
@@ -11,8 +12,8 @@ int controller(int op){
 
     type_instruc *tradu;
     
-    tradu = memInstruc(program_counter); //COMEÇA COM 0 
-    numeroLinhas = sizeof(tradu);
+    tradu = memInstruc(program_counter, 2); //COMEÇA COM 0
+    numeroLinhas = sizeof(tradu); //sizeof nao vai pegar as linhas de tradu, apenas o tamanho em bytes
 
     switch (op)
     {
@@ -26,13 +27,13 @@ int controller(int op){
                 /*strcpy(rd,ULA(tradu, program_counter)); ACREDITO QUE O RD PARA O REG POSSA SER UM INTEIRO QUE 
                 RECEBE O RETORNO DA FUNÇÃO ULA, COM ELA RETORNANDO OS RD'S INTEIROS*/
                 RD = ULA(tradu, program_counter);
-                Registradores(RD, tradu[program_counter].posicao);
+                Registradores(RD, tradu[program_counter].posicao, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(tradu[program_counter].opcode,"0100"))){
                 /*strcpy(rd,ULA(tradu, program_counter));*/
                 RD = ULA(tradu, program_counter);
-                Registradores(RD, tradu[program_counter].posicao);
+                Registradores(RD, tradu[program_counter].posicao, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(tradu[program_counter].opcode,"1011"))){
@@ -58,13 +59,13 @@ int controller(int op){
             {
                 /*strcpy(rd,ULA(tradu, program_counter));*/
                 RD = ULA(tradu, program_counter);
-                Registradores(RD, tradu[program_counter].posicao);
+                Registradores(RD, tradu[program_counter].posicao, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(tradu[program_counter].opcode,"0100"))){
                 /*strcpy(rd,ULA(tradu, program_counter));*/
                 RD = ULA(tradu, program_counter);
-                Registradores(RD, tradu[program_counter].posicao);
+                Registradores(RD, tradu[program_counter].posicao, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(tradu[program_counter].opcode,"1011"))){
@@ -89,13 +90,13 @@ int controller(int op){
             {
                 /*strcpy(rd,ULA(tradu, program_counter));*/
                 RD = ULA(tradu, program_counter);
-                Registradores(RD, tradu[program_counter].posicao);
+                Registradores(RD, tradu[program_counter].posicao, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(tradu[program_counter].opcode,"0100"))){
                 /*strcpy(rd,ULA(tradu, program_counter));*/
                 RD = ULA(tradu, program_counter);
-                Registradores(RD, tradu[program_counter].posicao);
+                Registradores(RD, tradu[program_counter].posicao, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(tradu[program_counter].opcode,"1011"))){
