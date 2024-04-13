@@ -24,6 +24,19 @@ type_instruc memInstruc(int contador, int opcao){
         }
     }
 
+    else if (opcao == 2){
+        int r=0, i=0, j=0;
+        if (strcmp(inst, "0000", 4))
+            r++;
+        else if (strcmp(inst, "0100", 4) || strcmp(inst, "1011", 4) || strcmp(inst, "1111", 4) || strcmp(inst, "0110", 4))
+            i++;
+        else if (strcmp(inst, "0010", 4) || strcmp(inst, "1000"))
+            j++;
+        
+        printf("O numero de instrucoes é de %d", tamanho_linhas);
+        printf("Observa-se: %d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
+    }
+
     else {
         traduzido = (type_instruc*)malloc(tamanho_linhas * sizeof(type_instruc));
 

@@ -44,7 +44,7 @@ int menu(){
             Registradores(0, "tanto-faz", 1);
             break;
         case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
-            
+            memInstruc(0, 2);
             break;
         case 5: //imprimir todo o simulador
             

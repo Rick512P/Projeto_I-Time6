@@ -12,7 +12,7 @@ int controller(int op){
 
     type_instruc *tradu;
     
-    tradu = memInstruc(program_counter, 2); //COMEÇA COM 0
+    tradu = memInstruc(program_counter, 3); //COMEÇA COM 0
     numeroLinhas = sizeof(tradu); //sizeof nao vai pegar as linhas de tradu, apenas o tamanho em bytes
 
     switch (op)
