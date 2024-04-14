@@ -20,9 +20,10 @@ int ULA(type_instruc *traduzido, int contador) {
             int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);  
             rd = rs + rt;
-            dec_to_bin(rd, Dest); //converte o resultado em binário
 
-            //memoriaDados(Dest); --> memoria de dados precisa receber o resultado em binario
+            memoriaDados(contador, rd);
+
+            dec_to_bin(rd, Dest); //converte o resultado em binário
 
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
@@ -32,9 +33,11 @@ int ULA(type_instruc *traduzido, int contador) {
             int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
+
+            memoriaDados(contador, rd);
+
             dec_to_bin(rd, Dest);
 
-            //memoriaDados(Dest); --> memoria de dados precisa receber o resultado em binario
 
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
@@ -42,6 +45,9 @@ int ULA(type_instruc *traduzido, int contador) {
         else if (strcmp(traduzido[contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
             AND(Source, Target, &Dest);
+
+            memoriaDados(contador, rd);
+
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             return rd;
         }
@@ -49,6 +55,9 @@ int ULA(type_instruc *traduzido, int contador) {
         else if (strcmp(traduzido[contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
+
+            memoriaDados(contador, rd);
+
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             return rd;
         }
@@ -59,9 +68,11 @@ int ULA(type_instruc *traduzido, int contador) {
         int rs, rt, immediate;
         bin_dec(Source, Target, Dest, &rs, &immediate, &rt);
         rt = rs + immediate;
+
+        memoriaDados(contador, rd);
+
         dec_to_bin(rt, Dest);
 
-        //memoriaDados(Dest); --> memoria de dados precisa receber o resultado em binario
 
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
@@ -69,12 +80,12 @@ int ULA(type_instruc *traduzido, int contador) {
     else if(strcmp(traduzido[contador].opcode,"1011") == 0){
         // lw --> LW TEM QUE RETORNAR RT
         address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
-        return address;
+        memoriaDados(contador, address);
 
     else if(strcmp(traduzido[contador].opcode,"1111") == 0){
         // sw
         address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
-        return address;
+        memoriaDados(contador, address);
     }
 
     else if(strcmp(traduzido[contador].opcode,"1000") == 0){// beq -> branch if equal 
@@ -95,7 +106,7 @@ int ULA(type_instruc *traduzido, int contador) {
         bin_dec(Source, Target, Dest, &address, NULL, NULL);
         // Implementação da função jump
         //printf("Jumping to address: %d\n", address);
-        return address;
+        memoriaDados(contador, address);
     }
 
     else{

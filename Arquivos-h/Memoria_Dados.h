@@ -4,7 +4,12 @@
 
 #include "bibliotecas.h"
 
+typedef struct {
+    char dados[TAMANHO_MEM_DADOS];
+} MemoriaDados;
 
-void save_data_to_file(int data[], int size);
+void escreveDado(MemoriaDados *mem, int endereco, char valor);
+char lerDado(MemoriaDados *mem, int endereco);
+void memoriaDados(int endereco, char valor[]);
 
 #endif
