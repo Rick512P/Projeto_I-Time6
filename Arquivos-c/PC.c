@@ -1,7 +1,7 @@
 #include "../Arquivos-h/PC.h"
 
 // Função para incrementar o contador de programa
-int increment_PC(int op, int *program_counter) {//PROGRAM_COUNTER COMO PONTEIRO POIS ELE RECEBERÁ O ENDEREÇO DE PROGRAM_COUNTER
+int increment_PC(int *program_counter, int op) {//PROGRAM_COUNTER COMO PONTEIRO POIS ELE RECEBERÁ O ENDEREÇO DE PROGRAM_COUNTER
     switch (op)
     {
      case 1:

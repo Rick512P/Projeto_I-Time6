@@ -6,7 +6,7 @@
 
 
 
-void parser(instrucao **inst, int *tamanho_linhas);
+void parser(instrucao *inst, int *tamanho_linhas);
 
 
 #endif

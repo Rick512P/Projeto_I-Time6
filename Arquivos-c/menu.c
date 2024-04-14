@@ -2,12 +2,17 @@
 #include "RemoveData.c"
 
 int main(){
+    menu();
     removedata();
+
     return 0;
 }
 
 int menu(){
-    int escolha;
+    int escolha, tamLinhas;
+    instrucao inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
+    type_instruc traduzido;
+    registradores regs;
     printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
     printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
@@ -31,23 +36,26 @@ int menu(){
         switch (escolha)
         {
         case 0:
+            if(inst){
+                free(inst);
+            }
             printf("Encerrando o programa!");
             break;
         case 1: //Carregar memória
-            memInstruc(0, 0);
+            memInstruc(0, 0, &inst, &tamLinhas);
             break;
         case 2: //Imprimir memória de instruções e memória de dados
-            memInstruc(0, 1);
+            memInstruc(0, 1, &inst, &tamLinhas);
             //memDados(0, 0, 1); --> exemplo de print da mem de dados 
             break;
         case 3: //Imprimir registradores
-            Registradores(0, "tanto-faz", 1);
+            Registradores(&regs, 0, "", 1);
             break;
         case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
-            memInstruc(0, 2);
+            memInstruc(0, 2, &inst, &tamLinhas);
             break;
         case 5: //imprimir todo o simulador
-            
+            controller(4, inst, tamLinhas);
             break;
         case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
 
@@ -56,18 +64,19 @@ int menu(){
             
             break;
         case 8: //Chamar função responsável pela execução do programa
-            controller(1);
+            controller(1, inst, tamLinhas, &regs);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2);
+            controller(2, inst, tamLinhas, &regs);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3);
+            controller(3, inst, tamLinhas, &regs);
             break;
         case 11:
-            increment_PC(0, 0);
+            increment_PC(0, 0); // ?
             break;
         default:
+            
             break;
         }
     }while(escolha != 0);

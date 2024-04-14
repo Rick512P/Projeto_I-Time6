@@ -41,14 +41,16 @@ int ULA(type_instruc *traduzido, int contador) {
 
         else if (strcmp(traduzido[contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
-            AND(Source, Target, Dest);
-            //E DEPOIS?
+            AND(Source, Target, &Dest);
+            bin_dec(Source, Target, Dest, &rs, &rt, &rd);
+            return rd;
         }
 
         else if (strcmp(traduzido[contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
-            //E DEPOIS?
+            bin_dec(Source, Target, Dest, &rs, &rt, &rd);
+            return rd;
         }
     }
 
@@ -65,7 +67,7 @@ int ULA(type_instruc *traduzido, int contador) {
     }
 
     else if(strcmp(traduzido[contador].opcode,"1011") == 0){
-        // lw
+        // lw --> LW TEM QUE RETORNAR RT
         address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
         return address;
 
@@ -113,8 +115,8 @@ int lw_sw_offset(char Source[], char Target[], char Dest[], char imm) {
 
 void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd) {
     int i, LS = strlen(Source), LT = strlen(Target), LD = strlen(Dest);
-    *rs = 0;
-    *rd = 0;
+    *rs = 0; 
+    *rd = 0; 
     *rt = 0;
     
     // Etapa de verificação de números negativos
@@ -186,24 +188,24 @@ char* dec_to_bin(int decimal, char binary[]) {
     return binary;
 }
 
-void AND(char Source[], char Target[], char Dest[]){
+void AND(char Source[], char Target[], char **Dest){
     int i, LS = strlen(Source);
     for (i = 0; i < LS; i++){
         if (Source[i] == '0' || Target[i] == '0'){
-            Dest[i] = '0';
+            (*Dest)[i] = '0';
         } else {
-            Dest[i] = '1';
+            (*Dest)[i] = '1';
         }
     }
 }
 
-void OR(char Source[], char Target[], char Dest[]){
+void OR(char Source[], char Target[], char **Dest){
     int i, LS = strlen(Source);
     for (i = 0; i < LS; i++){
         if (Source[i] == '1' || Target[i] == '1'){
-            Dest[i] = '1';
+            (*Dest)[i] = '1';
         } else {
-            Dest[i] = '0';
+            (*Dest)[i] = '0';
         }
     }
 }

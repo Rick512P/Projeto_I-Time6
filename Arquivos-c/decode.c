@@ -18,14 +18,7 @@ type_instruc decoder(instrucao *inst, int i){
         traducao.rt[3] = '\0';
         strncpy(traducao.rd, inst[i].instruc + 10, 4);
         traducao.rd[3] = '\0';
-        printf("\n======TIPO R=========\n");
-        printf("opcode: %s\n", traducao.opcode);
-        printf("rs: %s\n", traducao.rs);
-        printf("rt: %s\n", traducao.rt);
-        printf("rd: %s\n", traducao.rd);
-        printf("funct: %s\n", traducao.funct);
-        printf("indice: %d\n", i);
-        printf("================\n");
+        
         return traducao;
     }
 
@@ -37,13 +30,7 @@ type_instruc decoder(instrucao *inst, int i){
         traducao.rt[3] = '\0';
         strncpy(traducao.rs, inst[i].instruc + 5, 4);
         traducao.rs[3] = '\0';
-        printf("\n=======TIPO I=========\n");
-        printf("opcode: %s\n", traducao.opcode);
-        printf("rt: %s\n", traducao.rs);
-        printf("rd: %s\n", traducao.rt);
-        printf("imm: %s\n", traducao.imm);
-        printf("indice: %d\n", i);
-        printf("================\n");
+        
         return traducao;
     }
 
@@ -51,11 +38,7 @@ type_instruc decoder(instrucao *inst, int i){
     else if (strcmp(traducao.opcode, "0010") == 0 || strcmp(traducao.opcode, "1000") == 0){//SE NAO, SABEREMOS QUE SERÁ TIPO J, PORTANDO ADICIONAREMOS APENAS O ADDR
         strncpy(traducao.addr, inst[i].instruc + 9, 8); // Escreve o funct
         traducao.addr[7] = '\0';
-        printf("\n========TIPO J========\n");
-        printf("opcode: %s\n", traducao.opcode);
-        printf("addr: %s\n", traducao.addr);
-        printf("indice: %d\n", i);
-        printf("\n================\n");
+        
         return traducao;
     }
     

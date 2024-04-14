@@ -12,7 +12,7 @@ void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *r
 char* dec_to_bin(int decimal, char binary[]);
 void AND(char Source[], char Target[], char Dest[]);
 void OR(char Source[], char Target[], char Dest[]);
-int lw_sw_offset(char Source[], char Target[], char Dest[], int offset);
+int lw_sw_offset(char Source[], char Target[], char Dest[], char imm);
 
 #endif
 

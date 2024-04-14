@@ -18,6 +18,7 @@ typedef struct{
     int reg7;
 }registradores;
 
-int Registradores (int valor, char posicao[]);
+void Registradores (registradores *regs, int valor, char posicao[], int opcao)
+int escritaRegistradores(registradores *regs, char posicao[], int valor);
 
 #endif

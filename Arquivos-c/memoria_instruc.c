@@ -4,60 +4,59 @@
 #include "../Arquivos-h/registradores.h"
 #include "../Arquivos-h/ULA.h"
 
-type_instruc memInstruc(int contador, int opcao){
-    int *tamanho_linhasP;
-    int tamanho_linhas;
-    instrucao *inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
-
-    type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
-
-    
-    tamanho_linhasV = &tamanho_linhas;
-    if (opcao == 0) {
-        parser(&inst, tamanho_linhasP); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
+type_instruc memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas){
+    switch(opcao){
+        case 0:
+        parser(inst, tamLinhas); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
     //O INST TERÁ A INSTRUÇÃO E TAMANHO_LINHAS O TANTO DE INSTRUÇÕES QUE PRECISARÁ SEREM EXECUTADAS
-    }
+        break;
 
-    else if (opcao == 1){
-        for (int i=0; i<tamanho_linhas;i++){
-            printf("%s", inst[i]);
-        }
-    }
-
-    else if (opcao == 2){
-        int r=0, i=0, j=0;
-        if (strcmp(inst, "0000", 4))
-            r++;
-        else if (strcmp(inst, "0100", 4) || strcmp(inst, "1011", 4) || strcmp(inst, "1111", 4) || strcmp(inst, "0110", 4))
-            i++;
-        else if (strcmp(inst, "0010", 4) || strcmp(inst, "1000"))
-            j++;
+        case 1:
+            for (int i=0; i<(*tamLinhas);i++){
+                printf("%s", inst[i]);
+            }
+            break;
         
-        printf("O numero de instrucoes é de %d", tamanho_linhas);
-        printf("Observa-se: %d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
+        case 2:
+            if (inst == NULL) {
+                fprintf(stderr, "Falha ao obter instruções.\n");
+                break;
+            }
+            int r=0, i=0, j=0;
+            for(int y=0;y<(*tamLinhas);y++){
+                if (strncmp(inst[y], "0000", 4))
+                    r++;
+                else if (strncmp(inst[y], "0100", 4) || strcmp(inst[y], "1011", 4) || strcmp(inst[y], "1111", 4) || strcmp(inst[y], "0110", 4))
+                    i++;
+                else if (strncmp(inst[y], "0010", 4) || strcmp(inst[y], "1000"))
+                    j++;
+            }
+            printf("O numero de instrucoes é de %d", (*tamLinhas));
+            printf("Observa-se: %d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
+            break;
+
+        case 3:
+            type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
+            traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
+
+            if (traduzido == NULL) {
+                fprintf(stderr, "Falha ao alocar memória para instruções traduzidas.\n");
+                return NULL;
+            }
+            //PC PASSA O ENDEREÇO, INCREMENTANDO +1
+            for(contador=0; contador<(*tamLinhas); contador++){
+
+                traduzido[contador] = decoder(inst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
+            //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
+
+                printf("%s\n", traduzido[contador].opcode); //DEBUG
+            }
+            return traduzido; //retorna para o controller
+            
+            
+            break;
     }
 
-    else {
-        traduzido = (type_instruc*)malloc(tamanho_linhas * sizeof(type_instruc));
-
-
-        //PC PASSA O ENDEREÇO, INCREMENTANDO +1
-        for(contador=0; contador<(tamanho_linhas); contador++){
-
-            traduzido[contador] = decoder(inst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
-        //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
-
-            printf("%s\n", traduzido[contador].opcode); //DEBUG
-
-            return *traduzido; //retorna para o controller
-            
-        }
-            
-        free(traduzido); //LIMPA A MEMORIA
-        free(inst);
-    
-
-    }
 }
     
 

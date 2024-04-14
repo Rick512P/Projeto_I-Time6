@@ -9,7 +9,7 @@ typedef struct{
 }instrucao;
     
 
-type_instruc memInstruc(int contador);
+type_instruc memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas);
 
 
 #endif
