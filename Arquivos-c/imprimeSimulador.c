@@ -1,10 +1,9 @@
 #include "../Arquivos-h/imprimeSimulador.h"
 
 
-void imprimeSimulador(int tamLinhas, type_instruc *tradu, instrucao *inst){
-    registradores tantofaz;
+void imprimeSimulador(int tamLinhas, type_instruc *tradu, instrucao **inst, int **regs){
     for(int i=0;i<tamLinhas;i++){
-            printf("Instrucao %d de %d: %s", i, tamLinhas, inst[i].instruc);
+            printf("Instrucao %d de %d: %s", i, tamLinhas, (*inst)[i].instruc);
             if (strcmp(tradu[i].opcode, "0000") == 0){
                 printf("\n======TIPO R=========\n");
                 printf("opcode: %s\n", tradu[i].opcode);
@@ -14,7 +13,7 @@ void imprimeSimulador(int tamLinhas, type_instruc *tradu, instrucao *inst){
                 printf("funct: %s\n", tradu[i].funct);
 
                 //AGORA OS REGISTRADORES
-                Registradores(&tantofaz, 0,tradu[i].rd,1);
+                Registradores(regs, 0,tradu[i].rd,1);
                 printf("================\n");
             }
             else if ((strcmp(tradu[i].opcode, "0100") == 0) || (strcmp(tradu[i].opcode, "1011") == 0) || (strcmp(tradu[i].opcode, "1111") == 0) || (strcmp(tradu[i].opcode, "0110") == 0)) {
@@ -23,7 +22,7 @@ void imprimeSimulador(int tamLinhas, type_instruc *tradu, instrucao *inst){
                 printf("rt: %s\n", tradu[i].rs);
                 printf("rd: %s\n", tradu[i].rt);
                 printf("imm: %s\n", tradu[i].imm);
-                Registradores(&tantofaz, 0,tradu[i].rt,1);
+                Registradores(regs, 0,tradu[i].rt,1);
                 printf("================\n");
             }
 

@@ -32,6 +32,4 @@ typedef struct{
 
 }type_instruc;
 
-
-
 #endif

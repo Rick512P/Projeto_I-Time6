@@ -1,7 +1,7 @@
 
 #include "../Arquivos-h/controller.h"
 
-int controller(int op, instrucao inst, int tamLinhas, registradores *regs, MemoriaDados *md){
+int controller(int op, instrucao **inst, int tamLinhas, int **regs, MemoriaDados *md){
     __DECODE_H__;
     __MEMORIA_INSTRUC_H__;
     ULA_H
@@ -12,7 +12,7 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
 
     type_instruc *instrucoesDecodificadas;
     
-    instrucoesDecodificadas = memInstruc(program_counter, 3, &inst, &tamLinhas); //COMEÇA COM 0
+    instrucoesDecodificadas = memInstruc(program_counter, 3, inst, &tamLinhas); //COMEÇA COM 0
 
     if (instrucoesDecodificadas == NULL) {
         fprintf(stderr, "Falha ao obter instruções decodificadas.\n");
@@ -126,7 +126,7 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
         break;
 
     case 4: //caso 4, ele ira printar o tradu
-        imprimeSimulador(tamLinhas, instrucoesDecodificadas, &inst);
+        imprimeSimulador(tamLinhas, instrucoesDecodificadas, inst, regs);
         break;
 
     default:

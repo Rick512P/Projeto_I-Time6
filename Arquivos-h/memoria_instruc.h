@@ -9,7 +9,7 @@
 #include "../Arquivos-h/ULA.h"
 
 
-type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas);
+type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinhas);
 
 
 #endif

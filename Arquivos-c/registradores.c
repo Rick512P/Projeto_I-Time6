@@ -2,70 +2,66 @@
 
 
 
-void Registradores (registradores *regs, int valor, char posicao[], int opcao){ //recebe do controle qual registrador usar e o valor a ser salvo
+void Registradores (int **regs, int valor, char posicao[], int opcao){ //recebe do controle qual registrador usar e o valor a ser salvo
     
     if (opcao == 0){
         escritaRegistradores(regs, valor, posicao);
     }
     else if (opcao == 1){
-        printf("Registrador 0: %d\n", (*regs).reg0);
-        printf("Registrador 1: %d\n", (*regs).reg1);
-        printf("Registrador 2: %d\n", (*regs).reg2);
-        printf("Registrador 3: %d\n", (*regs).reg3);
-        printf("Registrador 4: %d\n", (*regs).reg4);
-        printf("Registrador 5: %d\n", (*regs).reg5);
-        printf("Registrador 6: %d\n", (*regs).reg6);
-        printf("Registrador 7: %d\n", (*regs).reg7);
+        for(int i = 0; i<8;i++){
+            printf("Registrador %d: %d\n", i, (*regs)[i]);
+        }
+        
     }
 }
 
 
-int escritaRegistradores(registradores *regs, int valor, char posicao[]){
+int escritaRegistradores(int **regs, int valor, char posicao[]){
         if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
             
-            (*regs).reg0 = valor;
+            (*regs)[0] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "001") == 0){
             
-            (*regs).reg1 = valor;
+            (*regs)[1] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "010") == 0){
             
-            (*regs).reg2 = valor;
+            (*regs)[2] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "011") == 0){
             
-            (*regs).reg3 = valor;
+            (*regs)[3] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "100") == 0){
             
-            (*regs).reg4 = valor;
+            (*regs)[4] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "101") == 0){
             
-            (*regs).reg5 = valor;
+            (*regs)[5] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "110") == 0){
             
-            (*regs).reg6 = valor;
+            (*regs)[6] = valor;
             return valor;
         }
 
         else if(strcmp(posicao, "111") == 0){
             
-            (*regs).reg7 = valor;
+            (*regs)[7] = valor;
             return valor;
         }
         else

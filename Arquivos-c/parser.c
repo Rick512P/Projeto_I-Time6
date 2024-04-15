@@ -1,7 +1,7 @@
 #include "../Arquivos-h/parser.h"
 
 //RESPONSAVEL POR ABRIR O ARQUIVO E ENCHER A MEMORIA DE INSTRUÇÕES
-int parser(instrucao *inst, int *tamanho_linhas){
+int parser(instrucao **inst, int *tamanho_linhas){
     char linha[100];
     int contador_de_linhas = 0;
     instrucao p;
@@ -19,7 +19,7 @@ int parser(instrucao *inst, int *tamanho_linhas){
         *tamanho_linhas = contador_de_linhas;
 
         //alocaçao de memoria que minha variavel inst terá será = ao tanto de linhas do arquivo lido
-        inst = (instrucao*)malloc(contador_de_linhas * sizeof(instrucao));
+        *inst = malloc(contador_de_linhas * sizeof(instrucao));
 
         if (!inst) { //se inst nao ter nada alocado, dará erro.
             fprintf(stderr, "Falha na alocação de memória para instruções.\n"); //stderr envia mensagem de erro
@@ -39,9 +39,8 @@ int parser(instrucao *inst, int *tamanho_linhas){
             linha[strcspn(linha, "\r\n")] = '\0';
 
             // Copia a linha para a estrutura inst
-            strncpy(inst[i].instruc, linha, 17);
-            inst[i].instruc[sizeof(inst[i].instruc) - 1] = '\0'; // certifica-se de que a string termina com null terminator
-
+            strncpy((*inst)[i].instruc, linha, 17);
+            (*inst)[i].instruc[sizeof((*inst)[i].instruc) - 1] = '\0'; // certifica-se de que a string termina com null terminator
         }
         
         fclose(arq);

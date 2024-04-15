@@ -1,8 +1,7 @@
 #include "../Arquivos-h/memoria_instruc.h"
 
 
-type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas){
-    printf("Entrou aqui!");
+type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinhas){
     type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
     switch(opcao){
         case 0:
@@ -12,7 +11,7 @@ type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinha
 
         case 1:
             for (int i=0; i<(*tamLinhas);i++){
-                printf("%s", inst[i].instruc);
+                printf("Instrucao %d: %s\n", i, (*inst)[i].instruc);
             }
             break;
         
@@ -23,15 +22,16 @@ type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinha
             }
             int r=0, i=0, j=0;
             for(int y=0;y<(*tamLinhas);y++){
-                if (strncmp(inst[y].instruc, "0000", 4))
+                if (strncmp((*inst)[y].instruc, "0000", 4) == 0){ //compara os 4 primeiros numeros de inst com "0000"
                     r++;
-                else if (strncmp(inst[y].instruc, "0100", 4) || strncmp(inst[y].instruc, "1011", 4) || strncmp(inst[y].instruc, "1111", 4) || strncmp(inst[y].instruc, "0110", 4))
+                    }
+                else if (strncmp((*inst)[y].instruc, "0100", 4) == 0 || strncmp((*inst)[y].instruc, "1011", 4) == 0 || strncmp((*inst)[y].instruc, "1111", 4) == 0 || strncmp((*inst)[y].instruc, "0110", 4) == 0)
                     i++;
-                else if (strncmp(inst[y].instruc, "0010", 4) || strncmp(inst[y].instruc, "1000", 4))
+                else if (strncmp((*inst)[y].instruc, "0010", 4) == 0 || strncmp((*inst)[y].instruc, "1000", 4) == 0)
                     j++;
             }
-            printf("O numero de instrucoes é de %d", (*tamLinhas));
-            printf("Observa-se: %d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
+            printf("O numero de instrucoes e de %d\n", (*tamLinhas));
+            printf("Observa-se: \n%d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
             break;
 
         case 3:
@@ -47,7 +47,7 @@ type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinha
                 traduzido[contador] = decoder(inst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
             //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
 
-                printf("%s\n", traduzido[contador].opcode); //DEBUG
+                printf("OPCODE: %s\n", traduzido[contador].opcode); //DEBUG
             }
             return traduzido; //retorna para o controller
             

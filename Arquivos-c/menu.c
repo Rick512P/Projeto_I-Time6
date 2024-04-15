@@ -9,9 +9,15 @@ int menu(){
     MemoriaDados md;
     memset(md.dados, 0, 256);
     int escolha, tamLinhas;
-    instrucao inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
+    instrucao *inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     type_instruc traduzido;
-    registradores regs;
+    int *regs; //registradores como um inteiro mesmo
+    regs = (int*)malloc(8 * sizeof(int));
+
+    for (int i=0;i<8;i++){ //zerando registradores, caso contrario dá números inconsistentes
+        regs[i] = 0;
+    }
+
     printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
     printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
@@ -51,7 +57,7 @@ int menu(){
             memInstruc(0, 2, &inst, &tamLinhas);
             break;
         case 5: //imprimir todo o simulador
-            controller(4, inst, tamLinhas, &regs, &md);
+            controller(4, &inst, tamLinhas, &regs, &md);
             break;
         /*case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
 
@@ -60,13 +66,13 @@ int menu(){
             
             break;
         case 8: //Chamar função responsável pela execução do programa
-            controller(1, inst, tamLinhas, &regs, &md);
+            controller(1, &inst, tamLinhas, &regs, &md);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, inst, tamLinhas, &regsm &md);
+            controller(2, &inst, tamLinhas, &regsm &md);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, inst, tamLinhas, &regs, &md);
+            controller(3, &inst, tamLinhas, &regs, &md);
             break;
         case 11:
             increment_PC(0, 0); // ?
