@@ -56,19 +56,20 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
             //EM TODO O PROGRAMA
         }
         break;
-    /*case 2: //ARRUMAR GET_PC
+    case 2:
         //Run by Step
-        if (tamLinhas < get_PC()){ //QUEM É GET_PC
-            program_counter = increment_PC(&program_counter, 0);   
+       // if (tamLinhas){ ARRUMAR IF
+            program_counter = increment_PC(&program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
             if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0000")) == 0)
             {
-                /*strcpy(rd,ULA(tradu, program_counter));
+                /*strcpy(rd,ULA(instrucoesDecodificadas, program_counter)); ACREDITO QUE O RD PARA O REG POSSA SER UM INTEIRO QUE 
+                RECEBE O RETORNO DA FUNÇÃO ULA, COM ELA RETORNANDO OS RD'S INTEIROS*/
                 RD = ULA(instrucoesDecodificadas, program_counter, md);
                 Registradores(regs, RD, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){
-                /*strcpy(rd,ULA(tradu, program_counter));
+                /*strcpy(rd,ULA(instrucoesDecodificadas, program_counter));*/
                 RT = ULA(instrucoesDecodificadas, program_counter, md);
                 Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
@@ -85,22 +86,24 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0010")) == 0){
                 program_counter = ULA(instrucoesDecodificadas, program_counter, md);
             }
-            increment_PC(&program_counter, 1);
-        }
+            increment_PC(&program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
+            //EM TODO O PROGRAMA
+      //  }
         break;*/
-    /*case 3: //ARRUMAR GET_PC()
+    case 3: //ARRUMAR GET_PC()
         //Return Run by Step
-        if (tamLinhas <= get_PC()){
-            program_counter = increment_PC(&program_counter, 0);   
+        //if (tamLinhas <= get_PC()){arrumar if
+            program_counter = increment_PC(&program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
             if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0000")) == 0)
             {
-                /*strcpy(rd,ULA(tradu, program_counter));
+                /*strcpy(rd,ULA(instrucoesDecodificadas, program_counter)); ACREDITO QUE O RD PARA O REG POSSA SER UM INTEIRO QUE 
+                RECEBE O RETORNO DA FUNÇÃO ULA, COM ELA RETORNANDO OS RD'S INTEIROS*/
                 RD = ULA(instrucoesDecodificadas, program_counter, md);
                 Registradores(regs, RD, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){
-                /*strcpy(rd,ULA(tradu, program_counter));
+                /*strcpy(rd,ULA(instrucoesDecodificadas, program_counter));*/
                 RT = ULA(instrucoesDecodificadas, program_counter, md);
                 Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
@@ -117,9 +120,10 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0010")) == 0){
                 program_counter = ULA(instrucoesDecodificadas, program_counter, md);
             }
-            increment_PC(&program_counter, 2);
-        }
-        break;*/
+            increment_PC(&program_counter, 2); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
+            //EM TODO O PROGRAMA
+       // }
+        break;
 
     case 4: //caso 4, ele ira printar o tradu
         imprimeSimulador(tamLinhas, *instrucoesDecodificadas, &inst);
