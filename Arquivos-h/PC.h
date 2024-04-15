@@ -5,7 +5,7 @@
 
 extern int program_counter;
 
-int increment_PC(int op, int *program_counter);
+int increment_PC( int *program_counter, int op);
 
 
 #endif

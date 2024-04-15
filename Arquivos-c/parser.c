@@ -1,7 +1,7 @@
 #include "../Arquivos-h/parser.h"
 
 //RESPONSAVEL POR ABRIR O ARQUIVO E ENCHER A MEMORIA DE INSTRUÇÕES
-void parser(instrucao *inst, int *tamanho_linhas){
+int parser(instrucao *inst, int *tamanho_linhas){
     char linha[100];
     int contador_de_linhas = 0;
     instrucao p;
@@ -39,8 +39,8 @@ void parser(instrucao *inst, int *tamanho_linhas){
             linha[strcspn(linha, "\r\n")] = '\0';
 
             // Copia a linha para a estrutura inst
-            strncpy((*inst)[i].instruc, linha, 17);
-            inst[i].instruc[sizeof((*inst)[i].instruc) - 1] = '\0'; // certifica-se de que a string termina com null terminator
+            strncpy(inst[i].instruc, linha, 17);
+            inst[i].instruc[sizeof(inst[i].instruc) - 1] = '\0'; // certifica-se de que a string termina com null terminator
 
         }
         

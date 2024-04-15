@@ -1,18 +1,20 @@
 #ifndef ULA_H
 #define ULA_H
-#define BITS 16 
-#include "memoria_instruc.h"
+#define BITS 16
+
 #include "decode.h"
+#include "memoria_instruc.h"
 #include "parser.h"
+#include "Memoria_Dados.h"
 #include "bibliotecas.h"
 
 
-char ULA(type_instruc *traduzido, int contador);
+int ULA(type_instruc *traduzido, int contador, MemoriaDados *md);
 void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd);
 char* dec_to_bin(int decimal, char binary[]);
-void AND(char Source[], char Target[], char Dest[]);
-void OR(char Source[], char Target[], char Dest[]);
-int lw_sw_offset(char Source[], char Target[], char Dest[], char imm);
+void AND(char Source[], char Target[], char *Dest);
+void OR(char Source[], char Target[], char *Dest);
+int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm);
 
 #endif
 

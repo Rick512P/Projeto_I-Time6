@@ -8,19 +8,19 @@ void Registradores (registradores *regs, int valor, char posicao[], int opcao){ 
         escritaRegistradores(regs, valor, posicao);
     }
     else if (opcao == 1){
-        printf("Registrador 0: %d\n", regs.reg0);
-        printf("Registrador 1: %d\n", regs.reg1);
-        printf("Registrador 2: %d\n", regs.reg2);
-        printf("Registrador 3: %d\n", regs.reg3);
-        printf("Registrador 4: %d\n", regs.reg4);
-        printf("Registrador 5: %d\n", regs.reg5);
-        printf("Registrador 6: %d\n", regs.reg6);
-        printf("Registrador 7: %d\n", regs.reg7);
+        printf("Registrador 0: %d\n", (*regs).reg0);
+        printf("Registrador 1: %d\n", (*regs).reg1);
+        printf("Registrador 2: %d\n", (*regs).reg2);
+        printf("Registrador 3: %d\n", (*regs).reg3);
+        printf("Registrador 4: %d\n", (*regs).reg4);
+        printf("Registrador 5: %d\n", (*regs).reg5);
+        printf("Registrador 6: %d\n", (*regs).reg6);
+        printf("Registrador 7: %d\n", (*regs).reg7);
     }
 }
 
 
-int escritaRegistradores(registradores *regs, char posicao[], int valor){
+int escritaRegistradores(registradores *regs, int valor, char posicao[]){
         if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
             
             (*regs).reg0 = valor;

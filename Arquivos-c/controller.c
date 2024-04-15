@@ -1,7 +1,7 @@
 
-#include "../Arquivos.h/controller.h"
+#include "../Arquivos-h/controller.h"
 
-int controller(int op, instrucao inst, int tamLinhas, registradores *regs){
+int controller(int op, instrucao inst, int tamLinhas, registradores *regs, MemoriaDados *md){
     __DECODE_H__;
     __MEMORIA_INSTRUC_H__;
     ULA_H
@@ -30,99 +30,99 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs){
             {
                 /*strcpy(rd,ULA(instrucoesDecodificadas, program_counter)); ACREDITO QUE O RD PARA O REG POSSA SER UM INTEIRO QUE 
                 RECEBE O RETORNO DA FUNÇÃO ULA, COM ELA RETORNANDO OS RD'S INTEIROS*/
-                RD = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RD, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                RD = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RD, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){
                 /*strcpy(rd,ULA(instrucoesDecodificadas, program_counter));*/
-                RT = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RT, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                RT = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"1011")) == 0){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
-                RT = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RT, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                RT = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"1111")) == 0){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-                address = ULA(instrucoesDecodificadas, program_counter);
+                address = ULA(instrucoesDecodificadas, program_counter, md);
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0010")) == 0){
-                program_counter = ULA(instrucoesDecodificadas, program_counter);
+                program_counter = ULA(instrucoesDecodificadas, program_counter, md);
             }
             increment_PC(&program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
             //EM TODO O PROGRAMA
         }
         break;
-    case 2:
+    /*case 2: //ARRUMAR GET_PC
         //Run by Step
-        if (tamLinhas < get_PC()){
+        if (tamLinhas < get_PC()){ //QUEM É GET_PC
             program_counter = increment_PC(&program_counter, 0);   
             if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0000")) == 0)
             {
-                /*strcpy(rd,ULA(tradu, program_counter));*/
-                RD = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RD, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                /*strcpy(rd,ULA(tradu, program_counter));
+                RD = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RD, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){
-                /*strcpy(rd,ULA(tradu, program_counter));*/
-                RT = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RT, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                /*strcpy(rd,ULA(tradu, program_counter));
+                RT = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"1011")) == 0){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
-                RT = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RT, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                RT = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"1111")) == 0){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-                address = ULA(instrucoesDecodificadas, program_counter);
+                address = ULA(instrucoesDecodificadas, program_counter, md);
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0010")) == 0){
-                program_counter = ULA(instrucoesDecodificadas, program_counter);
+                program_counter = ULA(instrucoesDecodificadas, program_counter, md);
             }
             increment_PC(&program_counter, 1);
         }
-        break;
-    case 3:
+        break;*/
+    /*case 3: //ARRUMAR GET_PC()
         //Return Run by Step
         if (tamLinhas <= get_PC()){
             program_counter = increment_PC(&program_counter, 0);   
             if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0000")) == 0)
             {
-                /*strcpy(rd,ULA(tradu, program_counter));*/
-                RD = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RD, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                /*strcpy(rd,ULA(tradu, program_counter));
+                RD = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RD, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){
-                /*strcpy(rd,ULA(tradu, program_counter));*/
-                RT = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RT, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                /*strcpy(rd,ULA(tradu, program_counter));
+                RT = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"1011")) == 0){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
-                RT = ULA(instrucoesDecodificadas, program_counter);
-                Registradores(RT, instrucoesDecodificadas[program_counter].posicao, 0, regs);
+                RT = ULA(instrucoesDecodificadas, program_counter, md);
+                Registradores(regs, RT, instrucoesDecodificadas[program_counter].rd, 0);
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"1111")) == 0){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-                address = ULA(instrucoesDecodificadas, program_counter);
+                address = ULA(instrucoesDecodificadas, program_counter, md);
             }
             else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0010")) == 0){
-                program_counter = ULA(instrucoesDecodificadas, program_counter);
+                program_counter = ULA(instrucoesDecodificadas, program_counter, md);
             }
             increment_PC(&program_counter, 2);
         }
-        break;
+        break;*/
 
     case 4: //caso 4, ele ira printar o tradu
-        imprimeSimulador(tamLinhas, instrucoesDecodificadas, inst);
+        imprimeSimulador(tamLinhas, *instrucoesDecodificadas, &inst);
         break;
 
     default:

@@ -11,6 +11,7 @@
 #include "registradores.h"
 #include "ULA.h"
 
-
+int main();
+int menu();
 
 #endif

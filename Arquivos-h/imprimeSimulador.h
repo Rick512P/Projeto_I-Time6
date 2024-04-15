@@ -1,9 +1,13 @@
 #ifndef __imprimeSimulador_h
 #define __imprimeSimulador_h
 
+#include "decode.h"
+#include "memoria_instruc.h"
+#include "registradores.h"
 #include "bibliotecas.h"
-#include "../Arquivos.h/menu.h"
+#include "menu.h"
 
-void imprimeSimulador(int tamLinhas, type_instruc tradu, instrucao inst);
+
+void imprimeSimulador(int tamLinhas, type_instruc tradu, instrucao *inst);
 
 #endif

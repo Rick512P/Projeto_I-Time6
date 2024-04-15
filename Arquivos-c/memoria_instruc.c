@@ -1,10 +1,7 @@
-#include "../Arquivos-h/decode.h"
 #include "../Arquivos-h/memoria_instruc.h"
-#include "../Arquivos-h/parser.h" //inclui arquivos de cabeçalho que estao no mesmo diretorio deste arquivo .c
-#include "../Arquivos-h/registradores.h"
-#include "../Arquivos-h/ULA.h"
 
-type_instruc memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas){
+
+type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas){
     switch(opcao){
         case 0:
         parser(inst, tamLinhas); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
@@ -13,7 +10,7 @@ type_instruc memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas
 
         case 1:
             for (int i=0; i<(*tamLinhas);i++){
-                printf("%s", inst[i]);
+                printf("%s", inst[i].instruc);
             }
             break;
         
@@ -24,11 +21,11 @@ type_instruc memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas
             }
             int r=0, i=0, j=0;
             for(int y=0;y<(*tamLinhas);y++){
-                if (strncmp(inst[y], "0000", 4))
+                if (strncmp(inst[y].instruc, "0000", 4))
                     r++;
-                else if (strncmp(inst[y], "0100", 4) || strcmp(inst[y], "1011", 4) || strcmp(inst[y], "1111", 4) || strcmp(inst[y], "0110", 4))
+                else if (strncmp(inst[y].instruc, "0100", 4) || strncmp(inst[y].instruc, "1011", 4) || strncmp(inst[y].instruc, "1111", 4) || strncmp(inst[y].instruc, "0110", 4))
                     i++;
-                else if (strncmp(inst[y], "0010", 4) || strcmp(inst[y], "1000"))
+                else if (strncmp(inst[y].instruc, "0010", 4) || strncmp(inst[y].instruc, "1000", 4))
                     j++;
             }
             printf("O numero de instrucoes é de %d", (*tamLinhas));

@@ -2,7 +2,7 @@
 
 // Função para salvar os dados de memória em um vetor
 int* salvar_dados_memoria(int *dados_memoria) {
-    int *vetor = (int*)malloc(tamanho_vetor * sizeof(int)); // Aloca memória para o vetor
+    int *vetor = (int*)malloc(tamanho_vetor * sizeof(int)); // quem é tamanho_vetor?
 
     if (vetor == NULL) {
     

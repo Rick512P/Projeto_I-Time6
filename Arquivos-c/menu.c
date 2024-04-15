@@ -9,6 +9,8 @@ int main(){
 }
 
 int menu(){
+    MemoriaDados md;
+    memset(md.dados, 0, 256);
     int escolha, tamLinhas;
     instrucao inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     type_instruc traduzido;
@@ -36,9 +38,6 @@ int menu(){
         switch (escolha)
         {
         case 0:
-            if(inst){
-                free(inst);
-            }
             printf("Encerrando o programa!");
             break;
         case 1: //Carregar memória
@@ -55,29 +54,29 @@ int menu(){
             memInstruc(0, 2, &inst, &tamLinhas);
             break;
         case 5: //imprimir todo o simulador
-            controller(4, inst, tamLinhas);
+            controller(4, inst, tamLinhas, &regs, &md);
             break;
-        case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
+        /*case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
 
             break;
         case 7: //salvar todos os dados de memória_Dados no arquivo DATA.mem
             
             break;
         case 8: //Chamar função responsável pela execução do programa
-            controller(1, inst, tamLinhas, &regs);
+            controller(1, inst, tamLinhas, &regs, &md);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, inst, tamLinhas, &regs);
+            controller(2, inst, tamLinhas, &regsm &md);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, inst, tamLinhas, &regs);
+            controller(3, inst, tamLinhas, &regs, &md);
             break;
         case 11:
             increment_PC(0, 0); // ?
             break;
         default:
             
-            break;
+            break;*/
         }
     }while(escolha != 0);
 

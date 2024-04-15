@@ -1,7 +1,6 @@
 #ifndef __DECODE_H__
 #define __DECODE_H__
 
-#include "memoria_instruc.h"
 #include "bibliotecas.h"
 
 
@@ -23,6 +22,8 @@ typedef struct{
     char addr[8];
 
 }type_instruc;
+
+#include "memoria_instruc.h"
 
 type_instruc decoder(instrucao *inst, int i);
 

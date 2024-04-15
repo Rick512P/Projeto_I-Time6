@@ -1,14 +1,14 @@
 #include "../Arquivos-h/ULA.h"
 
 
-int ULA(type_instruc *traduzido, int contador) {
+int ULA(type_instruc *traduzido, int contador, MemoriaDados *md) {
     __DECODE_H__;
     __MEMORIA_INSTRUC_H__;
 
     char Target[4];
     char Dest[4];
     char Source[4];
-    int address;
+    int address, rs, rt, rd;
     strncpy(Source, traduzido[contador].rs, 4);
     strncpy(Target, traduzido[contador].rt, 4);
     strncpy(Dest, traduzido[contador].rd, 4);
@@ -17,38 +17,33 @@ int ULA(type_instruc *traduzido, int contador) {
 		
         if (strcmp(traduzido[contador].funct, "000") == 0 ){
             //"add -> rs + rt = rd";
-            int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);  
             rd = rs + rt;
 
-            memoriaDados(contador, rd);
-
             dec_to_bin(rd, Dest); //converte o resultado em binário
 
+            memoriaDados(md, 0, Dest, contador);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
         else if (strcmp(traduzido[contador].funct, "010") == 0 ){
             //"sub -> rs - rt = rd";
-            int rs, rt, rd;
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
 
-            memoriaDados(contador, rd);
-
             dec_to_bin(rd, Dest);
 
-
+            memoriaDados(md, 0, Dest, contador);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
         else if (strcmp(traduzido[contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
-            AND(Source, Target, &Dest);
+            AND(Source, Target, Dest);
 
-            memoriaDados(contador, rd);
+            memoriaDados(md, 0, Dest, contador);
 
-            bin_dec(Source, Target, Dest, &rs, &rt, &rd);
+            bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
             return rd;
         }
 
@@ -56,45 +51,45 @@ int ULA(type_instruc *traduzido, int contador) {
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
 
-            memoriaDados(contador, rd);
+            memoriaDados(md, 0, Dest, contador);
 
-            bin_dec(Source, Target, Dest, &rs, &rt, &rd);
+            bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
             return rd;
         }
     }
 
     else if(strcmp(traduzido[contador].opcode,"0100") == 0){
         // addi -> rs + immediate = rt
-        int rs, rt, immediate;
+        int immediate;
         bin_dec(Source, Target, Dest, &rs, &immediate, &rt);
         rt = rs + immediate;
 
-        memoriaDados(contador, rd);
-
         dec_to_bin(rt, Dest);
 
-
+        memoriaDados(md, 0, Dest, contador);
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
     else if(strcmp(traduzido[contador].opcode,"1011") == 0){
         // lw --> LW TEM QUE RETORNAR RT
         address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
-        memoriaDados(contador, address);
-
+        dec_to_bin(address, Dest);
+        memoriaDados(md, 0, Dest, contador);
+    }
     else if(strcmp(traduzido[contador].opcode,"1111") == 0){
         // sw
         address = lw_sw_offset(Source, Target, Dest, traduzido[contador].imm);
-        memoriaDados(contador, address);
+        dec_to_bin(address, Dest);
+        memoriaDados(md, 0, Dest, contador);
     }
 
     else if(strcmp(traduzido[contador].opcode,"1000") == 0){// beq -> branch if equal 
-        int rs, rt;
         bin_dec(Source, Target, Dest, &rs, &rt, NULL);
         if (rs == rt) {
-            printf("Branching to address: %d\n", traduzido[contador].imm);
+            printf("Branching to address: %s\n", traduzido[contador].imm);
             // Implementação do salto para o endereço especificado
-            contador = traduzido[contador].imm; // Atualiza o contador de programa com o endereço especificado
+            bin_dec(NULL, NULL, traduzido[contador].imm, NULL, NULL, &rd);
+            contador = rd; // Atualiza o contador de programa com o endereço especificado
             printf("Jumped to address: %d\n", contador); // Exibe o novo endereço
         } else {
             printf("Branch not taken.\n");
@@ -106,20 +101,21 @@ int ULA(type_instruc *traduzido, int contador) {
         bin_dec(Source, Target, Dest, &address, NULL, NULL);
         // Implementação da função jump
         //printf("Jumping to address: %d\n", address);
-        memoriaDados(contador, address);
+        dec_to_bin(address, Dest);
+        memoriaDados(md, 0, Dest, contador);
     }
 
     else{
         printf("OPCODE ERROR!");
     }
 }
-}
 
-int lw_sw_offset(char Source[], char Target[], char Dest[], char imm) {
+
+int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm) {
     // Implementação do deslocamento de memória para instruções lw e sw
-    int base_address;
-    bin_dec(Source, Target, Dest, &base_address, NULL, NULL);
-    int effective_address = base_address + imm; ///MUDAR ISSO AQUI
+    int base_address, immDec;
+    bin_dec(Source, imm, NULL, &base_address, &immDec, NULL);
+    int effective_address = base_address + immDec; ///MUDAR ISSO AQUI
     printf("Accessing memory at address: %d\n", effective_address);
     return effective_address;
 }
@@ -199,24 +195,24 @@ char* dec_to_bin(int decimal, char binary[]) {
     return binary;
 }
 
-void AND(char Source[], char Target[], char **Dest){
+void AND(char Source[], char Target[], char *Dest){
     int i, LS = strlen(Source);
     for (i = 0; i < LS; i++){
         if (Source[i] == '0' || Target[i] == '0'){
-            (*Dest)[i] = '0';
+            Dest[i] = '0';
         } else {
-            (*Dest)[i] = '1';
+            Dest[i] = '1';
         }
     }
 }
 
-void OR(char Source[], char Target[], char **Dest){
+void OR(char Source[], char Target[], char *Dest){
     int i, LS = strlen(Source);
     for (i = 0; i < LS; i++){
         if (Source[i] == '1' || Target[i] == '1'){
-            (*Dest)[i] = '1';
+            Dest[i] = '1';
         } else {
-            (*Dest)[i] = '0';
+            Dest[i] = '0';
         }
     }
 }
