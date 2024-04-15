@@ -2,6 +2,8 @@
 
 
 type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinhas){
+    printf("Entrou aqui!");
+    type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
     switch(opcao){
         case 0:
         parser(inst, tamLinhas); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
@@ -33,7 +35,6 @@ type_instruc* memInstruc(int contador, int opcao, instrucao *inst, int *tamLinha
             break;
 
         case 3:
-            type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
             traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
 
             if (traduzido == NULL) {

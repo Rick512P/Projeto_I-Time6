@@ -6,11 +6,11 @@ void memoriaDados(MemoriaDados *md, int opcao, char valor[], int contador){
     switch (opcao)
     {
     case 0:
-        escreveDado(&md, valor, contador);
+        escreveDado(md, contador, valor);
         break;
     
     case 1:
-        lerDado(&md, contador);
+        lerDado(md, contador);
     }
 
 }

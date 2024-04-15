@@ -89,7 +89,7 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
             increment_PC(&program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
             //EM TODO O PROGRAMA
       //  }
-        break;*/
+        break;
     case 3: //ARRUMAR GET_PC()
         //Return Run by Step
         //if (tamLinhas <= get_PC()){arrumar if
@@ -126,7 +126,7 @@ int controller(int op, instrucao inst, int tamLinhas, registradores *regs, Memor
         break;
 
     case 4: //caso 4, ele ira printar o tradu
-        imprimeSimulador(tamLinhas, *instrucoesDecodificadas, &inst);
+        imprimeSimulador(tamLinhas, instrucoesDecodificadas, &inst);
         break;
 
     default:

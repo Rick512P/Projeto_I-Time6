@@ -5,4 +5,33 @@
 #include <stdlib.h>
 #include <string.h>
 
+//instrucao da memoria de instruções
+typedef struct{
+    char instruc[17];
+
+}instrucao;
+
+
+//intrucao traduzida
+typedef struct{
+    char opcode[5];
+
+    //TIPO R OU I
+    char rs [4];
+    char rt [4];
+
+    //TIPO R
+    char rd [4];
+    char funct [4];
+
+    //TIPO I
+    char imm [7];
+
+    //TIPO J
+    char addr[8];
+
+}type_instruc;
+
+
+
 #endif

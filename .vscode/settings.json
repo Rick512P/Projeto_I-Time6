@@ -11,7 +11,8 @@
     "controller.h": "c",
     "bibliotecas.h": "c",
     "pc.h": "c",
-    "menu.h": "c"
+    "menu.h": "c",
+    "memória de dados.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

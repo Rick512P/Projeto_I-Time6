@@ -1,10 +1,7 @@
 #include "../Arquivos-h/menu.h"
-#include "RemoveData.c"
 
 int main(){
     menu();
-    removedata();
-
     return 0;
 }
 
