@@ -12,9 +12,9 @@ void memoriaDados(MemoriaDados *md, int opcao, char valor[], int contador){
     case 1:
         lerDado(md, contador);
         
-	case 2:
-		escreverArquivoMemoria(md);
-		break;
+    case 2:
+	escreverArquivoMemoria(md);
+	break;
     }
 
 }
