@@ -11,6 +11,10 @@ void memoriaDados(MemoriaDados *md, int opcao, char valor[], int contador){
     
     case 1:
         lerDado(md, contador);
+        
+	case 2:
+		escreverArquivoMemoria(md);
+		break;
     }
 
 }
@@ -36,4 +40,20 @@ void memDados(MemoriaDados *md){
 	for (int i = 0; i < 256; i++) {
 		printf("Endereço %d: %d\n", i, md->dados[i]);
 	}
+}
+
+void escreverArquivoMemoria(MemoriaDados *md) {
+	FILE *arquivo;
+	arquivo = fopen("DATA.mem", "w");
+	
+	if(arquivo==NULL){
+		fprintf(stderr, "Erro ao abrir o arquivo DATA.mem\n");
+		return;
+	}
+	
+	for (int i=0; i<256; i++){
+		fprintf(arquivo, "%d\n", md->dados[i]);
+	}
+	
+	fclose(arquivo);
 }
