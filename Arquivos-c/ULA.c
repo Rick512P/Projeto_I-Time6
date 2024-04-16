@@ -2,9 +2,6 @@
 
 
 int ULA(type_instruc *traduzido, int contador, MemoriaDados *md) {
-    __DECODE_H__;
-    __MEMORIA_INSTRUC_H__;
-
     char Target[4];
     char Dest[4];
     char Source[4];
@@ -12,7 +9,6 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md) {
     strncpy(Source, traduzido[contador].rs, 4);
     strncpy(Target, traduzido[contador].rt, 4);
     strncpy(Dest, traduzido[contador].rd, 4);
-    
     if (strcmp(traduzido[contador].opcode, "0000") == 0 ) {
 		
         if (strcmp(traduzido[contador].funct, "000") == 0 ){
@@ -67,6 +63,8 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md) {
         dec_to_bin(rt, Dest);
 
         memoriaDados(md, 0, Dest, contador);
+        printf("\nULA operacao: %s, rs: %d, rt: %d, rd: %d, retorno: %d", traduzido[contador].opcode, rs, rt, rd, rd);
+
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 

@@ -8,6 +8,6 @@
 
 
 void Registradores (int **regs, int valor, char posicao[], int opcao);
-int escritaRegistradores(int **regs, int valor, char posicao[]);
+void escritaRegistradores(int **regs, int valor, char posicao[]);
 
 #endif

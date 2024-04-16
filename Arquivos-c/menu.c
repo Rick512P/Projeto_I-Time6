@@ -18,11 +18,11 @@ int menu(){
         regs[i] = 0;
     }
 
-    printf("___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
+    printf("\n___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
     printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
     do{
-        printf("\n\n\n\n\n");
+        printf("\n\n");
         printf("                              _____________________________________\n");
         printf("                              |1 +       Carregar memória         +|\n");
         printf("                              |2 +       Imprimir memória         +|\n");
@@ -42,7 +42,12 @@ int menu(){
         {
         case 0:
             printf("Encerrando o programa!");
+            memInstruc(0, 4, &inst, &tamLinhas);
+            free(inst);
+            free(regs);
+            
             break;
+            
         case 1: //Carregar memória
             memInstruc(0, 0, &inst, &tamLinhas);
             break;
@@ -64,22 +69,20 @@ int menu(){
             break;
         case 7: //salvar todos os dados de memória_Dados no arquivo DATA.mem
             
-            break;
+            break;*/
         case 8: //Chamar função responsável pela execução do programa
             controller(1, &inst, tamLinhas, &regs, &md);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, &inst, tamLinhas, &regsm &md);
+            controller(2, &inst, tamLinhas, &regs, &md);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
             controller(3, &inst, tamLinhas, &regs, &md);
             break;
-        case 11:
-            increment_PC(0, 0); // ?
-            break;
+
         default:
             
-            break;*/
+            break;
         }
     }while(escolha != 0);
 

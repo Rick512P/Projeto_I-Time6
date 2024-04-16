@@ -4,18 +4,19 @@
 type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinhas){
     type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
     switch(opcao){
-        case 0:
+
+        case 0: //CASO 0: LE O ARQUIVO E ARMAZENA AS INTRUÇOES NA VARIAVEL INST
         parser(inst, tamLinhas); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
     //O INST TERÁ A INSTRUÇÃO E TAMANHO_LINHAS O TANTO DE INSTRUÇÕES QUE PRECISARÁ SEREM EXECUTADAS
         break;
 
-        case 1:
+        case 1: //CASO 1: IMPRIME TODAS AS INTRUÇÕES
             for (int i=0; i<(*tamLinhas);i++){
-                printf("Instrucao %d: %s\n", i, (*inst)[i].instruc);
+                printf("Instrucao %d: %s\n", i+1, (*inst)[i].instruc);
             }
             break;
         
-        case 2:
+        case 2: //CASO 2: IMPRIME AS ESTATISTICAS DAS INTRUÇÕES
             if (inst == NULL) {
                 fprintf(stderr, "Falha ao obter instruções.\n");
                 break;
@@ -34,7 +35,7 @@ type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinh
             printf("Observa-se: \n%d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
             break;
 
-        case 3:
+        case 3: //CASO 3 DECOMPOE AS INTRUÇOES
             traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
 
             if (traduzido == NULL) {
@@ -46,13 +47,14 @@ type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinh
 
                 traduzido[contador] = decoder(inst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
             //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
-
-                printf("OPCODE: %s\n", traduzido[contador].opcode); //DEBUG
+  
             }
             return traduzido; //retorna para o controller
-            
-            
             break;
+
+            case 4: //CASO 4: LIBERA MEMORIA DO PONTEIRO TRADUZIDO
+                free(traduzido);
+                break;
     }
 
 }

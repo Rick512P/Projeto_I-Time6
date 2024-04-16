@@ -1,10 +1,9 @@
 #include "../Arquivos-h/decode.h"
 
 type_instruc decoder(instrucao **inst, int i){
+    
     type_instruc traducao;
-
     (*inst)[i].instruc[16] = '\0';
-    printf("\nInstrucao completa: %s\n", (*inst)[i].instruc); //EXCLUIR PRINTF DEPOIS
     
     strncpy(traducao.opcode, (*inst)[i].instruc, 5); //copia para .opcode os 5 primeiros caracteres de inst[i].instruc
     traducao.opcode[4] = '\0';
