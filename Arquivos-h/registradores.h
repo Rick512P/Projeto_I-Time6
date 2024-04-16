@@ -7,7 +7,8 @@
 #include "bibliotecas.h"
 
 
-void Registradores (int **regs, int valor, char posicao[], int opcao);
+int Registradores (int **regs, int valor, char posicao[], int opcao);
 void escritaRegistradores(int **regs, int valor, char posicao[]);
+int retornoRegs(int **regs, char posicao[]);
 
 #endif

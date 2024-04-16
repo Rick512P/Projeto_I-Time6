@@ -2,7 +2,7 @@
 
 
 
-void Registradores (int **regs, int valor, char posicao[], int opcao){ //recebe do controle qual registrador usar e o valor a ser salvo
+int Registradores (int **regs, int valor, char posicao[], int opcao){ //recebe do controle qual registrador usar e o valor a ser salvo
     if (opcao == 0){
         escritaRegistradores(regs, valor, posicao);
     }
@@ -12,6 +12,63 @@ void Registradores (int **regs, int valor, char posicao[], int opcao){ //recebe 
         }
         
     }
+    else if (opcao == 2){
+
+        return retornoRegs(regs, posicao);
+
+    }
+}
+
+int retornoRegs(int **regs, char posicao[]){
+        if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
+            
+            return (*regs)[0];
+            
+        }
+
+        else if(strcmp(posicao, "001") == 0){
+            
+            return (*regs)[1];
+            
+        }
+
+        else if(strcmp(posicao, "010") == 0){
+            
+            return (*regs)[2];
+            
+        }
+
+        else if(strcmp(posicao, "011") == 0){
+            
+            return (*regs)[3];
+            
+        }
+
+        else if(strcmp(posicao, "100") == 0){
+            
+            return (*regs)[4];
+            
+        }
+
+        else if(strcmp(posicao, "101") == 0){
+            
+            return (*regs)[5];
+           
+        }
+
+        else if(strcmp(posicao, "110") == 0){
+            
+            return (*regs)[6];
+            
+        }
+
+        else if(strcmp(posicao, "111") == 0){
+            
+            return (*regs)[7];
+            
+        }
+        else
+            printf("ERRO. Nenhum Registrador encontrado.");
 }
 
 
