@@ -12,5 +12,6 @@ void escreveDado(MemoriaDados *mem, int endereco, char *valor);
 char lerDado(MemoriaDados *mem, int endereco);
 void memoriaDados(MemoriaDados *md, int opcao, char valor[], int contador);
 void memDados(MemoriaDados *md);
+void escreverArquivoMemoria(MemoriaDados *md);
 
 #endif
