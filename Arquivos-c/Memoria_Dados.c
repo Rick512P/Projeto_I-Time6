@@ -30,3 +30,10 @@ void escreveDado(MemoriaDados *mem, int endereco, char *valor) {
         fprintf(stderr, "Tentativa de escrita fora dos limites da memória no endereço %d\n", endereco);
     }
 }
+
+void memDados(MemoriaDados *md){
+	printf("Memória de Dados:\n");
+	for (int i = 0; i < 256; i++) {
+		printf("Endereço %d: %d\n", i, md->dados[i]);
+	}
+}
