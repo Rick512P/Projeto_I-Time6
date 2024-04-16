@@ -32,4 +32,11 @@ typedef struct{
 
 }type_instruc;
 
+
+//tamanho da memoria de dados
+typedef struct {
+    char dados[256];
+} MemoriaDados;
+
+
 #endif

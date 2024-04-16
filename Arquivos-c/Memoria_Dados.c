@@ -5,14 +5,14 @@
 void memoriaDados(MemoriaDados *md, int opcao, char valor[], int contador){
     switch (opcao)
     {
-    case 0:
-        escreveDado(md, contador, valor);
-        break;
-    
-    case 1:
-        lerDado(md, contador);
+        case 0:
+            escreveDado(md, contador, valor);
+            break;
+        
+        case 1:
+            lerDado(md, contador);
+            break;
     }
-
 }
 
 char lerDado(MemoriaDados *mem, int endereco) {
@@ -20,7 +20,6 @@ char lerDado(MemoriaDados *mem, int endereco) {
         return mem->dados[endereco];
     }
     fprintf(stderr, "Acesso inválido à memória de dados no endereço %d\n", endereco);
-    return 0;
 }
 
 void escreveDado(MemoriaDados *mem, int endereco, char *valor) {
@@ -31,9 +30,23 @@ void escreveDado(MemoriaDados *mem, int endereco, char *valor) {
     }
 }
 
-void memDados(MemoriaDados *md){
-	printf("Memória de Dados:\n");
-	for (int i = 0; i < 256; i++) {
-		printf("Endereço %d: %d\n", i, md->dados[i]);
+void imprimeDados(MemoriaDados md, int tamLinhas){
+	for (int i = 0; i < tamLinhas; i++) {
+		printf("\nDado armazenado no endereco %d da Memoria de Dados: %s\n", i, md.dados[i]);
 	}
+}
+
+void escreverArquivoMemoria(MemoriaDados md) {
+	FILE *arquivo;
+	arquivo = fopen("DATA.mem", "w");
+	
+	if(arquivo==NULL){
+		fprintf(stderr, "Erro ao abrir o arquivo DATA.mem\n");
+	}
+	
+	for (int i=0; i<256; i++){
+		fprintf(arquivo, "%s\n", md.dados[i]);
+	}
+	
+	fclose(arquivo);
 }

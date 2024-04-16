@@ -1,7 +1,7 @@
 
 #include "../Arquivos-h/controller.h"
 
-int controller(int op, instrucao **inst, int tamLinhas, int **regs, MemoriaDados *md){
+int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados *md){
     //ESTA FALTANDO A INSTRUÇÃO 1000 (BEQ)
     int numeroLinhas, jump, RD, RT, i, address, program_counter = 0;
 
@@ -9,7 +9,7 @@ int controller(int op, instrucao **inst, int tamLinhas, int **regs, MemoriaDados
 
     type_instruc *instrucoesDecodificadas;
     
-    instrucoesDecodificadas = memInstruc(program_counter, 3, inst, &tamLinhas); //COMEÇA COM 0
+    instrucoesDecodificadas = memInstruc(program_counter, 0, memoriaInst, &tamLinhas); //COMEÇA COM 0
 
     if (instrucoesDecodificadas == NULL) {
         fprintf(stderr, "Falha ao obter instruções decodificadas.\n");
@@ -30,7 +30,7 @@ int controller(int op, instrucao **inst, int tamLinhas, int **regs, MemoriaDados
                 Registradores(regs, RD, instrucoesDecodificadas[program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
-            else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){
+            else if ((strcmp(instrucoesDecodificadas[program_counter].opcode,"0100")) == 0){ //ADDI
                 printf("\nposicao do program_counter: %d em 0100", program_counter, regs);
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs); 
                 printf("\nValor de RT: %d", RT);
@@ -55,12 +55,11 @@ int controller(int op, instrucao **inst, int tamLinhas, int **regs, MemoriaDados
                 program_counter+=jump;
                 
             }
-            printf("\nprogram_counter antes: %d", program_counter);
             increment_PC(&program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
             //EM TODO O PROGRAMA
-            printf("\nprogram_counter depois: %d\n\n", program_counter);
         }
         break;
+
     case 2:
         //Run by Step
        // if (tamLinhas){ ARRUMAR IF
@@ -130,7 +129,7 @@ int controller(int op, instrucao **inst, int tamLinhas, int **regs, MemoriaDados
         break;
 
     case 4: //caso 4, ele ira printar as intrucoes decodificadas
-        imprimeSimulador(tamLinhas, instrucoesDecodificadas, inst, regs);
+        imprimeSimulador(tamLinhas, instrucoesDecodificadas, memoriaInst, regs);
         break;
 
     default:

@@ -3,19 +3,15 @@
 
 
 int Registradores (int **regs, int valor, char posicao[], int opcao){ //recebe do controle qual registrador usar e o valor a ser salvo
-    if (opcao == 0){
+    switch (opcao)
+    {
+    case 0:
         escritaRegistradores(regs, valor, posicao);
-    }
-    else if (opcao == 1){
-        for(int i = 0; i<8;i++){
-            printf("Registrador %d: %d\t\t", i, (*regs)[i]);
-        }
-        
-    }
-    else if (opcao == 2){
-
+        break;
+    
+    case 2:
         return retornoRegs(regs, posicao);
-
+        break;
     }
 }
 
@@ -124,4 +120,10 @@ void escritaRegistradores(int **regs, int valor, char posicao[]){
         else
             printf("ERRO. Nenhum Registrador encontrado.");
         printf("\nESCREVEU NOS REGISTRADORES");
+}
+
+void imprimeRegistradores(int *regs){
+    for(int i = 0; i<8;i++){
+            printf("Registrador %d: %d\t\t", i, regs[i]);
+    }
 }

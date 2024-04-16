@@ -1,41 +1,10 @@
 #include "../Arquivos-h/memoria_instruc.h"
 
 
-type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinhas){
+type_instruc* memInstruc(int contador, int opcao, instrucao **memoriaInst, int *tamLinhas){
     type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
     switch(opcao){
-
-        case 0: //CASO 0: LE O ARQUIVO E ARMAZENA AS INTRUÇOES NA VARIAVEL INST
-        parser(inst, tamLinhas); //funçao responsavel por abrir o arquvio .mem e coletar a instruçao, armazenando na variavel inst
-    //O INST TERÁ A INSTRUÇÃO E TAMANHO_LINHAS O TANTO DE INSTRUÇÕES QUE PRECISARÁ SEREM EXECUTADAS
-        break;
-
-        case 1: //CASO 1: IMPRIME TODAS AS INTRUÇÕES
-            for (int i=0; i<(*tamLinhas);i++){
-                printf("Instrucao %d: %s\n", i+1, (*inst)[i].instruc);
-            }
-            break;
-        
-        case 2: //CASO 2: IMPRIME AS ESTATISTICAS DAS INTRUÇÕES
-            if (inst == NULL) {
-                fprintf(stderr, "Falha ao obter instruções.\n");
-                break;
-            }
-            int r=0, i=0, j=0;
-            for(int y=0;y<(*tamLinhas);y++){
-                if (strncmp((*inst)[y].instruc, "0000", 4) == 0){ //compara os 4 primeiros numeros de inst com "0000"
-                    r++;
-                    }
-                else if (strncmp((*inst)[y].instruc, "0100", 4) == 0 || strncmp((*inst)[y].instruc, "1011", 4) == 0 || strncmp((*inst)[y].instruc, "1111", 4) == 0 || strncmp((*inst)[y].instruc, "0110", 4) == 0)
-                    i++;
-                else if (strncmp((*inst)[y].instruc, "0010", 4) == 0 || strncmp((*inst)[y].instruc, "1000", 4) == 0)
-                    j++;
-            }
-            printf("O numero de instrucoes e de %d\n", (*tamLinhas));
-            printf("Observa-se: \n%d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J", r,i,j);
-            break;
-
-        case 3: //CASO 3 DECOMPOE AS INTRUÇOES
+        case 0: //CASO 0: DECOMPOE AS INTRUÇOES
             traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
 
             if (traduzido == NULL) {
@@ -45,18 +14,42 @@ type_instruc* memInstruc(int contador, int opcao, instrucao **inst, int *tamLinh
             //PC PASSA O ENDEREÇO, INCREMENTANDO +1
             for(contador=0; contador<(*tamLinhas); contador++){
 
-                traduzido[contador] = decoder(inst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
+                traduzido[contador] = decoder(memoriaInst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
             //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
   
             }
             return traduzido; //retorna para o controller
             break;
 
-            case 4: //CASO 4: LIBERA MEMORIA DO PONTEIRO TRADUZIDO
+            case 1: //CASO 1: LIBERA MEMORIA DO PONTEIRO TRADUZIDO
                 free(traduzido);
                 break;
     }
 
+}
+
+void imprimeMemInstruc(instrucao *memoriaInst, int tamLinhas){
+    for (int i=0; i<tamLinhas;i++){
+                printf("Instrucao %d: %s\n", i+1, memoriaInst[i].instruc);
+            }
+}
+
+void imprimeEstatisticas(instrucao *memoriaInst, int tamLinhas){
+    if (memoriaInst == NULL) {
+                fprintf(stderr, "Falha ao obter instruções.\n");
+            }
+    int r=0, i=0, j=0;
+    for(int y=0;y<tamLinhas;y++){
+        if (strncmp(memoriaInst[y].instruc, "0000", 4) == 0){ //compara os 4 primeiros numeros de memoriaInst com "0000"
+            r++;
+        }
+        else if (strncmp(memoriaInst[y].instruc, "0100", 4) == 0 || strncmp(memoriaInst[y].instruc, "1011", 4) == 0 || strncmp(memoriaInst[y].instruc, "1111", 4) == 0 || strncmp(memoriaInst[y].instruc, "0110", 4) == 0)
+            i++;
+        else if (strncmp(memoriaInst[y].instruc, "0010", 4) == 0 || strncmp(memoriaInst[y].instruc, "1000", 4) == 0)
+            j++;
+    }
+    printf("O numero de instrucoes e de %d\n", tamLinhas);
+    printf("Observa-se: \n%d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J\n", r,i,j);
 }
     
 

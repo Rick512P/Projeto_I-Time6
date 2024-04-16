@@ -79,7 +79,6 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
         dec_to_bin(rt, Target);
 
         memoriaDados(md, 0, Target, contador);
-        printf("\nULA operacao: %s, rs: %d, rt: %d, retorno: %d", traduzido[contador].opcode, rs, rt, rt);
 
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
@@ -162,7 +161,7 @@ int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm) {
     return effective_address;
 }
 
-void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd) {
+/*void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd) {
     int i, LS = strlen(Source), LT = strlen(Target), LD = strlen(Dest);
     *rs = 0; 
     *rd = 0; 
@@ -197,9 +196,31 @@ void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *r
             *rd += (1 << (LD - i - 1));
         }
     }
+}*/
+
+
+// Função que converte uma string binária para um valor decimal inteiro.
+int bin_to_dec(const char *bin) {
+    int dec = 0;
+    int base = 1;
+    int len = strlen(bin);
+
+    for (int i = len - 1; i >= 0; i--) {
+        if (bin[i] == '1') {
+            dec += base;
+        }
+        base *= 2;
+    }
+
+    return dec;
 }
 
-
+// Função para converter três strings binárias para valores decimais.
+void bin_dec(const char Source[], const char Target[], const char Dest[], int *rs, int *rt, int *rd) {
+    if (rs) *rs = bin_to_dec(Source); // Converte Source para decimal e armazena em rs.
+    if (rt) *rt = bin_to_dec(Target); // Converte Target para decimal e armazena em rt.
+    if (rd) *rd = bin_to_dec(Dest);   // Converte Dest para decimal e armazena em rd.
+}
 
 void dec_to_bin(int decimal, char *binary) {
     int i;

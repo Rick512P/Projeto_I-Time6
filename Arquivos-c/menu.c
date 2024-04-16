@@ -9,7 +9,7 @@ int menu(){
     MemoriaDados md;
     memset(md.dados, 0, 256);
     int escolha, tamLinhas;
-    instrucao *inst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
+    instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     type_instruc traduzido;
     int *regs; //registradores como um inteiro mesmo
     regs = (int*)malloc(8 * sizeof(int));
@@ -42,46 +42,45 @@ int menu(){
         {
         case 0:
             printf("Encerrando o programa!");
-            memInstruc(0, 4, &inst, &tamLinhas);
-            free(inst);
+            memInstruc(0, 1, &memoriaInst, &tamLinhas);
+            free(memoriaInst);
             free(regs);
             
             break;
             
         case 1: //Carregar memória
-            memInstruc(0, 0, &inst, &tamLinhas);
+            parser(&memoriaInst, &tamLinhas);
             break;
         case 2: //Imprimir memória de instruções e memória de dados
-            memInstruc(0, 1, &inst, &tamLinhas);
-            memDados(&md);
+            imprimeMemInstruc(memoriaInst, tamLinhas);
+            imprimeDados(md, tamLinhas);
             break;
         case 3: //Imprimir registradores
-            Registradores(&regs, 0, "", 1);
+            imprimeRegistradores(regs);
             break;
         case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
-            memInstruc(0, 2, &inst, &tamLinhas);
+            imprimeEstatisticas(memoriaInst, tamLinhas);
             break;
         case 5: //imprimir todo o simulador
-            controller(4, &inst, tamLinhas, &regs, &md);
+            imprimeEstatisticas(memoriaInst, tamLinhas);
+            controller(4, &memoriaInst, tamLinhas, &regs, &md);
+            imprimeRegistradores(regs);
+
             break;
         /*case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
 
-            break;
-        case 7: //salvar todos os dados de memória_Dados no arquivo DATA.mem
-            
             break;*/
+        case 7:
+            escreverArquivoMemoria(md);
+            break;
         case 8: //Chamar função responsável pela execução do programa
-            controller(1, &inst, tamLinhas, &regs, &md);
+            controller(1, &memoriaInst, tamLinhas, &regs, &md);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, &inst, tamLinhas, &regs, &md);
+            controller(2, &memoriaInst, tamLinhas, &regs, &md);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, &inst, tamLinhas, &regs, &md);
-            break;
-
-        default:
-            
+            controller(3, &memoriaInst, tamLinhas, &regs, &md);
             break;
         }
     }while(escolha != 0);
