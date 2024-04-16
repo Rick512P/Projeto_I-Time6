@@ -2,41 +2,23 @@
 #include "../Arquivos-h/bibliotecas.h"
 #include "../Arquivos-h/Memoria_Dados.h"
 //EXEMPLO
-void memoriaDados(MemoriaDados *md, int opcao, char valor[], int contador){
-    switch (opcao)
-    {
-        case 0:
-            escreveDado(md, contador, valor);
-            break;
-        
-        case 1:
-            lerDado(md, contador);
-            break;
-    }
-}
 
-char lerDado(MemoriaDados *mem, int endereco) {
-    if (endereco >= 0 && endereco < 256) {
-        return mem->dados[endereco];
-    }
-    fprintf(stderr, "Acesso inválido à memória de dados no endereço %d\n", endereco);
-}
-
-void escreveDado(MemoriaDados *mem, int endereco, char *valor) {
-    if (endereco >= 0 && endereco < 256) {
-        mem->dados[endereco] = *valor;
+void escreveDado(MemoriaDados **mem, int contador, char *valor) {
+    printf("entrou na escreve dados");
+    if (contador >= 0 && contador < 256) {
+        strcpy((*mem)[contador].dados, valor);
     } else {
-        fprintf(stderr, "Tentativa de escrita fora dos limites da memória no endereço %d\n", endereco);
+        fprintf(stderr, "Tentativa de escrita fora dos limites da memória no endereço %d\n", contador);
     }
 }
 
-void imprimeDados(MemoriaDados md, int tamLinhas){
+void imprimeDados(MemoriaDados *md, int tamLinhas){
 	for (int i = 0; i < tamLinhas; i++) {
-		printf("\nDado armazenado no endereco %d da Memoria de Dados: %s\n", i, md.dados[i]);
+		printf("\nDado armazenado no endereco %d da Memoria de Dados: %s\n", i, md[i].dados);
 	}
 }
 
-void escreverArquivoMemoria(MemoriaDados md) {
+void escreverArquivoMemoria(MemoriaDados *md) {
 	FILE *arquivo;
 	arquivo = fopen("DATA.mem", "w");
 	
@@ -45,7 +27,7 @@ void escreverArquivoMemoria(MemoriaDados md) {
 	}
 	
 	for (int i=0; i<256; i++){
-		fprintf(arquivo, "%s\n", md.dados[i]);
+		fprintf(arquivo, "%s\n", md[i].dados);
 	}
 	
 	fclose(arquivo);

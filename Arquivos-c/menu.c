@@ -6,17 +6,17 @@ int main(){
 }
 
 int menu(){
-    MemoriaDados md;
-    memset(md.dados, 0, 256);
+    MemoriaDados *md;
     int escolha, tamLinhas;
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     type_instruc traduzido;
     int *regs; //registradores como um inteiro mesmo
     regs = (int*)malloc(8 * sizeof(int));
-
     for (int i=0;i<8;i++){ //zerando registradores, caso contrario dá números inconsistentes
         regs[i] = 0;
     }
+
+    md = (MemoriaDados*)malloc(256 * sizeof(MemoriaDados));
 
     printf("\n___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
@@ -64,6 +64,7 @@ int menu(){
         case 5: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas);
             controller(4, &memoriaInst, tamLinhas, &regs, &md);
+            imprimeDados(md, tamLinhas);
             imprimeRegistradores(regs);
 
             break;

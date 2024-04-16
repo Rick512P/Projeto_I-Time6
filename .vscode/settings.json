@@ -13,7 +13,8 @@
     "pc.h": "c",
     "menu.h": "c",
     "memória de dados.h": "c",
-    "imprimesimulador.h": "c"
+    "imprimesimulador.h": "c",
+    "memoria_dados.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

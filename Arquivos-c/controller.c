@@ -1,7 +1,7 @@
 
 #include "../Arquivos-h/controller.h"
 
-int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados *md){
+int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md){
     //ESTA FALTANDO A INSTRUÇÃO 1000 (BEQ)
     int numeroLinhas, jump, RD, RT, i, address, program_counter = 0;
 

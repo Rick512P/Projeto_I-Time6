@@ -1,7 +1,7 @@
 #include "../Arquivos-h/ULA.h"
 
 
-int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
+int ULA(type_instruc *traduzido, int contador, MemoriaDados **md, int **regs) {
   
     int address, rs, rt, rd;
 
@@ -26,7 +26,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
             dec_to_bin(rd, Dest); //converte o resultado em binário
             printf("\nrd2: %d", rd); //VALOR DE RD É MUDADO ??????????????
 
-            memoriaDados(md, 0, Dest, contador);
+            escreveDado(md, contador, Dest);
             
         }
 
@@ -37,7 +37,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
 
             dec_to_bin(rd, Dest);
 
-            memoriaDados(md, 0, Dest, contador);
+            escreveDado(md, contador, Dest);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
@@ -45,7 +45,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
 
-            memoriaDados(md, 0, Dest, contador);
+            escreveDado(md, contador, Dest);
 
             bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
             return rd;
@@ -55,7 +55,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
 
-            memoriaDados(md, 0, Dest, contador);
+            escreveDado(md, contador, Dest);
 
             bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
             return rd;
@@ -77,8 +77,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
 
 
         dec_to_bin(rt, Target);
-
-        memoriaDados(md, 0, Target, contador);
+        escreveDado(md, contador, Target);
 
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
@@ -95,7 +94,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
         strcpy(Immediate, traduzido[contador].imm);
         address = lw_sw_offset(Source, Target, Immediate, traduzido[contador].imm);
         dec_to_bin(address, Immediate);
-        memoriaDados(md, 0, Immediate, contador);
+        escreveDado(md, contador, Immediate);
     }
     else if(strcmp(traduzido[contador].opcode,"1111") == 0){
         // sw
@@ -109,7 +108,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
         strcpy(Immediate, traduzido[contador].imm);
         address = lw_sw_offset(Source, Target, Immediate, traduzido[contador].imm);
         dec_to_bin(address, Immediate);
-        memoriaDados(md, 0, Immediate, contador);
+        escreveDado(md, contador, Immediate);
     }
 
     else if(strcmp(traduzido[contador].opcode,"1000") == 0){// beq -> branch if equal 
@@ -141,7 +140,7 @@ int ULA(type_instruc *traduzido, int contador, MemoriaDados *md, int **regs) {
         printf("\nEntrou aqui na ULA 0010");
         bin_dec(Source, Target, ADDR, &address, &rt, &rs);
         dec_to_bin(address, ADDR);
-        memoriaDados(md, 0, ADDR, contador);
+        escreveDado(md, contador, ADDR);
         printf("VAI SAIR");
         return address;
     }
@@ -160,43 +159,6 @@ int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm) {
     printf("Accessing memory at address: %d\n", effective_address);
     return effective_address;
 }
-
-/*void bin_dec(char Source[], char Target[], char Dest[], int *rs, int *rt, int *rd) {
-    int i, LS = strlen(Source), LT = strlen(Target), LD = strlen(Dest);
-    *rs = 0; 
-    *rd = 0; 
-    *rt = 0;
-    
-    // Etapa de verificação de números negativos
-    int NegativeSource = (Source[0] == '1');
-    int NegativeTarget = (Target[0] == '1');
-    int NegativeDest = (Dest[0] == '1');
-    
-    // Etapa de Converção de binário para decimal, considerando números negativos
-    for (i = 0; i < LS; i++) {
-        if (NegativeSource && i == 0) {
-            *rs -= (1 << (LS - i - 1));
-        } else if (Source[i] == '1') {
-            *rs += (1 << (LS - i - 1));
-        }
-    }
-    
-    for (i = 0; i < LT; i++) {
-        if (NegativeTarget && i == 0) {
-            *rt -= (1 << (LT - i - 1));
-        } else if (Target[i] == '1') {
-            *rt += (1 << (LT - i - 1));
-        }
-    }
-    
-    for (i = 0; i < LD; i++) {
-        if (NegativeDest && i == 0) {
-            *rd -= (1 << (LD - i - 1));
-        } else if (Dest[i] == '1') {
-            *rd += (1 << (LD - i - 1));
-        }
-    }
-}*/
 
 
 // Função que converte uma string binária para um valor decimal inteiro.

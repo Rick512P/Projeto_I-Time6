@@ -35,7 +35,7 @@ typedef struct{
 
 //tamanho da memoria de dados
 typedef struct {
-    char dados[256];
+    char dados[17];
 } MemoriaDados;
 
 
