@@ -53,7 +53,7 @@ int menu(){
             break;
         case 2: //Imprimir memória de instruções e memória de dados
             memInstruc(0, 1, &inst, &tamLinhas);
-            //memDados(0, 0, 1); --> exemplo de print da mem de dados 
+            memDados(&md);
             break;
         case 3: //Imprimir registradores
             Registradores(&regs, 0, "", 1);
