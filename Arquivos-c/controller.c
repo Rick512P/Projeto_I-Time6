@@ -33,7 +33,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             else if ((strcmp(instrucoesDecodificadas[*program_counter].opcode,"0100")) == 0){ //ADDI
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs); 
                 Registradores(regs, RT, instrucoesDecodificadas[*program_counter].rt, 0);
-                //enviar rd para Banco de Registradores
+                //enviar rt para Banco de Registradores
             }
             else if ((strcmp(instrucoesDecodificadas[*program_counter].opcode,"1011")) == 0){ //ARRUMAR 1011
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
@@ -46,11 +46,31 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
 
                 address = ULA(instrucoesDecodificadas, program_counter, md, regs);
             }
+            else if (strcmp(instrucoesDecodificadas[*program_counter].opcode,"1000") == 0)
+            {
+                //if ( $rs == $rt ) then PC = PC + imm * 2 
+                char Target[4];
+                char Source[4];
+                char Immediate[7];
+                int immediate, rs, rt;
+                strcpy(Target, instrucoesDecodificadas[*program_counter].rt);
+                strcpy(Source, instrucoesDecodificadas[*program_counter].rs);
+                strcpy(Immediate, instrucoesDecodificadas[*program_counter].imm);
+                bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+                if (rs == rt) {
+                    printf("Branching to address: %s\n", instrucoesDecodificadas[*program_counter].imm);
+                    // Implementação do salto para o endereço especificado
+                    bin_dec(Source, Target, instrucoesDecodificadas[*program_counter].imm, &rs, &rt, &immediate);
+                    *program_counter = *program_counter + immediate * 2; // Atualiza o contador de programa com o endereço especificado
+                    printf("Jumped to address: %d\n", *program_counter); // Exibe o novo endereço
+                } else {
+                    printf("Branch not taken.\n");
+                }
+            }            
             else if ((strcmp(instrucoesDecodificadas[*program_counter].opcode,"0010")) == 0){
 
                 jump = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 (*program_counter)+=jump;
-                
             }
             increment_PC(program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
             //EM TODO O PROGRAMA

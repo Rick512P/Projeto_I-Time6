@@ -62,8 +62,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         }
     }
 
-    else if(strcmp(traduzido[*contador].opcode,"0100") == 0){
-        // addi -> rs + immediate = rt
+    else if(strcmp(traduzido[*contador].opcode,"0100") == 0){// addi -> rs + immediate = rt
         char Target[4];
         char Source[4];
         char Immediate[7];
@@ -82,8 +81,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
-    else if(strcmp(traduzido[*contador].opcode,"1011") == 0){
-        // lw --> LW TEM QUE RETORNAR RT
+    else if(strcmp(traduzido[*contador].opcode,"1011") == 0){// lw --> LW TEM QUE RETORNAR RT
         //$rt = M[$rs + imm]
         char Target[4];
         char Source[4];
@@ -96,8 +94,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         dec_to_bin(address, Immediate);
         escreveDado(md, contador, Immediate);
     }
-    else if(strcmp(traduzido[*contador].opcode,"1111") == 0){
-        // sw
+    else if(strcmp(traduzido[*contador].opcode,"1111") == 0){// sw
         //M[$rs + imm] = $rt
         char Target[4];
         char Source[4];
@@ -109,27 +106,6 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         address = lw_sw_offset(Source, Target, Immediate, traduzido[*contador].imm);
         dec_to_bin(address, Immediate);
         escreveDado(md, contador, Immediate);
-    }
-
-    else if(strcmp(traduzido[*contador].opcode,"1000") == 0){// beq -> branch if equal 
-    //if ( $rs == $rt ) then PC = PC + imm * 2 
-        char Target[4];
-        char Source[4];
-        char Immediate[7];
-        int immediate;
-        strcpy(Target, traduzido[*contador].rt);
-        strcpy(Source, traduzido[*contador].rs);
-        strcpy(Immediate, traduzido[*contador].imm);
-        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
-        if (rs == rt) {
-            printf("Branching to address: %s\n", traduzido[*contador].imm);
-            // Implementação do salto para o endereço especificado
-            bin_dec(Source, Target, traduzido[*contador].imm, &rs, &rt, &immediate);
-            *contador = *contador + immediate * 2; // Atualiza o contador de programa com o endereço especificado
-            printf("Jumped to address: %d\n", *contador); // Exibe o novo endereço
-        } else {
-            printf("Branch not taken.\n");
-        }
     }
 
     else if(strcmp(traduzido[*contador].opcode,"0010") == 0){ // j -> jump to specified address
@@ -151,8 +127,8 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
 }
 
 
+// Implementação do deslocamento de memória para instruções lw e sw
 int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm) {
-    // Implementação do deslocamento de memória para instruções lw e sw
     int base_address, immDec;
     bin_dec(Source, imm, NULL, &base_address, &immDec, NULL);
     int effective_address = base_address + immDec; ///MUDAR ISSO AQUI
@@ -221,7 +197,6 @@ void dec_to_bin(int decimal, char *binary) {
         }
 
     }
-
 }
 
 void AND(char Source[], char Target[], char *Dest){
