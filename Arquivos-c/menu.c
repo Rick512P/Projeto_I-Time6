@@ -6,10 +6,10 @@ int main(){
 }
 
 int menu(){
+    Assembly *AssemblyInst;
     MemoriaDados *md;
     int escolha, tamLinhas, program_counter = 0;
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
-    type_instruc traduzido;
     int *regs; //registradores como um inteiro mesmo
     regs = (int*)malloc(8 * sizeof(int));
     for (int i=0;i<8;i++){ //zerando registradores, caso contrario dá números inconsistentes
@@ -53,7 +53,8 @@ int menu(){
             break;
         case 2: //Imprimir memória de instruções e memória de dados
             imprimeMemInstruc(memoriaInst, tamLinhas);
-            imprimeDados(md, tamLinhas);
+            if (md)
+                imprimeDados(md, tamLinhas);
             break;
         case 3: //Imprimir registradores
             imprimeRegistradores(regs);
@@ -63,26 +64,29 @@ int menu(){
             break;
         case 5: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas);
-            controller(4, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
-            imprimeDados(md, tamLinhas);
+            controller(4, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
+            if(md)
+                imprimeDados(md, tamLinhas);
             imprimeRegistradores(regs);
-            imprimirASM();
-
+            if (AssemblyInst)
+                imprimirASM(AssemblyInst, tamLinhas);
             break;
         case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
-            SaveASM();
+            controller(5, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
+            SaveASM(AssemblyInst, tamLinhas);
             break;
         case 7: //Salvar arquivo DATA.mem
             escreverArquivoMemoria(md);
             break;
         case 8: //Chamar função responsável pela execução do programa
-            controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
+            program_counter = 0;
+            controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
+            controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
+            controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
             break;
         }
     }while(escolha != 0);

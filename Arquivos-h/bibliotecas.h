@@ -43,6 +43,6 @@ typedef struct{
   char InstructsAssembly[20];
 } Assembly;
 
-Assembly *A;
+
 
 #endif

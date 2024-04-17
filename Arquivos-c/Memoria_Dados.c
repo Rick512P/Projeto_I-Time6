@@ -3,12 +3,13 @@
 #include "../Arquivos-h/Memoria_Dados.h"
 //EXEMPLO
 
-void escreveDado(MemoriaDados **mem, int contador, char *valor) {
+void escreveDado(MemoriaDados **mem, int *contador, char *valor) {
+
     printf("entrou na escreve dados");
-    if (contador >= 0 && contador < 256) {
-        strcpy((*mem)[contador].dados, valor);
+    if (*contador >= 0 && *contador < 256) {
+        strcpy((*mem)[*contador].dados, valor);
     } else {
-        fprintf(stderr, "Tentativa de escrita fora dos limites da memória no endereço %d\n", contador);
+        fprintf(stderr, "Tentativa de escrita fora dos limites da memória no endereço %d\n", *contador);
     }
 }
 

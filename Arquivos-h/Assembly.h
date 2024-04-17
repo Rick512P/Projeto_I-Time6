@@ -3,8 +3,8 @@
 
 #include "bibliotecas.h"
 
-void Asm(type_instruc *traduzido);
-int SaveASM();
-void imprimirASM();
+void AsmCopy(type_instruc *traduzido, Assembly **A, int tamLinhas);
+int SaveASM(Assembly *A, int tamLinhas);
+void imprimirASM(Assembly *A, int tamLinhas);
     
 #endif

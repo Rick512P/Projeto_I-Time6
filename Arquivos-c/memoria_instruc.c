@@ -1,20 +1,19 @@
 #include "../Arquivos-h/memoria_instruc.h"
 
 
-type_instruc* memInstruc(int contador, int opcao, instrucao **memoriaInst, int *tamLinhas){
+type_instruc* memInstruc(int *contador, int opcao, instrucao **memoriaInst, int *tamLinhas){
     type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
     switch(opcao){
         case 0: //CASO 0: DECOMPOE AS INTRUÇOES
             traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
-            A = (Assembly*) malloc((*tamLinhas) * sizeof(Assembly));
             if (traduzido == NULL) {
                 fprintf(stderr, "Falha ao alocar memória para instruções traduzidas.\n");
                 return NULL;
             }
             //PC PASSA O ENDEREÇO, INCREMENTANDO +1
-            for(contador=0; contador<(*tamLinhas); contador++){
+            for(*contador=0; *contador<(*tamLinhas); *contador++){
 
-                traduzido[contador] = decoder(memoriaInst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
+                traduzido[*contador] = decoder(memoriaInst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
             //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
   
             }

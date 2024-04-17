@@ -44,7 +44,9 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
         }
         
         fclose(arq);
+        printf("Arquivo lido com sucesso!");
     }
+    
     
 
     else
