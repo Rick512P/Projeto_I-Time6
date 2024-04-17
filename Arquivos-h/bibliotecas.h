@@ -38,5 +38,11 @@ typedef struct {
     char dados[17];
 } MemoriaDados;
 
+//instruções em assembly
+typedef struct{
+  char InstructsAssembly[20];
+} Assembly;
+
+Assembly *A;
 
 #endif

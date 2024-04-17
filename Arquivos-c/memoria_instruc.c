@@ -6,7 +6,7 @@ type_instruc* memInstruc(int contador, int opcao, instrucao **memoriaInst, int *
     switch(opcao){
         case 0: //CASO 0: DECOMPOE AS INTRUÇOES
             traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
-
+            A = (Assembly*) malloc((*tamLinhas) * sizeof(Assembly));
             if (traduzido == NULL) {
                 fprintf(stderr, "Falha ao alocar memória para instruções traduzidas.\n");
                 return NULL;

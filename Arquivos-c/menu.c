@@ -7,7 +7,7 @@ int main(){
 
 int menu(){
     MemoriaDados *md;
-    int escolha, tamLinhas;
+    int escolha, tamLinhas, program_counter = 0;
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     type_instruc traduzido;
     int *regs; //registradores como um inteiro mesmo
@@ -63,25 +63,26 @@ int menu(){
             break;
         case 5: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas);
-            controller(4, &memoriaInst, tamLinhas, &regs, &md);
+            controller(4, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
             imprimeDados(md, tamLinhas);
             imprimeRegistradores(regs);
+            imprimirASM();
 
             break;
-        /*case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
-
-            break;*/
-        case 7:
+        case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
+            SaveASM();
+            break;
+        case 7: //Salvar arquivo DATA.mem
             escreverArquivoMemoria(md);
             break;
         case 8: //Chamar função responsável pela execução do programa
-            controller(1, &memoriaInst, tamLinhas, &regs, &md);
+            controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, &memoriaInst, tamLinhas, &regs, &md);
+            controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
             break;
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, &memoriaInst, tamLinhas, &regs, &md);
+            controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter);
             break;
         }
     }while(escolha != 0);
