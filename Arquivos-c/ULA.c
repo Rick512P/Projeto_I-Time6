@@ -1,22 +1,22 @@
 #include "../Arquivos-h/ULA.h"
 
 
-int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
+int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md, int **regs) {
   
     int address, rs, rt, rd;
 
-    if (strcmp(traduzido[*contador].opcode, "0000") == 0 ) {
+    if (strcmp((*instrucoesDecodificadas)[*contador].opcode, "0000") == 0 ) {
         char Target[4];
         char *Dest=malloc(4);
         char Source[4];
-        strcpy(Source, traduzido[*contador].rs);
-        strcpy(Target, traduzido[*contador].rt);
-        strcpy(Dest, traduzido[*contador].rd);
+        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
+        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
+        strcpy(Dest, (*instrucoesDecodificadas)[*contador].rd);
 
-        rs = Registradores(regs, 0, traduzido[*contador].rs, 2);
-        rt = Registradores(regs, 0, traduzido[*contador].rt, 2);
+        rs = Registradores(regs, 0, (*instrucoesDecodificadas)[*contador].rs, 2);
+        rt = Registradores(regs, 0, (*instrucoesDecodificadas)[*contador].rt, 2);
 
-        if (strcmp(traduzido[*contador].funct, "000") == 0 ){
+        if (strcmp((*instrucoesDecodificadas)[*contador].funct, "000") == 0 ){
             
             //"add -> rs + rt = rd";
             printf("rs: %d \t rt: %d", rs, rt);
@@ -33,7 +33,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             
         }
 
-        else if (strcmp(traduzido[*contador].funct, "010") == 0 ){
+        else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "010") == 0 ){
             //"sub -> rs - rt = rd";
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
@@ -45,7 +45,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
-        else if (strcmp(traduzido[*contador].funct, "100") == 0 ){
+        else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
 
@@ -56,7 +56,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             return rd;
         }
 
-        else if (strcmp(traduzido[*contador].funct, "101") == 0 ){
+        else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
 
@@ -68,14 +68,14 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         }
     }
 
-    else if(strcmp(traduzido[*contador].opcode,"0100") == 0){// addi -> rs + immediate = rt
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0100") == 0){// addi -> rs + immediate = rt
         char *Target=malloc(4);
         char Source[4];
         char Immediate[7];
         int immediate;
-        strcpy(Target, traduzido[*contador].rt);
-        strcpy(Source, traduzido[*contador].rs);
-        strcpy(Immediate, traduzido[*contador].imm);
+        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
+        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
+        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
         bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
         rt = rs + immediate;
 
@@ -86,40 +86,40 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
-    else if(strcmp(traduzido[*contador].opcode,"1011") == 0){// lw --> LW TEM QUE RETORNAR RT
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1011") == 0){// lw --> LW TEM QUE RETORNAR RT
         //$rt = M[$rs + imm]
         char Target[4];
         char Source[4];
         char *Immediate = malloc(7);
         int immediate;
-        strcpy(Target, traduzido[*contador].rt);
-        strcpy(Source, traduzido[*contador].rs);
-        strcpy(Immediate, traduzido[*contador].imm);
-        address = lw_sw_offset(Source, Target, Immediate, traduzido[*contador].imm);
+        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
+        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
+        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
+        address = lw_sw_offset(Source, Target, Immediate, (*instrucoesDecodificadas)[*contador].imm);
         dec_to_bin(address, &Immediate);
         escreveDado(md, contador, Immediate);
         free(Immediate);
     }
-    else if(strcmp(traduzido[*contador].opcode,"1111") == 0){// sw
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1111") == 0){// sw
         //M[$rs + imm] = $rt
         char Target[4];
         char Source[4];
         char *Immediate = malloc(7);
         int immediate;
-        strcpy(Target, traduzido[*contador].rt);
-        strcpy(Source, traduzido[*contador].rs);
-        strcpy(Immediate, traduzido[*contador].imm);
-        address = lw_sw_offset(Source, Target, Immediate, traduzido[*contador].imm);
+        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
+        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
+        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
+        address = lw_sw_offset(Source, Target, Immediate, (*instrucoesDecodificadas)[*contador].imm);
         dec_to_bin(address, &Immediate);
         escreveDado(md, contador, Immediate);
         free(Immediate);
     }
 
-    else if(strcmp(traduzido[*contador].opcode,"0010") == 0){ // j -> jump to specified address
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0010") == 0){ // j -> jump to specified address
         char Target[4];
         char Source[4];
         char *ADDR = malloc(8);
-        strcpy(ADDR, traduzido[*contador].addr);
+        strcpy(ADDR, (*instrucoesDecodificadas)[*contador].addr);
         bin_dec(Source, Target, ADDR, &address, &rt, &rs);
         dec_to_bin(address, &ADDR);
         escreveDado(md, contador, ADDR);

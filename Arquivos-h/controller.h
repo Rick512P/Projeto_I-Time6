@@ -10,6 +10,6 @@
 #include "imprimeSimulador.h"
 #include "menu.h"
 
-int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst);
+int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst, type_instruc **instrucoesDecodificadas);
 
 #endif

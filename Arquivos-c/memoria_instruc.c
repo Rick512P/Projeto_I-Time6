@@ -1,27 +1,17 @@
 #include "../Arquivos-h/memoria_instruc.h"
 
 
-type_instruc* memInstruc(int *contador, int opcao, instrucao **memoriaInst, int *tamLinhas){
-    type_instruc *traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
-    switch(opcao){
-        case 0: //CASO 0: DECOMPOE AS INTRUÇOES
-            traduzido = (type_instruc*)malloc((*tamLinhas) * sizeof(type_instruc));
-            if (traduzido == NULL) {
-                fprintf(stderr, "Falha ao alocar memória para instruções traduzidas.\n");
-                return NULL;
-            }
+type_instruc memInstruc(int *contador, instrucao **memoriaInst, int *tamLinhas){
+    type_instruc traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
+
             //PC PASSA O ENDEREÇO, INCREMENTANDO +1
 
-            traduzido[*contador] = decoder(memoriaInst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
+            traduzido = decoder(memoriaInst, contador); //DECODER IRA DECOMPOR A INSTRUÇÃO NA POSIÇÃO [CONTADOR] NA
             //MEMÓRIA E ARMAZENARÁ NA VARIAVEL TRADUZIDO
   
             return traduzido; //retorna para o controller
-            break;
 
-            case 1: //CASO 1: LIBERA MEMORIA DO PONTEIRO TRADUZIDO
-                free(traduzido);
-                break;
-    }
+
 
 }
 

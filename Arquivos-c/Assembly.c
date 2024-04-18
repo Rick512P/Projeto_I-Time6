@@ -1,188 +1,61 @@
 #include "../Arquivos-h/Assembly.h"
 
-void AsmCopy(type_instruc *InstrucoesDecodificadas, Assembly **A, int tamLinhas){
-    char Opcode[5], rd[4], rs[4], rt[4], funct[4], operacao[6], imediato[7];
-    A = malloc(tamLinhas * sizeof(Assembly));
-    for (int i = 0; i<tamLinhas; i++){
-        //Register Source
-        if (strcmp("000",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t0");
-        }
-        else if (strcmp("001",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t1");
-        }
-        else if (strcmp("010",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t2");
-        }
-        else if (strcmp("011",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t3");
-        }
-        else if (strcmp("100",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t4");
-        }
-        else if (strcmp("101",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t5");
-        }
-        else if (strcmp("110",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t6");
-        }
-        else if (strcmp("111",InstrucoesDecodificadas[i].rs))
-        {
-            strcpy(rs,"$t7");
-        }
-        
-        //Register Target
-        if (strcmp("000",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t0");
-        }
-        else if (strcmp("001",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t1");
-        }
-        else if (strcmp("010",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t2");
-        }
-        else if (strcmp("011",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t3");
-        }
-        else if (strcmp("100",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t4");
-        }
-        else if (strcmp("101",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t5");
-        }
-        else if (strcmp("110",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t6");
-        }
-        else if (strcmp("111",InstrucoesDecodificadas[i].rt))
-        {
-            strcpy(rt,"$t7");
-        }
+void AsmCopy(type_instruc **instrucoesDecodificadas, Assembly **A, int tamLinhas){
+    char Opcode[10], rd[5], rs[5], rt[5], funct[5], operacao[10], imediato[8];
+    printf("Entrou em asmcopy\n");
 
-        // Tipo R
-        if (strcmp("0000",InstrucoesDecodificadas[i].opcode))
-        {
-            //Register Destiny
-            if (strcmp("000",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t0");
-            }
-            else if (strcmp("001",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t1");
-            }
-            else if (strcmp("010",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t2");
-            }
-            else if (strcmp("011",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t3");
-            }
-            else if (strcmp("100",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t4");
-            }
-            else if (strcmp("101",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t5");
-            }
-            else if (strcmp("110",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t6");
-            }
-            else if (strcmp("111",InstrucoesDecodificadas[i].rd))
-            {
-                strcpy(rd,"$t7");
-            }
+    *A = malloc((tamLinhas + 1) * sizeof(Assembly)); // Correção na alocação
+    if (*A == NULL) {
+        fprintf(stderr, "Falha na alocação de memória\n");
+        return;
+    }
 
-            // função
+    for (int i = 0; i <= tamLinhas; i++) {
+        // Inicializa as strings
+        strcpy((*A)[i].InstructsAssembly, "");
 
-            if (strcmp("000",InstrucoesDecodificadas[i].funct)){
-                strcpy(Opcode,"add");
-            }
-            else if (strcmp("010",InstrucoesDecodificadas[i].funct)){
-                strcpy(Opcode,"sub");
-            }
-            else if (strcmp("100",InstrucoesDecodificadas[i].funct)){
-                strcpy(Opcode,"and");
-            }
-            else if (strcmp("101",InstrucoesDecodificadas[i].funct)){
-                strcpy(Opcode,"or");
-            }
+        // Decodifica rs, rt, rd baseado no conteúdo de rs, rt, rd das instruções
+        strcpy(rs, decode_register((*instrucoesDecodificadas)[i].rs));
+        strcpy(rt, decode_register((*instrucoesDecodificadas)[i].rt));
+        strcpy(rd, decode_register((*instrucoesDecodificadas)[i].rd));
 
-            //concatenação
-            strcat((*A)[i].InstructsAssembly,Opcode);
-            strcat((*A)[i].InstructsAssembly,rd);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly,rs);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly,rt);
-            strcat((*A)[i].InstructsAssembly,", ");
-        }
-        else if (strcmp("0100",InstrucoesDecodificadas[i].opcode)){
-            /* addi */
-            strcat((*A)[i].InstructsAssembly, "addi ");
-            strcat((*A)[i].InstructsAssembly, rt);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly, rs);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly,imediato);
-        }
-        else if (strcmp("1011",InstrucoesDecodificadas[i].opcode))
-        {
-            /* lw */
-            strcat((*A)[i].InstructsAssembly, "lw ");
-            strcat((*A)[i].InstructsAssembly, rt);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly, imediato);
-            strcat((*A)[i].InstructsAssembly,"(");
-            strcat((*A)[i].InstructsAssembly,rs);
-            strcat((*A)[i].InstructsAssembly,")");
-        }
-        else if (strcmp("1111",InstrucoesDecodificadas[i].opcode))
-        {
-            /* sw */
-            strcat((*A)[i].InstructsAssembly, "sw ");
-            strcat((*A)[i].InstructsAssembly, rt);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly, imediato);
-            strcat((*A)[i].InstructsAssembly,"(");
-            strcat((*A)[i].InstructsAssembly,rs);
-            strcat((*A)[i].InstructsAssembly,")");
-        }
-        else if (strcmp("1000",InstrucoesDecodificadas[i].opcode))
-        {
-            /* beq */
-            strcat((*A)[i].InstructsAssembly, "beq ");
-            strcat((*A)[i].InstructsAssembly, rt);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly, rs);
-            strcat((*A)[i].InstructsAssembly,", ");
-            strcat((*A)[i].InstructsAssembly,imediato);
-        }
-        else if (strcmp("0010",InstrucoesDecodificadas[i].opcode))
-        {
-            /* Jump */
-            strcat((*A)[i].InstructsAssembly, "beq ");
-            strcat((*A)[i].InstructsAssembly, InstrucoesDecodificadas[i].rs);
-            strcat((*A)[i].InstructsAssembly, InstrucoesDecodificadas[i].rt);
-            strcat((*A)[i].InstructsAssembly, InstrucoesDecodificadas[i].imm);
+        // Realiza operações baseadas no opcode
+        if (strcmp((*instrucoesDecodificadas)[i].opcode, "0000") == 0) {
+            decode_function((*instrucoesDecodificadas)[i].funct, Opcode);
+            sprintf((*A)[i].InstructsAssembly, "%s %s, %s, %s", Opcode, rd, rs, rt);
+        } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "0100") == 0) {
+            sprintf((*A)[i].InstructsAssembly, "addi %s, %s, %s", rt, rs, (*instrucoesDecodificadas)[i].imm);
+        } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "1011") == 0) {
+            sprintf((*A)[i].InstructsAssembly, "lw %s, %s(%s)", rt, (*instrucoesDecodificadas)[i].imm, rs);
+        } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "1111") == 0) {
+            sprintf((*A)[i].InstructsAssembly, "sw %s, %s(%s)", rt, (*instrucoesDecodificadas)[i].imm, rs);
+        } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "1000") == 0) {
+            sprintf((*A)[i].InstructsAssembly, "beq %s, %s, %s", rs, rt, (*instrucoesDecodificadas)[i].imm);
+        } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "0010") == 0) {
+            sprintf((*A)[i].InstructsAssembly, "j %s", (*instrucoesDecodificadas)[i].imm);
         }
     }
+}
+
+// Funções auxiliares para decodificar rs, rt, rd e funct
+char* decode_register(const char *reg) {
+    if (strcmp(reg, "000") == 0) return "$t0";
+    if (strcmp(reg, "001") == 0) return "$t1";
+    if (strcmp(reg, "010") == 0) return "$t2";
+    if (strcmp(reg, "011") == 0) return "$t3";
+    if (strcmp(reg, "100") == 0) return "$t4";
+    if (strcmp(reg, "101") == 0) return "$t5";
+    if (strcmp(reg, "110") == 0) return "$t6";
+    if (strcmp(reg, "111") == 0) return "$t7";
+    return "";
+}
+
+void decode_function(const char *func, char *opcode) {
+    if (strcmp(func, "000") == 0) strcpy(opcode, "add");
+    else if (strcmp(func, "010") == 0) strcpy(opcode, "sub");
+    else if (strcmp(func, "100") == 0) strcpy(opcode, "and");
+    else if (strcmp(func, "101") == 0) strcpy(opcode, "or");
+    else strcpy(opcode, "");
 }
 
 int SaveASM(Assembly *A, int tamLinhas){
@@ -201,10 +74,8 @@ int SaveASM(Assembly *A, int tamLinhas){
 
         fprintf(arquivo, "%s\n", A[i].InstructsAssembly);
 
-
-        // Fecha o arquivo
-        fclose(arquivo);
     }
+    fclose(arquivo);
     printf("Arquivo asm salvo com sucesso!\n");
 }
 

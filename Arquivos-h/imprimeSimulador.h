@@ -8,6 +8,6 @@
 #include "menu.h"
 
 
-void imprimeSimulador(int tamLinhas, type_instruc *tradu, instrucao **memoriaInst, int **regs);
+void imprimeSimulador(int tamLinhas, type_instruc **instrucoesDecodificadas, instrucao *memoriaInst);
 
 #endif
