@@ -46,12 +46,13 @@ int menu(){
         switch (escolha)
         {
         case 0:
-            printf("Encerrando o programa!");
             free(md);
             free(memoriaInst);
             free(regs);
             free(AssemblyInst);
             free(instrucoesDecodificadas);
+            system("clear");
+            printf("ProgramaEncerrado!\n");
             break;
             
         case 1: //Carregar memória
