@@ -5,7 +5,6 @@
 
 void escreveDado(MemoriaDados **mem, int *contador, char *valor) {
 
-    printf("entrou na escreve dados");
     if (*contador >= 0 && *contador < 256) {
         strcpy((*mem)[*contador].dados, valor);
     } else {

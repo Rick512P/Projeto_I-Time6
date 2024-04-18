@@ -8,7 +8,7 @@ int main(){
 int menu(){
     Assembly *AssemblyInst;
     MemoriaDados *md;
-    int escolha, tamLinhas, program_counter = 0;
+    unsigned int escolha, tamLinhas, program_counter = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     int *regs; //registradores como um inteiro mesmo
     regs = (int*)malloc(8 * sizeof(int));
@@ -16,7 +16,8 @@ int menu(){
         regs[i] = 0;
     }
 
-    md = (MemoriaDados*)malloc(256 * sizeof(MemoriaDados));
+    md = (MemoriaDados*)calloc(256, sizeof(MemoriaDados));
+    
 
     printf("\n___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
@@ -53,8 +54,7 @@ int menu(){
             break;
         case 2: //Imprimir memória de instruções e memória de dados
             imprimeMemInstruc(memoriaInst, tamLinhas);
-            if (md)
-                imprimeDados(md, tamLinhas);
+            imprimeDados(md, tamLinhas);
             break;
         case 3: //Imprimir registradores
             imprimeRegistradores(regs);

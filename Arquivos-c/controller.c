@@ -20,7 +20,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
     {
     case 1:
 
-        for (i = 0; i < tamLinhas; i++)
+        for ((*program_counter) = 0; (*program_counter) < tamLinhas; increment_PC(program_counter, 1))
         {
             if ((strcmp(instrucoesDecodificadas[*program_counter].opcode,"0000")) == 0)
             {
@@ -72,8 +72,8 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 jump = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 (*program_counter)+=jump;
             }
-            increment_PC(program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
-            //EM TODO O PROGRAMA
+                            //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
+                            //EM TODO O PROGRAMA
         }
         break;
 

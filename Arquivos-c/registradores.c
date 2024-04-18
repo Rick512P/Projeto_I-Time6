@@ -69,7 +69,6 @@ int retornoRegs(int **regs, char posicao[]){
 
 
 void escritaRegistradores(int **regs, int valor, char posicao[]){
-        printf("\nposicao do decodificado.rt: %s", posicao);
         if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
             
             (*regs)[0] = valor;
