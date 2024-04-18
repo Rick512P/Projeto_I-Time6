@@ -7,7 +7,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
 
     if (strcmp(traduzido[*contador].opcode, "0000") == 0 ) {
         char Target[4];
-        char Dest[4];
+        char *Dest=malloc(4);
         char Source[4];
         strcpy(Source, traduzido[*contador].rs);
         strcpy(Target, traduzido[*contador].rt);
@@ -22,15 +22,14 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             printf("rs: %d \t rt: %d", rs, rt);
             rd = rs + rt;
             int local_decimal = rd;
-            printf("\nrd: %d\n", rd); //VALOR DE RD CORRETO
-            printf("Valor de Dest: %s", Dest);
-            dec_to_bin(local_decimal, Dest); //converte o resultado em binário
-            printf("Valor de Dest depois de dectobin: %s\n", Dest);
-            printf("\nrd depois de dectobin: %d\n", rd); //VALOR DE RD É MUDADO ??????????????
+
+            dec_to_bin(local_decimal, &Dest); //converte o resultado em binário
+            escreveDado(md, contador, Dest);
+            free(Dest);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
 
 
-            escreveDado(md, contador, Dest);
+            
             
         }
 
@@ -39,9 +38,10 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
 
-            dec_to_bin(rd, Dest);
+            dec_to_bin(rd, &Dest);
 
             escreveDado(md, contador, Dest);
+            free(Dest);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
@@ -52,6 +52,7 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             escreveDado(md, contador, Dest);
 
             bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
+            free(Dest);
             return rd;
         }
 
@@ -62,12 +63,13 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
             escreveDado(md, contador, Dest);
 
             bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
+            free(Dest);
             return rd;
         }
     }
 
     else if(strcmp(traduzido[*contador].opcode,"0100") == 0){// addi -> rs + immediate = rt
-        char Target[4];
+        char *Target=malloc(4);
         char Source[4];
         char Immediate[7];
         int immediate;
@@ -78,9 +80,9 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         rt = rs + immediate;
 
 
-        dec_to_bin(rt, Target);
+        dec_to_bin(rt, &Target);
         escreveDado(md, contador, Target);
-
+        free(Target);
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
@@ -88,37 +90,40 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         //$rt = M[$rs + imm]
         char Target[4];
         char Source[4];
-        char Immediate[7];
+        char *Immediate = malloc(7);
         int immediate;
         strcpy(Target, traduzido[*contador].rt);
         strcpy(Source, traduzido[*contador].rs);
         strcpy(Immediate, traduzido[*contador].imm);
         address = lw_sw_offset(Source, Target, Immediate, traduzido[*contador].imm);
-        dec_to_bin(address, Immediate);
+        dec_to_bin(address, &Immediate);
         escreveDado(md, contador, Immediate);
+        free(Immediate);
     }
     else if(strcmp(traduzido[*contador].opcode,"1111") == 0){// sw
         //M[$rs + imm] = $rt
         char Target[4];
         char Source[4];
-        char Immediate[7];
+        char *Immediate = malloc(7);
         int immediate;
         strcpy(Target, traduzido[*contador].rt);
         strcpy(Source, traduzido[*contador].rs);
         strcpy(Immediate, traduzido[*contador].imm);
         address = lw_sw_offset(Source, Target, Immediate, traduzido[*contador].imm);
-        dec_to_bin(address, Immediate);
+        dec_to_bin(address, &Immediate);
         escreveDado(md, contador, Immediate);
+        free(Immediate);
     }
 
     else if(strcmp(traduzido[*contador].opcode,"0010") == 0){ // j -> jump to specified address
         char Target[4];
         char Source[4];
-        char ADDR[8];
+        char *ADDR = malloc(8);
         strcpy(ADDR, traduzido[*contador].addr);
         bin_dec(Source, Target, ADDR, &address, &rt, &rs);
-        dec_to_bin(address, ADDR);
+        dec_to_bin(address, &ADDR);
         escreveDado(md, contador, ADDR);
+        free(ADDR);
         return address;
     }
 
@@ -161,18 +166,22 @@ void bin_dec(const char Source[], const char Target[], const char Dest[], int *r
     if (rd) *rd = bin_to_dec(Dest);   // Converte Dest para decimal e armazena em rd.
 }
 
-void dec_to_bin(int decimal, char *binary) {
-    int i;
-
-    // Inicializa a string binária
-    for (i = 0; i < 17; i++) {
-        binary[i] = '0';
+void dec_to_bin(int decimal, char **binaryPtr) {
+    char *new_binary = realloc(*binaryPtr, BITS); // Tentativa de realocar com o novo tamanho
+    if (new_binary == NULL) {
+        fprintf(stderr, "Falha ao realocar memória.\n");
+        return; // Falha na realocação
     }
-    binary[17] = '\0';  // Garante que o último caractere é o terminador nulo
+    *binaryPtr = new_binary; // Atualiza o ponteiro original com o novo endereço
 
-    // Converte decimal para binário
-    for (i = 17 - 1; i >= 0 && decimal > 0; i--) {
-        binary[i] = (decimal % 2) ? '1' : '0';
+    // Inicializa o novo buffer
+    memset(*binaryPtr, '0', BITS - 1);
+    (*binaryPtr)[BITS - 1] = '\0'; // Terminador nulo
+
+    // Preenche o buffer com a representação binária
+    int index = BITS - 2;
+    while (decimal > 0 && index >= 0) {
+        (*binaryPtr)[index--] = (decimal % 2) ? '1' : '0';
         decimal /= 2;
     }
 } 

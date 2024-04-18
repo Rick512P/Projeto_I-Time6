@@ -65,11 +65,9 @@ int menu(){
         case 5: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas);
             controller(4, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
-            if(md)
-                imprimeDados(md, tamLinhas);
+            imprimeDados(md, tamLinhas);
             imprimeRegistradores(regs);
-            if (AssemblyInst)
-                imprimirASM(AssemblyInst, tamLinhas);
+            imprimirASM(AssemblyInst, tamLinhas);
             break;
         case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
             controller(5, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
