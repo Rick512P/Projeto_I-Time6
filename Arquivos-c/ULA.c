@@ -13,18 +13,14 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
         strcpy(Dest, (*instrucoesDecodificadas)[*contador].rd);
 
-        rs = Registradores(regs, 0, (*instrucoesDecodificadas)[*contador].rs, 2);
-        rt = Registradores(regs, 0, (*instrucoesDecodificadas)[*contador].rt, 2);
+        rs = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
+        rt = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
 
         if (strcmp((*instrucoesDecodificadas)[*contador].funct, "000") == 0 ){
-            
-            //"add -> rs + rt = rd";
-            printf("rs: %d \t rt: %d", rs, rt);
             rd = rs + rt;
             int local_decimal = rd;
 
             dec_to_bin(local_decimal, &Dest); //converte o resultado em binário
-            escreveDado(md, contador, Dest);
             free(Dest);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
 
@@ -40,7 +36,6 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
 
             dec_to_bin(rd, &Dest);
 
-            escreveDado(md, contador, Dest);
             free(Dest);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
@@ -49,7 +44,6 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
 
-            escreveDado(md, contador, Dest);
 
             bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
             free(Dest);
@@ -60,7 +54,6 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
 
-            escreveDado(md, contador, Dest);
 
             bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
             free(Dest);
@@ -81,38 +74,41 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
 
 
         dec_to_bin(rt, &Target);
-        escreveDado(md, contador, Target);
         free(Target);
         return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
-    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1011") == 0){// lw --> LW TEM QUE RETORNAR RT
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1011") == 0){// lw GRAVA CONTEUDO DA MEMORIA NOS REGISTRADORES
         //$rt = M[$rs + imm]
         char Target[4];
         char Source[4];
         char *Immediate = malloc(7);
-        int immediate;
+        int immediate, dados;
         strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
         strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
         strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
-        address = lw_sw_offset(Source, Target, Immediate, (*instrucoesDecodificadas)[*contador].imm);
-        dec_to_bin(address, &Immediate);
-        escreveDado(md, contador, Immediate);
+        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+        //Agora sei qual a posicao Immediate em decimal:
+        bin_dec(Source, Target, (*md)[immediate].dados, &rs, &rt, &dados);
+        //Agora sei qual o valor contido na posição 4 da memoria em decimal:
         free(Immediate);
+        return dados;
     }
-    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1111") == 0){// sw
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1111") == 0){// sw GRAVA CONTEUDO NA MEMORIA DE DADOS
         //M[$rs + imm] = $rt
         char Target[4];
         char Source[4];
-        char *Immediate = malloc(7);
-        int immediate;
+        char Immediate[7];
+        int immediate, conteudo;
+        char *conteudo_bin = malloc(7);
         strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
         strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
         strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
-        address = lw_sw_offset(Source, Target, Immediate, (*instrucoesDecodificadas)[*contador].imm);
-        dec_to_bin(address, &Immediate);
-        escreveDado(md, contador, Immediate);
-        free(Immediate);
+        conteudo = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
+        dec_to_bin(conteudo, &conteudo_bin);
+        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+        escreveDado(md, &immediate, conteudo_bin);
+        free(conteudo_bin);
     }
 
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0010") == 0){ // j -> jump to specified address
@@ -122,10 +118,27 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         strcpy(ADDR, (*instrucoesDecodificadas)[*contador].addr);
         bin_dec(Source, Target, ADDR, &address, &rt, &rs);
         dec_to_bin(address, &ADDR);
-        escreveDado(md, contador, ADDR);
         free(ADDR);
         return address;
     }
+
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1000") == 0){
+        char Target[4];
+        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
+        char Source[4];
+        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
+        char Immediate[7];
+        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
+        int immediate;
+        int reg1 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
+        int reg2 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
+        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+        if (reg1 == reg2)
+            return ((*contador) += immediate);
+        else
+            return (*contador);    
+    }
+
 
     else{
         printf("OPCODE ERROR!");
@@ -134,11 +147,10 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
 
 
 // Implementação do deslocamento de memória para instruções lw e sw
-int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm) {
+int SW(char Source[], char Target[], char Dest[], char *imm) {
     int base_address, immDec;
     bin_dec(Source, imm, NULL, &base_address, &immDec, NULL);
     int effective_address = base_address + immDec; ///MUDAR ISSO AQUI
-    printf("Accessing memory at address: %d\n", effective_address);
     return effective_address;
 }
 

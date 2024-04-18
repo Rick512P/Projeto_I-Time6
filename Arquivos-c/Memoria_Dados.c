@@ -31,4 +31,5 @@ void escreverArquivoMemoria(MemoriaDados *md) {
 	}
 	
 	fclose(arquivo);
+	printf("\nArquivo criado com sucesso!\n\n");
 }

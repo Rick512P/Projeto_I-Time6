@@ -5,7 +5,7 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
     char linha[100];
     int contador_de_linhas = 0;
     instrucao p;
-    FILE *arq = fopen("../memoria/TestaInstruc(sem1111-1011-1000).mem", "r");
+    FILE *arq = fopen("../memoria/programaTestaInstrucoes.mem", "r");
 
     if(arq){
 

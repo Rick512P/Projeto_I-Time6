@@ -17,6 +17,7 @@ int menu(){
     }
     type_instruc **instrucoesDecodificadas = malloc(sizeof(type_instruc*));
     
+    
 
     
     md = (MemoriaDados*)calloc(256, sizeof(MemoriaDados));
@@ -46,12 +47,11 @@ int menu(){
         {
         case 0:
             printf("Encerrando o programa!");
-            memInstruc(0, &memoriaInst, &tamLinhas);
+            free(md);
             free(memoriaInst);
             free(regs);
+            free(AssemblyInst);
             free(instrucoesDecodificadas);
-            instrucoesDecodificadas = NULL; // Evita o uso de ponteiro pendente
-            
             break;
             
         case 1: //Carregar memória
@@ -61,17 +61,28 @@ int menu(){
                 fprintf(stderr, "Falha ao alocar memória para instruções decodificadas.\n");
                 return -1;
             }
+            
+            AssemblyInst = malloc((tamLinhas + 1) * sizeof(Assembly));
+
+            if (*instrucoesDecodificadas == NULL) {
+                fprintf(stderr, "Falha ao alocar memória para instrucoes assembly.\n");
+                return -1;
+            }
             break;
+
         case 2: //Imprimir memória de instruções e memória de dados
             imprimeMemInstruc(memoriaInst, tamLinhas);
             imprimeDados(md, tamLinhas);
             break;
+
         case 3: //Imprimir registradores
             imprimeRegistradores(regs);
             break;
+
         case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
             imprimeEstatisticas(memoriaInst, tamLinhas);
             break;
+
         case 5: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas);
             imprimeSimulador(tamLinhas, instrucoesDecodificadas, memoriaInst);
@@ -79,24 +90,30 @@ int menu(){
             imprimeRegistradores(regs);
             imprimirASM(AssemblyInst, tamLinhas);
             break;
+
         case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
-            
             SaveASM(AssemblyInst, tamLinhas);
             break;
+
         case 7: //Salvar arquivo DATA.mem
             escreverArquivoMemoria(md);
             break;
+
         case 8: //Chamar função responsável pela execução do programa
             program_counter = 0;
             controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
+
         case 9: //Chamar função responsável pela execução do programa passo a passo
             controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
+            AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
+
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
             controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
             break;
+
         default:
             break;
         }

@@ -16,7 +16,7 @@ void bin_dec(const char Source[], const char Target[], const char Dest[], int *r
 void dec_to_bin(int decimal, char **binaryPtr);
 void AND(char Source[], char Target[], char *Dest);
 void OR(char Source[], char Target[], char *Dest);
-int lw_sw_offset(char Source[], char Target[], char Dest[], char *imm);
+int SW(char Source[], char Target[], char Dest[], char *imm);
 
 #endif
 

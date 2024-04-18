@@ -2,19 +2,6 @@
 
 
 
-int Registradores (int **regs, int valor, char posicao[], int opcao){ //recebe do controle qual registrador usar e o valor a ser salvo
-    switch (opcao)
-    {
-    case 0:
-        escritaRegistradores(regs, valor, posicao);
-        break;
-    
-    case 2:
-        return retornoRegs(regs, posicao);
-        break;
-    }
-}
-
 int retornoRegs(int **regs, char posicao[]){
         if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
             
@@ -123,7 +110,7 @@ void escritaRegistradores(int **regs, int valor, char posicao[]){
 void imprimeRegistradores(int *regs){
     printf("\n");
     for(int i = 0; i<8;i++){
-            printf("Registrador %d: %d\t\t", i, regs[i]);
+            printf("Registrador $%d: %d\t\t", i, regs[i]);
     }
     printf("\n");
 }

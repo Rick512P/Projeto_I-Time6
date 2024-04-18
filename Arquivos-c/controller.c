@@ -17,47 +17,25 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0)
             {
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd, 0);
+                escritaRegistradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0100")) == 0){ //ADDI
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs); 
-                Registradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt, 0);
-                //enviar rt para Banco de Registradores
+                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
             }
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){ //ARRUMAR 1011
-                //enviar address para Memória de Dados, juntamente do valor a ser posto
-
-                RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt, 0);
+            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){  //LW
+                RT = ULA(instrucoesDecodificadas, program_counter, md, regs); 
+                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
             }
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){ //ARRUMAR 1111
-                //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
-
-                address = ULA(instrucoesDecodificadas, program_counter, md, regs);
+            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){ //SW
+                ULA(instrucoesDecodificadas, program_counter, md, regs); 
             }
-            else if (strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1000") == 0)
+            else if (strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1000") == 0) //BEQ
             {
-                //if ( $rs == $rt ) then PC = PC + imm * 2 
-                char Target[4];
-                char Source[4];
-                char Immediate[7];
-                int immediate, rs, rt;
-                strcpy(Target, (*instrucoesDecodificadas)[*program_counter].rt);
-                strcpy(Source, (*instrucoesDecodificadas)[*program_counter].rs);
-                strcpy(Immediate, (*instrucoesDecodificadas)[*program_counter].imm);
-                bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
-                if (rs == rt) {
-                    printf("Branching to address: %s\n", (*instrucoesDecodificadas)[*program_counter].imm);
-                    // Implementação do salto para o endereço especificado
-                    bin_dec(Source, Target, (*instrucoesDecodificadas)[*program_counter].imm, &rs, &rt, &immediate);
-                    *program_counter = *program_counter + immediate * 2; // Atualiza o contador de programa com o endereço especificado
-                    printf("Jumped to address: %d\n", *program_counter); // Exibe o novo endereço
-                } else {
-                    printf("Branch not taken.\n");
-                }
+                (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
             }            
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){
+            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){ //JUMP
 
                 jump = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 (*program_counter)+=jump;
@@ -69,27 +47,26 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
 
     case 2:
         //Run by Step
-       // if (tamLinhas){ ARRUMAR IF
+            printf("Instrucao %d", *program_counter);
             increment_PC(program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
             (*instrucoesDecodificadas)[*program_counter] = memInstruc(program_counter, memoriaInst, &tamLinhas);
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0)
             {
                 
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd, 0);
+                escritaRegistradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0100")) == 0){
                 
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                printf("RT: %d", RT);
-                Registradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt, 0);
+                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt, 0);
+                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
@@ -98,31 +75,35 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
             }
+            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1000")) == 0){ //beq
+                (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
+
+            }
             increment_PC(program_counter, 1); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
             //EM TODO O PROGRAMA
       //  }
         break;
     case 3:
         //Return Run by Step
-        //if (tamLinhas <= get_PC()){arrumar if
-            increment_PC(program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
+            increment_PC(program_counter, 2); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
+            //EM TODO O PROGRAMA
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0) //TIPO R
             {
                 
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd, 0);
+                escritaRegistradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0100")) == 0){ //TIPO I
                 
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt, 0);
+                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
                 //enviar rd para Banco de Registradores
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){ //TIPO I
                 //enviar address para Memória de Dados, juntamente do valor a ser posto
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                Registradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt, 0);
+                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){ //TIPO I
                 //enviar address para Memória de Dados, e receber como retorno o valor presente na célula
@@ -131,9 +112,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){ //TIPO J
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
             }
-            increment_PC(program_counter, 2); //MANDA O ENDEREÇO DE PROGRAM_COUNTER PARA QUE ELE SEJA ATUALIZADO
-            //EM TODO O PROGRAMA
-       // }
+            
         break;
 
     }
