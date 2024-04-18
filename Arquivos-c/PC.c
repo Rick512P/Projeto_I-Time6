@@ -13,5 +13,4 @@ void increment_PC(int *program_counter, int op) {//PROGRAM_COUNTER COMO PONTEIRO
     default:
         break;
     }
-    
 }

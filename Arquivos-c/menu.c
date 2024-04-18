@@ -88,6 +88,8 @@ int menu(){
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
             controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst);
             break;
+        default:
+            break;
         }
     }while(escolha != 0);
 

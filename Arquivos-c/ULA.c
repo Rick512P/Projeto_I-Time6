@@ -17,14 +17,18 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         rt = Registradores(regs, 0, traduzido[*contador].rt, 2);
 
         if (strcmp(traduzido[*contador].funct, "000") == 0 ){
+            
             //"add -> rs + rt = rd";
             printf("rs: %d \t rt: %d", rs, rt);
             rd = rs + rt;
-
-            printf("\nrd: %d", rd); //VALOR DE RD CORRETO
+            int local_decimal = rd;
+            printf("\nrd: %d\n", rd); //VALOR DE RD CORRETO
+            printf("Valor de Dest: %s", Dest);
+            dec_to_bin(local_decimal, Dest); //converte o resultado em binário
+            printf("Valor de Dest depois de dectobin: %s\n", Dest);
+            printf("\nrd depois de dectobin: %d\n", rd); //VALOR DE RD É MUDADO ??????????????
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
-            dec_to_bin(rd, Dest); //converte o resultado em binário
-            printf("\nrd2: %d", rd); //VALOR DE RD É MUDADO ??????????????
+
 
             escreveDado(md, contador, Dest);
             
@@ -71,7 +75,6 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         strcpy(Source, traduzido[*contador].rs);
         strcpy(Immediate, traduzido[*contador].imm);
         bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
-        printf("Valor de immediate em decimal: %d", immediate);
         rt = rs + immediate;
 
 
@@ -113,11 +116,9 @@ int ULA(type_instruc *traduzido, int *contador, MemoriaDados **md, int **regs) {
         char Source[4];
         char ADDR[8];
         strcpy(ADDR, traduzido[*contador].addr);
-        printf("\nEntrou aqui na ULA 0010");
         bin_dec(Source, Target, ADDR, &address, &rt, &rs);
         dec_to_bin(address, ADDR);
         escreveDado(md, contador, ADDR);
-        printf("VAI SAIR");
         return address;
     }
 
@@ -162,14 +163,28 @@ void bin_dec(const char Source[], const char Target[], const char Dest[], int *r
 
 void dec_to_bin(int decimal, char *binary) {
     int i;
-    int local_decimal = decimal;
+
+    // Inicializa a string binária
+    for (i = 0; i < 17; i++) {
+        binary[i] = '0';
+    }
+    binary[17] = '\0';  // Garante que o último caractere é o terminador nulo
+
+    // Converte decimal para binário
+    for (i = 17 - 1; i >= 0 && decimal > 0; i--) {
+        binary[i] = (decimal % 2) ? '1' : '0';
+        decimal /= 2;
+    }
+} 
+
+/*void dec_to_bin(int decimal, char *binary) {
+    int i;
     // Etapa de verificação de números negativos
-    int Negative = (local_decimal < 0);
-    printf("decimal1: %d", decimal);
+    int Negative = (decimal < 0);
     
     // Se for negativo, ajusta o valor para o complemento de dois
     if (Negative) {
-        local_decimal = (1 << BITS) + local_decimal;
+        decimal = (1 << BITS) + decimal;
     }
     
     // Inicializa a string binária
@@ -180,8 +195,8 @@ void dec_to_bin(int decimal, char *binary) {
     
     // Converte decimal para binário
     for (i = BITS - 1; i >= 0; i--) {
-        binary[i] = (local_decimal % 2) ? '1' : '0';
-        local_decimal /= 2;
+        binary[i] = (decimal % 2) ? '1' : '0';
+        decimal /= 2;
     }
     
     // Se o número original era negativo, complementa os bits
@@ -197,7 +212,7 @@ void dec_to_bin(int decimal, char *binary) {
         }
 
     }
-}
+}*/
 
 void AND(char Source[], char Target[], char *Dest){
     int i, LS = strlen(Source);

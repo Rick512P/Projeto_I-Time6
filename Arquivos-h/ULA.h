@@ -1,6 +1,6 @@
 #ifndef ULA_H
 #define ULA_H
-#define BITS 16
+#define BITS 17
 
 #include "decode.h"
 #include "memoria_instruc.h"

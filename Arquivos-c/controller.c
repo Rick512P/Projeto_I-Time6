@@ -8,8 +8,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
     char rd[4];
 
     type_instruc *instrucoesDecodificadas;
-    
-    instrucoesDecodificadas = memInstruc(program_counter, 0, memoriaInst, &tamLinhas); //COMEÇA COM 0
+    instrucoesDecodificadas = (type_instruc*)malloc(tamLinhas * sizeof(type_instruc));
 
     if (instrucoesDecodificadas == NULL) {
         fprintf(stderr, "Falha ao obter instruções decodificadas.\n");
@@ -21,12 +20,11 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
     case 1:
 
         for ((*program_counter) = 0; (*program_counter) < tamLinhas; increment_PC(program_counter, 1))
-        {
+        {   
+            instrucoesDecodificadas = memInstruc(program_counter, 0, memoriaInst, &tamLinhas);
             if ((strcmp(instrucoesDecodificadas[*program_counter].opcode,"0000")) == 0)
             {
-                printf("\nposicao do program_counter: %d em 0000", *program_counter);
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                printf("\nRD: %d", RD);
                 Registradores(regs, RD, instrucoesDecodificadas[*program_counter].rd, 0);
                 //enviar rd para Banco de Registradores
             }
@@ -81,6 +79,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
         //Run by Step
        // if (tamLinhas){ ARRUMAR IF
             increment_PC(program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
+            instrucoesDecodificadas = memInstruc(program_counter, 0, memoriaInst, &tamLinhas);
             if ((strcmp(instrucoesDecodificadas[*program_counter].opcode,"0000")) == 0)
             {
                 

@@ -118,7 +118,6 @@ void escritaRegistradores(int **regs, int valor, char posicao[]){
         }
         else
             printf("ERRO. Nenhum Registrador encontrado.");
-        printf("\nESCREVEU NOS REGISTRADORES");
 }
 
 void imprimeRegistradores(int *regs){
