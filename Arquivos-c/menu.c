@@ -80,7 +80,7 @@ int menu(){
             imprimirASM(AssemblyInst, tamLinhas);
             break;
         case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
-            AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
+            
             SaveASM(AssemblyInst, tamLinhas);
             break;
         case 7: //Salvar arquivo DATA.mem
@@ -89,6 +89,7 @@ int menu(){
         case 8: //Chamar função responsável pela execução do programa
             program_counter = 0;
             controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
+            AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
         case 9: //Chamar função responsável pela execução do programa passo a passo
             controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);

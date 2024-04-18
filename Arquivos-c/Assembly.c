@@ -1,18 +1,18 @@
 #include "../Arquivos-h/Assembly.h"
 
 void AsmCopy(type_instruc **instrucoesDecodificadas, Assembly **A, int tamLinhas){
-    char Opcode[10], rd[5], rs[5], rt[5], funct[5], operacao[10], imediato[8];
+    char Opcode[10], rd[5], rs[5], rt[5], imediato[8];
     printf("Entrou em asmcopy\n");
 
-    *A = malloc((tamLinhas + 1) * sizeof(Assembly)); // Correção na alocação
+    *A = malloc((tamLinhas + 1) * sizeof(Assembly));
     if (*A == NULL) {
         fprintf(stderr, "Falha na alocação de memória\n");
         return;
     }
 
-    for (int i = 0; i <= tamLinhas; i++) {
-        // Inicializa as strings
-        strcpy((*A)[i].InstructsAssembly, "");
+    for (int i = 0; i < tamLinhas; i++) {
+        // Garante que a string esteja limpa antes de usar
+        memset((*A)[i].InstructsAssembly, 0, sizeof((*A)[i].InstructsAssembly));
 
         // Decodifica rs, rt, rd baseado no conteúdo de rs, rt, rd das instruções
         strcpy(rs, decode_register((*instrucoesDecodificadas)[i].rs));
@@ -83,6 +83,5 @@ void imprimirASM(Assembly *A, int tamLinhas){
     /*Realizar Impressão da Struct ASM*/
     for (int i = 0; i<tamLinhas; i++){
         printf("\nInstrucao em Assembly: %s", A[i].InstructsAssembly);
-        printf("\n");
     }
 }

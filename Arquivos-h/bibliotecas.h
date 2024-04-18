@@ -40,7 +40,7 @@ typedef struct {
 
 //instruções em assembly
 typedef struct{
-  char InstructsAssembly[20];
+  char InstructsAssembly[30];
 } Assembly;
 
 
