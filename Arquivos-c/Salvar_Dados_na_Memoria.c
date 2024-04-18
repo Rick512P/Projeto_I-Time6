@@ -1,4 +1,4 @@
-#include "Memoria_Dados.h"
+#include "../Arquivos-h/Memoria_Dados.h"
 
 // Função para salvar os dados de memória em um vetor
 int* salvar_dados_memoria(int *dados_memoria) {
