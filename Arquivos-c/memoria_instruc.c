@@ -1,7 +1,7 @@
 #include "../Arquivos-h/memoria_instruc.h"
 
 
-type_instruc memInstruc(int *contador, instrucao **memoriaInst, int *tamLinhas){
+type_instruc memInstruc(int contador, instrucao **memoriaInst, int *tamLinhas){
     type_instruc traduzido; //DECOMPOE A INSTRUÇÃO EM OPCODE, RS, RT, RD, FUNCT, IMM OU ADDR
 
             //PC PASSA O ENDEREÇO, INCREMENTANDO +1
@@ -30,9 +30,9 @@ void imprimeEstatisticas(instrucao *memoriaInst, int tamLinhas){
         if (strncmp(memoriaInst[y].instruc, "0000", 4) == 0){ //compara os 4 primeiros numeros de memoriaInst com "0000"
             r++;
         }
-        else if (strncmp(memoriaInst[y].instruc, "0100", 4) == 0 || strncmp(memoriaInst[y].instruc, "1011", 4) == 0 || strncmp(memoriaInst[y].instruc, "1111", 4) == 0 || strncmp(memoriaInst[y].instruc, "0110", 4) == 0)
+        else if (strncmp(memoriaInst[y].instruc, "0100", 4) == 0 || strncmp(memoriaInst[y].instruc, "1011", 4) == 0 || strncmp(memoriaInst[y].instruc, "1111", 4) == 0 || strncmp(memoriaInst[y].instruc, "0110", 4) == 0 || strncmp(memoriaInst[y].instruc, "1000", 4) == 0)
             i++;
-        else if (strncmp(memoriaInst[y].instruc, "0010", 4) == 0 || strncmp(memoriaInst[y].instruc, "1000", 4) == 0)
+        else if (strncmp(memoriaInst[y].instruc, "0010", 4) == 0)
             j++;
     }
     printf("O numero de instrucoes e de %d\n", tamLinhas);

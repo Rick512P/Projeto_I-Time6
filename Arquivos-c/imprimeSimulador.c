@@ -3,7 +3,7 @@
 
 void imprimeSimulador(int tamLinhas, type_instruc **instrucoesDecodificadas, instrucao *memoriaInst){
     for(int i=0;i<tamLinhas;i++){
-            printf("\n\nInstrucao %d de %d: %s", i+1, tamLinhas, memoriaInst[i].instruc);
+            printf("\n\nInstrucao %d de %d: [%s]", i+1, tamLinhas, memoriaInst[i].instruc);
             if (strcmp((*instrucoesDecodificadas)[i].opcode, "0000") == 0){
                 printf("\n======TIPO R=========\n");
                 printf("opcode[%s]\t", (*instrucoesDecodificadas)[i].opcode);
