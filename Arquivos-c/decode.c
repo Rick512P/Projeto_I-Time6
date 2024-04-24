@@ -21,8 +21,14 @@ type_instruc decoder(instrucao **memoriaInst, int contador){
         return traducao;
     }
 
+    else if (strcmp(traducao.opcode, "0010") == 0){//SE NAO, SABEREMOS QUE SERÁ TIPO J, PORTANDO ADICIONAREMOS APENAS O ADDR
+        strncpy(traducao.addr, (*memoriaInst)[i].instruc + 9, 8); // Escreve o funct
+        traducao.addr[7] = '\0';
+        
+        return traducao;
+    }
 
-    else if ((strcmp(traducao.opcode, "0100") == 0) || (strcmp(traducao.opcode, "1011") == 0) || (strcmp(traducao.opcode, "1111") == 0) || (strcmp(traducao.opcode, "0110") == 0) || (strcmp(traducao.opcode, "1000") == 0) ) { //TIPO I
+    else { //TIPO I
         strncpy(traducao.imm, (*memoriaInst)[i].instruc + 10, 7); // Escreve o IMMEDIATE de 6 bits
         traducao.imm[6] = '\0';
         strncpy(traducao.rt, (*memoriaInst)[i].instruc + 7, 4);
@@ -33,12 +39,7 @@ type_instruc decoder(instrucao **memoriaInst, int contador){
     }
 
 
-    else if (strcmp(traducao.opcode, "0010") == 0){//SE NAO, SABEREMOS QUE SERÁ TIPO J, PORTANDO ADICIONAREMOS APENAS O ADDR
-        strncpy(traducao.addr, (*memoriaInst)[i].instruc + 9, 8); // Escreve o funct
-        traducao.addr[7] = '\0';
-        
-        return traducao;
-    }
+    
     
     
 }

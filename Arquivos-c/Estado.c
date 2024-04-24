@@ -6,7 +6,7 @@ int retorna_estado(MemoriaDados **md, int **regs) {
     char *nome_arquivo = "Log/log.dat";
 
     if ((data = fopen(nome_arquivo, "rb")) == NULL) {
-        printf("Erro ao abrir o arquivo.");
+        printf("Erro ao abrir o arquivo para leitura do log.");
         return 1;
     }
 
@@ -26,7 +26,6 @@ int retorna_estado(MemoriaDados **md, int **regs) {
     fread(*md, sizeof(MemoriaDados), 1, data);
 
     // Retrocede para ler os registradores
-    // Supondo que regs seja um array de inteiros
     fseek(data, -sizeof(int) * 64, SEEK_CUR);
     fread(*regs, sizeof(int), 64, data);
 
@@ -38,20 +37,17 @@ int retorna_estado(MemoriaDados **md, int **regs) {
     return PC;
 }
 
-int salva_estado(int PC, MemoriaDados **md, int *regs, int *Last_State) {
+int salva_estado(int *program_counter, MemoriaDados **md, int **regs) {
     FILE *data;
     char *nome_arquivo = "Log/log.dat";
 
     if ((data = fopen(nome_arquivo, "ab")) == NULL) {
-        printf("Erro ao abrir o arquivo.");
+        printf("Erro ao abrir o arquivo para salvar estado.");
         return 1;
     }
 
-    // Escrever Last_State
-    fwrite(Last_State, sizeof(int), 1, data);
-
     // Escrever program_counter
-    fprintf(data, "%d", PC);
+    fwrite(program_counter, sizeof(int), 1, data);
 
     // Escrever MemoriaDados
     fwrite(*md, sizeof(MemoriaDados), 1, data);
@@ -71,7 +67,7 @@ void DeleteLast_State(){
     FILE *data;
     char *nome_arquivo = "Log/log.dat";
 
-    if ((data = fopen(nome_arquivo, "rb+")) == NULL) {
+    if ((data = fopen(nome_arquivo, "r+b")) == NULL) {
         printf("Erro ao abrir o arquivo.");
         return;
     }

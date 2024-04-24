@@ -50,5 +50,5 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
     
 
     else
-        printf("Erro ao abrir arquivo.");
+        printf("Erro ao abrir arquivo de instrucoes.");
 }

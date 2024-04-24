@@ -3,108 +3,26 @@
 
 
 int retornoRegs(int **regs, char posicao[]){
-        if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
-            
-            return (*regs)[0];
-            
-        }
-
-        else if(strcmp(posicao, "001") == 0){
-            
-            return (*regs)[1];
-            
-        }
-
-        else if(strcmp(posicao, "010") == 0){
-            
-            return (*regs)[2];
-            
-        }
-
-        else if(strcmp(posicao, "011") == 0){
-            
-            return (*regs)[3];
-            
-        }
-
-        else if(strcmp(posicao, "100") == 0){
-            
-            return (*regs)[4];
-            
-        }
-
-        else if(strcmp(posicao, "101") == 0){
-            
-            return (*regs)[5];
-           
-        }
-
-        else if(strcmp(posicao, "110") == 0){
-            
-            return (*regs)[6];
-            
-        }
-
-        else if(strcmp(posicao, "111") == 0){
-            
-            return (*regs)[7];
-            
-        }
-        else
+    int indice;
+        bin_decimal(&indice, posicao);
+        if(indice >= 8){
             printf("ERRO. Nenhum Registrador encontrado.");
+            return -1;
+        }
+        return (*regs)[indice];
 }
 
-
-void escritaRegistradores(int **regs, int valor, char posicao[]){
-        if(strcmp(posicao, "000") == 0){ //define em qual registrador o valor sera armazenado
-            
-            (*regs)[0] = valor;
-            
-        }
-
-        else if(strcmp(posicao, "001") == 0){
-            
-            (*regs)[1] = valor;
-            
-        }
-
-        else if(strcmp(posicao, "010") == 0){
-            
-            (*regs)[2] = valor;
-            
-        }
-
-        else if(strcmp(posicao, "011") == 0){
-            
-            (*regs)[3] = valor;
-            
-        }
-
-        else if(strcmp(posicao, "100") == 0){
-            
-            (*regs)[4] = valor;
-            
-        }
-
-        else if(strcmp(posicao, "101") == 0){
-            
-            (*regs)[5] = valor;
-           
-        }
-
-        else if(strcmp(posicao, "110") == 0){
-            
-            (*regs)[6] = valor;
-            
-        }
-
-        else if(strcmp(posicao, "111") == 0){
-            
-            (*regs)[7] = valor;
-            
-        }
-        else
+int escritaRegistradores(int **regs, int valor, char posicao[]){
+       int indice;
+        bin_decimal(&indice, posicao);
+        if(indice >= 8){
             printf("ERRO. Nenhum Registrador encontrado.");
+            return -1;
+        }
+            
+        (*regs)[indice] = valor;
+
+            
 }
 
 void imprimeRegistradores(int *regs){
@@ -114,3 +32,6 @@ void imprimeRegistradores(int *regs){
     }
     printf("\n");
 }
+
+
+

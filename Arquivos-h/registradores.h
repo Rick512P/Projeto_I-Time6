@@ -5,9 +5,10 @@
 #include "decode.h"
 #include "ULA.h"
 #include "bibliotecas.h"
+#include "bin_to_decimal.h"
 
 
-void escritaRegistradores(int **regs, int valor, char posicao[]);
+int escritaRegistradores(int **regs, int valor, char posicao[]);
 int retornoRegs(int **regs, char posicao[]);
 void imprimeRegistradores(int *regs);
 

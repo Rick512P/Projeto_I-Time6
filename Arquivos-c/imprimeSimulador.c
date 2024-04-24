@@ -13,7 +13,14 @@ void imprimeSimulador(int tamLinhas, type_instruc **instrucoesDecodificadas, ins
                 printf("funct[%s]\t\t", (*instrucoesDecodificadas)[i].funct);
                 printf("\n======================\n");
             }
-            else if ((strcmp((*instrucoesDecodificadas)[i].opcode, "0100") == 0) || (strcmp((*instrucoesDecodificadas)[i].opcode, "1011") == 0) || (strcmp((*instrucoesDecodificadas)[i].opcode, "1111") == 0) || (strcmp((*instrucoesDecodificadas)[i].opcode, "0110") == 0) || strcmp((*instrucoesDecodificadas)[i].opcode, "1000") == 0) {
+            else if (strcmp((*instrucoesDecodificadas)[i].opcode, "0010") == 0){
+                printf("\n========TIPO J========\n");
+                printf("opcode[%s]\t", (*instrucoesDecodificadas)[i].opcode);
+                printf("addr[%s]\t\t", (*instrucoesDecodificadas)[i].addr);
+                printf("\n======================\n");
+            } 
+
+            else{
                 printf("\n\n=======TIPO I=========\n");
                 printf("opcode[%s]\t", (*instrucoesDecodificadas)[i].opcode);
                 printf("rs[%s]\t\t", (*instrucoesDecodificadas)[i].rs);
@@ -23,11 +30,6 @@ void imprimeSimulador(int tamLinhas, type_instruc **instrucoesDecodificadas, ins
                 printf("\n======================\n");
             }
 
-            else if (strcmp((*instrucoesDecodificadas)[i].opcode, "0010") == 0){
-                printf("\n========TIPO J========\n");
-                printf("opcode[%s]\t", (*instrucoesDecodificadas)[i].opcode);
-                printf("addr[%s]\t\t", (*instrucoesDecodificadas)[i].addr);
-                printf("\n======================\n");
-            }    
+               
     }
 }

@@ -1,8 +1,8 @@
 
 #include "../Arquivos-h/controller.h"
 
-int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst, type_instruc **instrucoesDecodificadas, int *Last_State){
-    int numeroLinhas, jump, RD, RT, i, address, PC;
+int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, type_instruc **instrucoesDecodificadas){
+    int numeroLinhas, jump, RD, RT, i, address;
     char rd[4];
 
     for(int j=0;j<tamLinhas;j++){
@@ -40,9 +40,8 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 jump = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 (*program_counter)+=jump;
             }
-            (*Last_State)++;
-            PC = *program_counter;
-            salva_estado(PC, md, regs, Last_State);
+
+            salva_estado(program_counter, md, regs );
         }
         break;
 
@@ -85,10 +84,9 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 //escrevePasso();
             }
-            *Last_State++;
+
             increment_PC(program_counter, 1);
-            PC = *program_counter;
-            salva_estado(PC, md, regs, Last_State);
+            salva_estado(program_counter, md, regs);
         break;
     case 3:
         //Return Run by Step

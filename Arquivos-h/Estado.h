@@ -7,7 +7,7 @@
 #include "bibliotecas.h"
 
 
-int salva_estado(int PC, MemoriaDados **md, int *regs, int *Last_State);
+int salva_estado(int *program_counter, MemoriaDados **md, int **regs);
 int retorna_estado(MemoriaDados **md, int **regs);
 void DeleteLast_State();
 
