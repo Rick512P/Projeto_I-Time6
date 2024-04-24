@@ -2,10 +2,12 @@
 
 //RESPONSAVEL POR ABRIR O ARQUIVO E ENCHER A MEMORIA DE INSTRUÇÕES
 int parser(instrucao **memoriaInst, int *tamanho_linhas){
-    char linha[100];
+    char linha[100], nome_arquivo[200];
     int contador_de_linhas = 0;
     instrucao p;
-    FILE *arq = fopen("../memoria/programaTestaInstrucoes.mem", "r");
+    printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
+    scanf(" %[^\n]", nome_arquivo);
+    FILE *arq = fopen(nome_arquivo, "r");
 
     if(arq){
 

@@ -2,7 +2,7 @@ index:
 	@if [ -f Log/log.dat ]; then \
 		rm Log/log.dat; \
 	fi
-	gcc -o executavel *.c
+	gcc -o executavel Arquivos-c/*.c
 	clear
 	./executavel
 
@@ -10,7 +10,7 @@ Testes:
 	@if [ -f Log/log.dat ]; then \
 		rm Log/log.dat; \
 	fi
-	gcc -o executavel *.c -g
+	gcc -o executavel Arquivos-c/*.c -g
 	./executavel
 
 clear:

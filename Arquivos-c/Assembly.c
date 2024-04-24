@@ -60,7 +60,6 @@ void decode_function(const char *func, char *opcode) {
 int SaveASM(Assembly *A, int tamLinhas){
     /*Salvar arquivo .asm*/
     FILE *arquivo;
-
     // Abre o arquivo para escrita (se não existir, será criado)
     arquivo = fopen("Instructs.asm", "w");
 

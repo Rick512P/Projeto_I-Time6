@@ -20,7 +20,7 @@ void imprimeDados(MemoriaDados *md, int tamLinhas){
 
 void escreverArquivoMemoria(MemoriaDados *md) {
 	FILE *arquivo;
-	arquivo = fopen("DATA.mem", "w");
+	arquivo = fopen("DATA.dat", "w");
 	
 	if(arquivo==NULL){
 		fprintf(stderr, "Erro ao abrir o arquivo DATA.mem\n");
