@@ -9,7 +9,8 @@
 #include "ULA.h"
 #include "imprimeSimulador.h"
 #include "menu.h"
+#include "Estado.h"
 
-int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst, type_instruc **instrucoesDecodificadas);
+int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst, type_instruc **instrucoesDecodificadas, int *Last_State);
 
 #endif

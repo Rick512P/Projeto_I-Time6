@@ -8,7 +8,7 @@ int main(){
 int menu(){
     Assembly *AssemblyInst;
     MemoriaDados *md;
-    unsigned int escolha, tamLinhas, program_counter = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
+    unsigned int escolha, tamLinhas, program_counter = 0, Last_State = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     int *regs; //registradores como um inteiro mesmo
     regs = (int*)malloc(8 * sizeof(int));
@@ -52,7 +52,8 @@ int menu(){
             free(AssemblyInst);
             free(instrucoesDecodificadas);
             system("clear");
-            printf("ProgramaEncerrado!\n");
+            removeLog();
+            printf("Programa Encerrado!\n");
             break;
             
         case 1: //Carregar memória
@@ -102,17 +103,17 @@ int menu(){
 
         case 8: //Chamar função responsável pela execução do programa
             program_counter = 0;
-            controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
+            controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas, &Last_State);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
         case 9: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
+            controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas, &Last_State);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
         case 10: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas);
+            controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, &AssemblyInst, instrucoesDecodificadas, &Last_State);
             break;
 
         default:

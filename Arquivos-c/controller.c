@@ -1,10 +1,10 @@
 
 #include "../Arquivos-h/controller.h"
 
-int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst, type_instruc **instrucoesDecodificadas){
-    int numeroLinhas, jump, RD, RT, i, address;
-
+int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, Assembly **AssemblyInst, type_instruc **instrucoesDecodificadas, int *Last_State){
+    int numeroLinhas, jump, RD, RT, i, address, PC;
     char rd[4];
+
     for(int j=0;j<tamLinhas;j++){
         (*instrucoesDecodificadas)[j] = memInstruc(j, memoriaInst, &tamLinhas);
     }
@@ -15,7 +15,6 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
 
         for ((*program_counter) = 0; (*program_counter) < tamLinhas; increment_PC(program_counter, 1))
         {   
-            
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0) // ADD/SUB/OR/AND
             {
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
@@ -41,8 +40,10 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 jump = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 (*program_counter)+=jump;
             }
+            (*Last_State)++;
+            PC = *program_counter;
+            salva_estado(PC, md, regs, Last_State);
         }
-
         break;
 
     case 2:
@@ -83,42 +84,20 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1000")) == 0){ //beq
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 //escrevePasso();
-
             }
+            *Last_State++;
             increment_PC(program_counter, 1);
-      //  }
+            PC = *program_counter;
+            salva_estado(PC, md, regs, Last_State);
         break;
     case 3:
         //Return Run by Step
-            increment_PC(program_counter, 2); 
-            
-            if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0) //TIPO R
-            {
-                //retornaPasso();
-                RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                escritaRegistradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd);
-
+            if (program_counter <= 0){
+                printf("Estamos no início do código!");
             }
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0100")) == 0){ //TIPO I
-                //retornaPasso();
-                RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
-
+            else{
+                //program_counter = retorna_estado(*Last_State--);
             }
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){ //TIPO I
-                //retornaPasso();
-                RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
-            }
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){ //TIPO I
-                //retornaPasso();
-                address = ULA(instrucoesDecodificadas, program_counter, md, regs);
-            }
-            else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){ //TIPO J
-                //retornaPasso();
-                (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
-            }
-            
         break;
 
     }

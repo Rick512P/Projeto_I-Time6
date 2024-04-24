@@ -1,5 +1,5 @@
 index:
-	gcc -o executavel *.c
+	gcc -o executavel *.c -g
 	clear
 	./executavel
 

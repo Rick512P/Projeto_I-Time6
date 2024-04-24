@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 //instrucao da memoria de instruções
@@ -43,6 +44,7 @@ typedef struct{
   char InstructsAssembly[30];
 } Assembly;
 
+void removeLog();
 
 
 #endif
