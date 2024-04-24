@@ -96,7 +96,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 printf("Estamos no início do código!");
             }
             else{
-                //program_counter = retorna_estado(*Last_State--);
+                *program_counter = retorna_estado(md, regs);
             }
         break;
 

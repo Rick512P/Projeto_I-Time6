@@ -1,8 +1,8 @@
 #include "../Arquivos-h/Estado.h"
 
-int retorna_estado(MemoriaDados **md, int **regs){
+int retorna_estado(MemoriaDados **md, int **regs) {
     FILE *data;
-    int PC=0;
+    int PC = 0, ultimo_estado;
     char *nome_arquivo = "Log/log.dat";
 
     if ((data = fopen(nome_arquivo, "rb")) == NULL) {
@@ -11,13 +11,14 @@ int retorna_estado(MemoriaDados **md, int **regs){
     }
 
     // Busca o final do arquivo
-    fseek(data, -sizeof(int), SEEK_END);
+    fseek(data, -1, SEEK_END); // Move uma posição antes do final do arquivo
+
+    // Move o ponteiro de volta até encontrar a última quebra de linha
+    while (fgetc(data) != '\n') {
+        fseek(data, -2, SEEK_CUR); // Retrocede dois bytes para evitar ler o caractere '\n'
+    }
 
     // Lê o estado
-    fread(&PC, sizeof(int), 1, data);
-
-    // Retrocede para ler o program_counter
-    fseek(data, -sizeof(int), SEEK_CUR);
     fscanf(data, "%d", &PC);
 
     // Retrocede para ler a MemoriaDados
@@ -25,22 +26,19 @@ int retorna_estado(MemoriaDados **md, int **regs){
     fread(*md, sizeof(MemoriaDados), 1, data);
 
     // Retrocede para ler os registradores
-    // Supondo que regs seja uma matriz de inteiros 2D
+    // Supondo que regs seja um array de inteiros
     fseek(data, -sizeof(int) * 64, SEEK_CUR);
-    int i, j;
-    for (i = 0; i < 8; i++) {
-        for (j = 0; j < 8; j++) {
-            fread(&regs[i][j], sizeof(int), 1, data);
-        }
-    }
+    fread(*regs, sizeof(int), 64, data);
 
     fclose(data);
+
+    // Agora que o estado foi completamente lido, podemos excluir o último estado do arquivo
+    DeleteLast_State();
 
     return PC;
 }
 
-int salva_estado(int PC, MemoriaDados **md, int **regs, int *Last_State){
-
+int salva_estado(int PC, MemoriaDados **md, int *regs, int *Last_State) {
     FILE *data;
     char *nome_arquivo = "Log/log.dat";
 
@@ -49,7 +47,7 @@ int salva_estado(int PC, MemoriaDados **md, int **regs, int *Last_State){
         return 1;
     }
 
-    // Escrever Estado
+    // Escrever Last_State
     fwrite(Last_State, sizeof(int), 1, data);
 
     // Escrever program_counter
@@ -59,18 +57,33 @@ int salva_estado(int PC, MemoriaDados **md, int **regs, int *Last_State){
     fwrite(*md, sizeof(MemoriaDados), 1, data);
 
     // Escrever registradores
-    // Supondo que regs seja uma matriz de inteiros 2D
-    int i, j;
-    for (i = 0; i < 8; i++) {
-        for (j = 0; j < 8; j++) {
-            fwrite(&regs[i][j], sizeof(int), 1, data);
-        }
-    }
+    fwrite(regs, sizeof(int), 64, data);
 
+    // Adicionar uma nova linha para indicar o fim do estado
+    fprintf(data, "\n");
 
     fclose(data);
+
+    return 0;
 }
 
-void DeleteLast_State(int Last_State){
-    //d
+void DeleteLast_State(){
+    FILE *data;
+    char *nome_arquivo = "Log/log.dat";
+
+    if ((data = fopen(nome_arquivo, "rb+")) == NULL) {
+        printf("Erro ao abrir o arquivo.");
+        return;
+    }
+
+    // Obtém o tamanho do último estado (int + program_counter + MemoriaDados + registradores)
+    long tamanho_ultimo_estado = sizeof(int) + sizeof(int) + sizeof(MemoriaDados) + sizeof(int) * 64;
+
+    // Move o ponteiro para a posição do início do último estado
+    fseek(data, -tamanho_ultimo_estado, SEEK_END);
+
+    // Trunca o arquivo nesse ponto, excluindo todos os dados após o último estado
+    ftruncate(fileno(data), ftell(data));
+
+    fclose(data);
 }
