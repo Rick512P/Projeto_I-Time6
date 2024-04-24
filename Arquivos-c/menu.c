@@ -15,13 +15,9 @@ int menu(){
     for (int i=0;i<8;i++){ //zerando registradores, caso contrario dá números inconsistentes
         regs[i] = 0;
     }
-    type_instruc **instrucoesDecodificadas = malloc(sizeof(type_instruc*));
-    
-    
 
-    
+    type_instruc **instrucoesDecodificadas = malloc(sizeof(type_instruc*));
     md = (MemoriaDados*)calloc(256, sizeof(MemoriaDados));
-    
 
     printf("\n___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
     printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
@@ -75,6 +71,8 @@ int menu(){
         case 2: //Imprimir memória de instruções e memória de dados
             imprimeMemInstruc(memoriaInst, tamLinhas);
             imprimeDados(md, tamLinhas);
+            imprimirASM(AssemblyInst, tamLinhas);
+            printf("\nPC = %d", program_counter);
             break;
 
         case 3: //Imprimir registradores
