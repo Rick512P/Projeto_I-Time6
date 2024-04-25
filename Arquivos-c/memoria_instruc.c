@@ -14,8 +14,8 @@ type_instruc memInstruc(int contador, instrucao **memoriaInst, int *tamLinhas){
 }
 
 void imprimeMemInstruc(instrucao *memoriaInst, int tamLinhas){
-    for (int i=0; i<tamLinhas+2;i++){
-                printf("Instrucao %d: %s\n", i+1, memoriaInst[i].instruc);
+    for (int i=0; i<tamLinhas;i++){
+                printf("Instrucao %d: %s\n\n", i, memoriaInst[i].instruc);
             }
 }
 

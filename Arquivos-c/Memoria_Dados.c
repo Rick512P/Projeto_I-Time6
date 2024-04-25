@@ -20,14 +20,14 @@ void escreveDado(MemoriaDados **mem, int *contador, char *valor) {
 }
 
 void imprimeDados(MemoriaDados *md, int tamLinhas){
-	for (int i = 0; i < tamLinhas+2; i++) {
-		printf("\nDado armazenado no endereco %d da Memoria de Dados: %s\n", i, md[i].dados);
+	for (int i = 0; i < 256; i++) {
+		printf("Dado armazenado no endereco %d da MD: [%s]\n", i, md[i].dados);
 	}
 }
 
 void escreverArquivoMemoria(MemoriaDados *md) {
 	FILE *arquivo;
-	arquivo = fopen("DATA.dat", "w");
+	arquivo = fopen("../memoria/DATA.dat", "w");
 	
 	if(arquivo==NULL){
 		fprintf(stderr, "Erro ao abrir o arquivo DATA.mem\n");

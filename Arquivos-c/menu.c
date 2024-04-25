@@ -29,13 +29,14 @@ int menu(){
         printf("                              |2 +        Imprimir memória       +|\n");
         printf("                              |3 +      Imprimir registradores    +|\n");
         printf("                              |4 +      Imprimir estatisticas     +|\n");
-        printf("                              |5 +    Imprimir todo o simulador   +|\n");
-        printf("                              |6 +          Salvar .asm           +|\n");
-        printf("                              |7 +          Salvar .mem           +|\n");
-        printf("                              |8 +      Executa Programa (run)    +|\n");
-        printf("                              |9 +     Executa instrucao (step)   +|\n");
-        printf("                              |10 +    Volta uma instrucao (back) +|\n");
-        printf("                              |11 +    Carregar memoria dados     +|\n");
+        printf("                              |5 +  Imprimir instrucoes Assembly  +|\n");
+        printf("                              |6 +    Imprimir todo o simulador   +|\n");
+        printf("                              |7 +          Salvar .asm           +|\n");
+        printf("                              |8 +          Salvar .mem           +|\n");
+        printf("                              |9 +      Executa Programa (run)    +|\n");
+        printf("                              |10 +     Executa instrucao (step)   +|\n");
+        printf("                              |11 +    Volta uma instrucao (back) +|\n");
+        printf("                              |12 +    Carregar memoria dados     +|\n");
         printf("                              |0 +             Sair               +|\n");
         printf("                              ______________________________________\n\n");
         scanf("%d", &escolha);
@@ -61,7 +62,7 @@ int menu(){
                 return -1;
             }
             
-            AssemblyInst = malloc((tamLinhas + 1) * sizeof(Assembly));
+            AssemblyInst = calloc((tamLinhas + 1), sizeof(Assembly));
 
             if (*instrucoesDecodificadas == NULL) {
                 fprintf(stderr, "Falha ao alocar memória para instrucoes assembly.\n");
@@ -81,8 +82,11 @@ int menu(){
         case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
             imprimeEstatisticas(memoriaInst, tamLinhas);
             break;
+        case 5:
+            imprimirASM(AssemblyInst, tamLinhas);
+            break;
 
-        case 5: //imprimir todo o simulador
+        case 6: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas);
             imprimeSimulador(tamLinhas, instrucoesDecodificadas, memoriaInst);
             imprimeDados(md, tamLinhas);
@@ -90,31 +94,34 @@ int menu(){
             imprimirASM(AssemblyInst, tamLinhas);
             break;
 
-        case 6: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
+        case 7: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
             SaveASM(AssemblyInst, tamLinhas);
             break;
 
-        case 7: //Salvar arquivo DATA.mem
+        case 8: //Salvar arquivo DATA.mem
             escreverArquivoMemoria(md);
             break;
 
-        case 8: //Chamar função responsável pela execução do programa
+        case 9: //Chamar função responsável pela execução do programa
             program_counter = 0;
             controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
-        case 9: //Chamar função responsável pela execução do programa passo a passo
+        case 10: //Chamar função responsável pela execução do programa passo a passo
             controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
-        case 10: //Chamar função responsável por retornar uma instrução (PC--)
+        case 111: //Chamar função responsável por retornar uma instrução (PC--)
             controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             break;
 
-        case 11:
-            carregamd(&md);
+        case 12:
+            if (program_counter == 0)
+                carregamd(&md);
+            else 
+                printf("Programa nao deve ter sido inicializado.");
             break;
         
         default:

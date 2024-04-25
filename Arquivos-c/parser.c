@@ -3,12 +3,22 @@
 //RESPONSAVEL POR ABRIR O ARQUIVO E ENCHER A MEMORIA DE INSTRUÇÕES
 int parser(instrucao **memoriaInst, int *tamanho_linhas){
     char linha[100], nome_arquivo[200];
-    int contador_de_linhas = 0;
+    int contador_de_linhas = 0, opcao;
     instrucao p;
-    printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
-    /*scanf(" %[^\n]", nome_arquivo);
-    FILE *arq = fopen(nome_arquivo, "r");*/
-    FILE *arq = fopen("../memoria/testalw.mem", "r");
+    FILE *arq;
+    printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo.");
+    scanf("%d", &opcao);
+    if(opcao == 1)
+        arq = fopen("../memoria/instrucoes.mem", "r");
+    else if(opcao == 2){
+        printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
+        scanf(" %[^\n]", nome_arquivo);
+        arq = fopen(nome_arquivo, "r");
+    }
+    else{
+        printf("Opcao inexistente. Utilizando o diretorio padrao.");
+        arq = fopen("../memoria/instrucoes.mem", "r");
+    }
 
     if(arq){
 
