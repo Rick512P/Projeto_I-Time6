@@ -15,6 +15,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
 
         for ((*program_counter) = 0; (*program_counter) < tamLinhas; increment_PC(program_counter, 1))
         {   
+            salva_estado(program_counter, md, regs );
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0) // ADD/SUB/OR/AND
             {
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
@@ -41,13 +42,14 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 (*program_counter)+=jump;
             }
 
-            salva_estado(program_counter, md, regs );
+            
         }
         break;
 
     case 2:
         //Run by Step
             printf("Instrucao %d", *program_counter);
+            salva_estado(program_counter, md, regs );
             increment_PC(program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
             
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0)
@@ -86,7 +88,6 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             }
 
             increment_PC(program_counter, 1);
-            salva_estado(program_counter, md, regs);
         break;
     case 3:
         //Return Run by Step

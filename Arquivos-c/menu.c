@@ -118,6 +118,8 @@ int menu(){
         case 11: //Chamar função responsável pela execução do programa passo a passo
             controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
+            printf("\n");
+            puts(AssemblyInst[program_counter].InstructsAssembly);
             break;
 
         case 12: //Chamar função responsável por retornar uma instrução (PC--)
