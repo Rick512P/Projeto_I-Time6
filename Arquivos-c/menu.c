@@ -25,19 +25,19 @@ int menu(){
     do{
         printf("\n\n");
         printf("                              _____________________________________\n");
-        printf("                              |1 +        Carregar memória       +|\n");
-        printf("                              |2 +        Imprimir memória       +|\n");
-        printf("                              |3 +      Imprimir registradores    +|\n");
-        printf("                              |4 +      Imprimir estatisticas     +|\n");
-        printf("                              |5 +  Imprimir instrucoes Assembly  +|\n");
-        printf("                              |6 +    Imprimir todo o simulador   +|\n");
-        printf("                              |7 +          Salvar .asm           +|\n");
-        printf("                              |8 +          Salvar .mem           +|\n");
-        printf("                              |9 +      Executa Programa (run)    +|\n");
-        printf("                              |10 +     Executa instrucao (step)   +|\n");
-        printf("                              |11 +    Volta uma instrucao (back) +|\n");
-        printf("                              |12 +    Carregar memoria dados     +|\n");
-        printf("                              |0 +             Sair               +|\n");
+        printf("                              |1 +  Carregar memória instruções   +|\n");
+        printf("                              |2 +    Carregar memoria dados      +|\n");
+        printf("                              |3 +        Imprimir memória        +|\n");
+        printf("                              |4 +      Imprimir registradores    +|\n");
+        printf("                              |5 +      Imprimir estatisticas     +|\n");
+        printf("                              |6 +  Imprimir instrucoes Assembly  +|\n");
+        printf("                              |7 +    Imprimir todo o simulador   +|\n");
+        printf("                              |8 +          Salvar .asm           +|\n");
+        printf("                              |9 +          Salvar .dat           +|\n");
+        printf("                              |10 +     Executa Programa (run)    +|\n");
+        printf("                              |11 +    Executa instrucao (step)   +|\n");
+        printf("                              |12 +   Volta uma instrucao (back)  +|\n");
+        printf("                              |0 +              Sair              +|\n");
         printf("                              ______________________________________\n\n");
         scanf("%d", &escolha);
 
@@ -54,7 +54,7 @@ int menu(){
             printf("Programa Encerrado!\n");
             break;
             
-        case 1: //Carregar memória
+        case 1: //Carregar memória de Instruções
             parser(&memoriaInst, &tamLinhas);
             *instrucoesDecodificadas = malloc(tamLinhas * sizeof(type_instruc));
             if (*instrucoesDecodificadas == NULL) {
@@ -70,23 +70,31 @@ int menu(){
             }
             break;
 
-        case 2: //Imprimir memória de instruções e memória de dados
+        case 2: //Carregar Memória de Dados
+            if (program_counter == 0)
+                carregamd(&md);
+            else 
+                printf("Programa nao deve ter sido inicializado.");
+            break;
+
+        case 3: //Imprimir memória de instruções e memória de dados
             imprimeMemInstruc(memoriaInst, tamLinhas);
             imprimeDados(md, tamLinhas);
             break;
 
-        case 3: //Imprimir registradores
+        case 4: //Imprimir registradores
             imprimeRegistradores(regs);
             break;
 
-        case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
+        case 5: //Imprimir estatísticas como: quantas intruc, classes, etc;
             imprimeEstatisticas(memoriaInst, tamLinhas, instrucoesDecodificadas);
             break;
-        case 5:
+            
+        case 6: // Imprimir Assembly
             imprimirASM(AssemblyInst, tamLinhas);
             break;
 
-        case 6: //imprimir todo o simulador
+        case 7: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas, instrucoesDecodificadas);
             imprimeSimulador(tamLinhas, instrucoesDecodificadas, memoriaInst);
             imprimeDados(md, tamLinhas);
@@ -94,36 +102,29 @@ int menu(){
             imprimirASM(AssemblyInst, tamLinhas);
             break;
 
-        case 7: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
+        case 8: //salvar arquivo .asm (com as instruções traduzidas para a linguagem intermediária Assembly)
             SaveASM(AssemblyInst, tamLinhas);
             break;
 
-        case 8: //Salvar arquivo DATA.mem
+        case 9: //Salvar arquivo DATA.dat
             escreverArquivoMemoria(md);
             break;
 
-        case 9: //Chamar função responsável pela execução do programa
+        case 10: //Chamar função responsável pela execução do programa
             program_counter = 0;
             controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
-        case 10: //Chamar função responsável pela execução do programa passo a passo
+        case 11: //Chamar função responsável pela execução do programa passo a passo
             controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
-        case 111: //Chamar função responsável por retornar uma instrução (PC--)
+        case 12: //Chamar função responsável por retornar uma instrução (PC--)
             controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             break;
-
-        case 12:
-            if (program_counter == 0)
-                carregamd(&md);
-            else 
-                printf("Programa nao deve ter sido inicializado.");
-            break;
-        
+            
         default:
             break;
         }
