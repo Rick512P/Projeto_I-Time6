@@ -9,15 +9,15 @@ void carregamd(MemoriaDados **md){
     printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo.");
     scanf("%d", &opcao);
     if(opcao == 1)
-        setmd = fopen("../memoria/md.mem", "r");
+        setmd = fopen("./memoria/md.dat", "r");
     else if(opcao == 2){
-        printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
+        printf("Entre com o caminho/nome do arquivo incluindo a extenção .dat\n");
         scanf(" %[^\n]", nome_arquivo);
         setmd = fopen(nome_arquivo, "r");
     }
     else{
         printf("Opcao inexistente. Utilizando o diretorio padrao.");
-        setmd = fopen("../memoria/md.mem", "r");
+        setmd = fopen("./memoria/md.dat", "r");
     }
 
 
@@ -43,7 +43,7 @@ void carregamd(MemoriaDados **md){
             linha[strcspn(linha, "\r\n")] = '\0';
 
             // Copia a linha para a estrutura memoria de Dados
-            strncpy((*md)[i].dados, linha, 17);
+            strncpy((*md)[i].dados, linha, 9);
             (*md)[i].dados[sizeof((*md)[i].dados) - 1] = '\0'; // certifica-se de que a string termina com null terminator
             
         }
