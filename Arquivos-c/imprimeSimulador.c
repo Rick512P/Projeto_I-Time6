@@ -33,3 +33,22 @@ void imprimeSimulador(int tamLinhas, type_instruc **instrucoesDecodificadas, ins
                
     }
 }
+
+
+void imprimeEstatisticas(instrucao *memoriaInst, int tamLinhas){
+    if (memoriaInst == NULL) {
+                fprintf(stderr, "Falha ao obter instruções.\n");
+            }
+    int r=0, i=0, j=0;
+    for(int y=0;y<tamLinhas;y++){
+        if (strncmp(memoriaInst[y].instruc, "0000", 4) == 0){ //compara os 4 primeiros numeros de memoriaInst com "0000"
+            r++;
+        }
+        else if (strncmp(memoriaInst[y].instruc, "0100", 4) == 0 || strncmp(memoriaInst[y].instruc, "1011", 4) == 0 || strncmp(memoriaInst[y].instruc, "1111", 4) == 0 || strncmp(memoriaInst[y].instruc, "0110", 4) == 0 || strncmp(memoriaInst[y].instruc, "1000", 4) == 0)
+            i++;
+        else if (strncmp(memoriaInst[y].instruc, "0010", 4) == 0)
+            j++;
+    }
+    printf("O numero de instrucoes e de %d\n", tamLinhas);
+    printf("Observa-se: \n%d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J\n", r,i,j);
+}

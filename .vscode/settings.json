@@ -16,7 +16,9 @@
     "imprimesimulador.h": "c",
     "memoria_dados.h": "c",
     "assembly.h": "c",
-    "estado.h": "c"
+    "estado.h": "c",
+    "carrememoriadados.h": "c",
+    "carregamemoriadados.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

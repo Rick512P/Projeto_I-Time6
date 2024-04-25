@@ -11,6 +11,7 @@
 #include "PC.h"
 #include "registradores.h"
 #include "ULA.h"
+#include "carregaMemoriaDados.h"
 
 int main();
 int menu();

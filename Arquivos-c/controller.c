@@ -25,7 +25,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){  //LW
-                RT = ULA(instrucoesDecodificadas, program_counter, md, regs); 
+                RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){ //SW

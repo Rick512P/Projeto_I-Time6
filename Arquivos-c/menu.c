@@ -25,16 +25,17 @@ int menu(){
     do{
         printf("\n\n");
         printf("                              _____________________________________\n");
-        printf("                              |1 +       Carregar memória         +|\n");
-        printf("                              |2 +       Imprimir memória         +|\n");
-        printf("                              |3 +    Imprimir registradores      +|\n");
-        printf("                              |4 +    Imprimir estatisticas       +|\n");
-        printf("                              |5 +  Imprimir todo o simulador     +|\n");
+        printf("                              |1 +        Carregar memória       +|\n");
+        printf("                              |2 +        Imprimir memória       +|\n");
+        printf("                              |3 +      Imprimir registradores    +|\n");
+        printf("                              |4 +      Imprimir estatisticas     +|\n");
+        printf("                              |5 +    Imprimir todo o simulador   +|\n");
         printf("                              |6 +          Salvar .asm           +|\n");
         printf("                              |7 +          Salvar .mem           +|\n");
         printf("                              |8 +      Executa Programa (run)    +|\n");
         printf("                              |9 +     Executa instrucao (step)   +|\n");
         printf("                              |10 +    Volta uma instrucao (back) +|\n");
+        printf("                              |11 +    Carregar memoria dados     +|\n");
         printf("                              |0 +             Sair               +|\n");
         printf("                              ______________________________________\n\n");
         scanf("%d", &escolha);
@@ -71,8 +72,6 @@ int menu(){
         case 2: //Imprimir memória de instruções e memória de dados
             imprimeMemInstruc(memoriaInst, tamLinhas);
             imprimeDados(md, tamLinhas);
-            imprimirASM(AssemblyInst, tamLinhas);
-            printf("\nPC = %d", program_counter);
             break;
 
         case 3: //Imprimir registradores
@@ -114,6 +113,10 @@ int menu(){
             controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             break;
 
+        case 11:
+            carregamd(&md);
+            break;
+        
         default:
             break;
         }

@@ -9,5 +9,6 @@
 
 
 void imprimeSimulador(int tamLinhas, type_instruc **instrucoesDecodificadas, instrucao *memoriaInst);
+void imprimeEstatisticas(instrucao *memoriaInst, int tamLinhas);
 
 #endif

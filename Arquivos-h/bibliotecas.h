@@ -36,7 +36,7 @@ typedef struct{
 
 //tamanho da memoria de dados
 typedef struct {
-    char dados[17];
+    char dados[9];
 } MemoriaDados;
 
 //instruções em assembly

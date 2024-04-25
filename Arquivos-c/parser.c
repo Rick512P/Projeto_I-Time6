@@ -6,8 +6,9 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
     int contador_de_linhas = 0;
     instrucao p;
     printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
-    scanf(" %[^\n]", nome_arquivo);
-    FILE *arq = fopen(nome_arquivo, "r");
+    /*scanf(" %[^\n]", nome_arquivo);
+    FILE *arq = fopen(nome_arquivo, "r");*/
+    FILE *arq = fopen("../memoria/testalw.mem", "r");
 
     if(arq){
 
@@ -43,6 +44,12 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
             // Copia a linha para a estrutura memoriaInst
             strncpy((*memoriaInst)[i].instruc, linha, 17);
             (*memoriaInst)[i].instruc[sizeof((*memoriaInst)[i].instruc) - 1] = '\0'; // certifica-se de que a string termina com null terminator
+        }
+        if(contador_de_linhas <=256){
+            for(int j=contador_de_linhas;j < 256; j++){
+                strncpy((*memoriaInst)[j].instruc, "0000000000000000", 17);
+            }
+
         }
         
         fclose(arq);

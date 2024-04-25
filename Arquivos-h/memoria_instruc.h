@@ -11,7 +11,7 @@
 
 type_instruc memInstruc(int contador, instrucao **memoriaInst, int *tamLinhas);
 void imprimeMemInstruc(instrucao *memoriaInst, int tamLinhas);
-void imprimeEstatisticas(instrucao *memoriaInst, int tamLinhas);
+
 
 
 #endif
