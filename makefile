@@ -1,4 +1,7 @@
 index:
+	@if [ ! -d Log ]; then \
+		mkdir Log; \
+	fi
 	@if [ -f Log/log.dat ]; then \
 		rm Log/log.dat; \
 	fi
@@ -7,6 +10,9 @@ index:
 	./executavel
 
 Testes:
+	@if [ ! -d Log ]; then \
+		mkdir Log; \
+	fi
 	@if [ -f Log/log.dat ]; then \
 		rm Log/log.dat; \
 	fi
@@ -19,5 +25,8 @@ clear:
 	fi
 	@if [ -f Log/log.dat ]; then \
 		rm Log/log.dat; \
+	fi
+	@if [ -d Log ]; then \
+		rmdir Log; \
 	fi
 	clear
