@@ -80,14 +80,14 @@ int menu(){
             break;
 
         case 4: //Imprimir estatísticas como: quantas intruc, classes, etc;
-            imprimeEstatisticas(memoriaInst, tamLinhas);
+            imprimeEstatisticas(memoriaInst, tamLinhas, instrucoesDecodificadas);
             break;
         case 5:
             imprimirASM(AssemblyInst, tamLinhas);
             break;
 
         case 6: //imprimir todo o simulador
-            imprimeEstatisticas(memoriaInst, tamLinhas);
+            imprimeEstatisticas(memoriaInst, tamLinhas, instrucoesDecodificadas);
             imprimeSimulador(tamLinhas, instrucoesDecodificadas, memoriaInst);
             imprimeDados(md, tamLinhas);
             imprimeRegistradores(regs);
