@@ -4,7 +4,10 @@
 #include "bibliotecas.h"
 #include "menu.h"
 
-void bin_decimal(int *indice, char *posicao);
-int bin_to_decimal(const char *decimal);
+
+int bin_to_decimal(char *binario);
+void ComplementodeDois(char *bin);
+void addOne(char *str, int index);
+void invertBits(char *str, int index);
 
 #endif

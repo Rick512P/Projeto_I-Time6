@@ -68,5 +68,5 @@ void imprimeEstatisticas(instrucao *memoriaInst, int tamLinhas, type_instruc **i
     }
     printf("O numero de instrucoes e de %d\n", tamLinhas);
     printf("Observa-se: \n%d instrucoes do tipo R\n%d instrucoes do tipo I\n%d instrucoes do tipo J\n", r,i,j);
-    printf("Onde %d instrucoes sao da classe Logica, %d Aritmetica, %d Desvio e %d Acesso a Memoria de Dados", instLogic, instAri, instDesvio, instAcessoMem);
+    printf("Onde %d instrucoes sao da classe Logica, %d Aritmetica, %d Desvio e %d Acesso a Memoria de Dados\n", instLogic, instAri, instDesvio, instAcessoMem);
 }

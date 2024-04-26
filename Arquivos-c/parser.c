@@ -6,7 +6,7 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
     int contador_de_linhas = 0, opcao;
     instrucao p;
     FILE *arq;
-    printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo.");
+    printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo: ");
     scanf("%d", &opcao);
     if(opcao == 1)
         arq = fopen("./memoria/instrucoes.mem", "r");

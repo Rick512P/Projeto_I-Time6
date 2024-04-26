@@ -4,16 +4,9 @@
 //EXEMPLO
 
 void escreveDado(MemoriaDados **mem, int *contador, char *valor) {
-	// Copiando os 8 bits menos significativos
-	char transforma8Bits[9];
-    for (int i = 0; i < 8; i++) {
-        transforma8Bits[i] = valor[8 + i];
-    }
-    transforma8Bits[8] = '\0';
-
 
     if (*contador >= 0 && *contador < 256) {
-        strcpy((*mem)[*contador].dados, transforma8Bits);
+        strcpy((*mem)[*contador].dados, valor);
     } else {
         fprintf(stderr, "Tentativa de escrita fora dos limites da memória no endereço %d\n", *contador);
     }

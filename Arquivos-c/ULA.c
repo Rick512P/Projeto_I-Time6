@@ -7,7 +7,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
 
     if (strcmp((*instrucoesDecodificadas)[*contador].opcode, "0000") == 0 ) {
         char Target[4];
-        char *Dest=malloc(4);
+        char Dest[4];
         char Source[4];
         strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
         strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
@@ -20,13 +20,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             rd = rs + rt;
             int local_decimal = rd;
 
-            dec_to_bin(local_decimal, &Dest); //converte o resultado em binário
-            free(Dest);
-            return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
-
-
-            
-            
+            return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR   
         }
 
         else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "010") == 0 ){
@@ -34,9 +28,6 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
 
-            dec_to_bin(rd, &Dest);
-
-            free(Dest);
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
@@ -44,95 +35,58 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             //"and -> rs and rt = rd";
             AND(Source, Target, Dest);
 
-
-            bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
-            free(Dest);
+            rd = bin_to_decimal(Dest);
             return rd;
         }
 
         else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
             OR(Source, Target, Dest);
-
-
-            bin_dec(NULL, NULL, Dest, NULL, NULL, &rd);
-            free(Dest);
+            rd = bin_to_decimal(Dest);
             return rd;
         }
     }
 
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0100") == 0){// addi -> rs + immediate = rt
-        char *Target=malloc(4);
-        char Source[4];
-        char Immediate[7];
-        int immediate;
-        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
-        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
-        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
-        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
-        rt = rs + immediate;
-
-
-        dec_to_bin(rt, &Target);
-        free(Target);
-        return rt; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
+        int immediate, rs, rt;
+        immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
+        rs = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
+        return (immediate + rs); //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1011") == 0){// lw GRAVA CONTEUDO DA MEMORIA NOS REGISTRADORES
         //$rt = M[$rs + imm]
-        char Target[4];
-        char Source[4];
-        char *Immediate = malloc(7);
         int immediate, dados;
-        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
-        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
-        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
-        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+        immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         //Agora sei qual a posicao Immediate em decimal:
-        bin_dec(Source, Target, (*md)[immediate].dados, &rs, &rt, &dados);
+        dados = bin_to_decimal((*md)[immediate].dados);
         //Agora sei qual o valor contido na posição 4 da memoria em decimal:
-        free(Immediate);
         return dados;
     }
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1111") == 0){// sw GRAVA CONTEUDO NA MEMORIA DE DADOS
         //M[$rs + imm] = $rt
-        char Target[4];
-        char Source[4];
-        char Immediate[7];
         int immediate, conteudo;
-        char *conteudo_bin = malloc(7);
-        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
-        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
-        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
+        char conteudo_bin[9];
+        conteudo_bin[8] = '\0';
+        printf("Valor de rt no SW: %s", (*instrucoesDecodificadas)[*contador].rt);
         conteudo = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
-        dec_to_bin(conteudo, &conteudo_bin);
-        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+        decimalToBinary(conteudo, conteudo_bin);
+        immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         escreveDado(md, &immediate, conteudo_bin);
-        free(conteudo_bin);
     }
 
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0010") == 0){ // j -> jump to specified address
-        char Target[4];
-        char Source[4];
-        char *ADDR = malloc(8);
-        strcpy(ADDR, (*instrucoesDecodificadas)[*contador].addr);
-        bin_dec(Source, Target, ADDR, &address, &rt, &rs);
-        dec_to_bin(address, &ADDR);
-        free(ADDR);
+
+        address = bin_to_decimal((*instrucoesDecodificadas)[*contador].addr);
+        dec_to_bin(address, (*instrucoesDecodificadas)[*contador].addr);
         return address;
     }
 
-    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1000") == 0){
-        char Target[4];
-        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
-        char Source[4];
-        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
-        char Immediate[7];
-        strcpy(Immediate, (*instrucoesDecodificadas)[*contador].imm);
+    else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1000") == 0){ //BEQ
         int immediate;
         int reg1 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
         int reg2 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
-        bin_dec(Source, Target, Immediate, &rs, &rt, &immediate);
+        immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         if (reg1 == reg2)
             return ((*contador) += immediate);
         else
@@ -145,14 +99,6 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
     }
 }
 
-
-// Implementação do deslocamento de memória para instruções lw e sw
-int SW(char Source[], char Target[], char Dest[], char *imm) {
-    int base_address, immDec;
-    bin_dec(Source, imm, NULL, &base_address, &immDec, NULL);
-    int effective_address = base_address + immDec; ///MUDAR ISSO AQUI
-    return effective_address;
-}
 
 
 // Função que converte uma string binária para um valor decimal inteiro.
@@ -178,25 +124,20 @@ void bin_dec(const char Source[], const char Target[], const char Dest[], int *r
     if (rd) *rd = bin_to_dec(Dest);   // Converte Dest para decimal e armazena em rd.
 }
 
-void dec_to_bin(int decimal, char **binaryPtr) {
-    char *new_binary = realloc(*binaryPtr, BITS); // Tentativa de realocar com o novo tamanho
-    if (new_binary == NULL) {
-        fprintf(stderr, "Falha ao realocar memória.\n");
-        return; // Falha na realocação
-    }
-    *binaryPtr = new_binary; // Atualiza o ponteiro original com o novo endereço
+void dec_to_bin(int decimal, char *binaryPtr) {
+    // Índice para percorrer o array binário da direita para a esquerda
+    int index = 7;
 
-    // Inicializa o novo buffer
-    memset(*binaryPtr, '0', BITS - 1);
-    (*binaryPtr)[BITS - 1] = '\0'; // Terminador nulo
-
-    // Preenche o buffer com a representação binária
-    int index = BITS - 2;
-    while (decimal > 0 && index >= 0) {
-        (*binaryPtr)[index--] = (decimal % 2) ? '1' : '0';
+    // Preenche o array binário da direita para a esquerda
+    while (index >= 0) {
+        binaryPtr[index--] = (decimal % 2) ? '1' : '0';
         decimal /= 2;
     }
-} 
+
+    // Adiciona o caractere nulo ao final do array
+    binaryPtr[8] = '\0';
+}
+
 
 /*void dec_to_bin(int decimal, char *binary) {
     int i;

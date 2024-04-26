@@ -63,7 +63,7 @@ int salva_estado(int *program_counter, MemoriaDados **md, int **regs) {
     int PC = *program_counter, registradores;
 
     if ((data = fopen(nome_arquivo, "a")) == NULL) {
-        printf("Erro ao abrir o arquivo para salvar estado.");
+        //printf("Erro ao abrir o arquivo para salvar estado.");
         return 1;
     }
 

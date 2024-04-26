@@ -6,7 +6,7 @@ void carregamd(MemoriaDados **md){
     char linha[1024], nome_arquivo[200];
     int contador_de_linhas = 0, opcao;
 
-    printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo.");
+    printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo: ");
     scanf("%d", &opcao);
     if(opcao == 1)
         setmd = fopen("./memoria/md.dat", "r");
