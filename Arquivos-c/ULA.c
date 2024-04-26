@@ -102,9 +102,12 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
     }
 
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0010") == 0){ // j -> jump to specified address
-
         address = bin_to_decimal((*instrucoesDecodificadas)[*contador].addr);
-        if(((*contador)+address) > 255){
+        if(address < 0){
+            address *= -1; //transforma um possivel valor negativo para positvo, ja que a memoria de dados nao tem posicao negativa.
+        }
+
+        if(((*contador+1)+address) > 255){
             fprintf(stderr, "OVERFLOW. Salto para posicao de memoria inexistente.");
             return -1;
         }
@@ -116,8 +119,11 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         int reg1 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
         int reg2 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
         immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
+        if(immediate < 0){
+            immediate *= -1; //transforma um possivel valor negativo para positvo, ja que a memoria de dados nao tem posicao negativa.
+        }
         if (reg1 == reg2){
-            if(((*contador) + immediate) > 255){
+            if(((*contador+1) + immediate) > 255){
                 fprintf(stderr, "OVERFLOW. PC ultrapassou limite de espaços de memória.");
                 return -1;
             }

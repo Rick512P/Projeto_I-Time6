@@ -23,7 +23,7 @@ void AsmCopy(type_instruc **instrucoesDecodificadas, Assembly **A, int tamLinhas
             decode_function((*instrucoesDecodificadas)[i].funct, Opcode);
             sprintf((*A)[i].InstructsAssembly, "%s %s, %s, %s", Opcode, rd, rs, rt);
         } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "0100") == 0) {
-            sprintf((*A)[i].InstructsAssembly, "addi %s, %s, %s", rt, rs, (*instrucoesDecodificadas)[i].imm);
+            sprintf((*A)[i].InstructsAssembly, "addi %s, %s, %s", rs, rt, (*instrucoesDecodificadas)[i].imm);
         } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "1011") == 0) {
             sprintf((*A)[i].InstructsAssembly, "lw %s, %s", rt, (*instrucoesDecodificadas)[i].imm);
         } else if (strcmp((*instrucoesDecodificadas)[i].opcode, "1111") == 0) {
@@ -38,14 +38,14 @@ void AsmCopy(type_instruc **instrucoesDecodificadas, Assembly **A, int tamLinhas
 
 // Funções auxiliares para decodificar rs, rt, rd e funct
 char* decode_register(const char *reg) {
-    if (strcmp(reg, "000") == 0) return "$t0";
-    if (strcmp(reg, "001") == 0) return "$t1";
-    if (strcmp(reg, "010") == 0) return "$t2";
-    if (strcmp(reg, "011") == 0) return "$t3";
-    if (strcmp(reg, "100") == 0) return "$t4";
-    if (strcmp(reg, "101") == 0) return "$t5";
-    if (strcmp(reg, "110") == 0) return "$t6";
-    if (strcmp(reg, "111") == 0) return "$t7";
+    if (strcmp(reg, "000") == 0) return "$0";
+    if (strcmp(reg, "001") == 0) return "$1";
+    if (strcmp(reg, "010") == 0) return "$2";
+    if (strcmp(reg, "011") == 0) return "$3";
+    if (strcmp(reg, "100") == 0) return "$4";
+    if (strcmp(reg, "101") == 0) return "$5";
+    if (strcmp(reg, "110") == 0) return "$6";
+    if (strcmp(reg, "111") == 0) return "$7";
     return "";
 }
 

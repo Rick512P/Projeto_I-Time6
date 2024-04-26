@@ -2,7 +2,7 @@
 #include "../Arquivos-h/controller.h"
 
 int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, type_instruc **instrucoesDecodificadas){
-    int numeroLinhas, jump, RD, RT, i, address;
+    int numeroLinhas, jump, RD, RT, i, address, a=0;
     char rd[4];
 
     for(int j=0;j<tamLinhas;j++){
@@ -39,7 +39,9 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){ //JUMP
 
                 jump = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                (*program_counter)+=jump;
+                (*program_counter) = jump;
+                a++;
+                printf("%d jump/loop concluido.\t\t", a);
             }
 
             
@@ -57,34 +59,31 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
                 
                 RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 escritaRegistradores(regs, RD, (*instrucoesDecodificadas)[*program_counter].rd);
-                //escrevePasso();
-                //enviar rd para Banco de Registradores
+
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0100")) == 0){
                 
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
-                //escrevePasso();
-                //enviar rd para Banco de Registradores
+
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1011")) == 0){
 
                 RT = ULA(instrucoesDecodificadas, program_counter, md, regs);
                 escritaRegistradores(regs, RT, (*instrucoesDecodificadas)[*program_counter].rt);
-                //escrevePasso();
+
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1111")) == 0){
 
-                address = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                //escrevePasso();
+                ULA(instrucoesDecodificadas, program_counter, md, regs);
+
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0010")) == 0){
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
-               // escrevePasso();
+
             }
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1000")) == 0){ //beq
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
-                //escrevePasso();
             }
 
             increment_PC(program_counter, 1);

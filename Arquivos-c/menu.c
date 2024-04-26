@@ -95,9 +95,9 @@ int menu(){
 
         case 7: //imprimir todo o simulador
             imprimeEstatisticas(memoriaInst, tamLinhas, instrucoesDecodificadas);
-            imprimirASM(AssemblyInst, tamLinhas);
             imprimeSimulador(tamLinhas, instrucoesDecodificadas, memoriaInst);      
             imprimeDados(md, tamLinhas);
+            imprimirASM(AssemblyInst, tamLinhas);
             imprimeRegistradores(regs);
             break;
 
