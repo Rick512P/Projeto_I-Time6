@@ -119,7 +119,7 @@ int menu(){
             controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             printf("\n");
-            puts(AssemblyInst[program_counter].InstructsAssembly);
+            puts(AssemblyInst[program_counter-1].InstructsAssembly);
             break;
 
         case 12: //Chamar função responsável por retornar uma instrução (PC--)

@@ -6,18 +6,22 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
     int address, rs, rt, rd;
 
     if (strcmp((*instrucoesDecodificadas)[*contador].opcode, "0000") == 0 ) {
-        char Target[4];
-        char Dest[4];
-        char Source[4];
-        strcpy(Source, (*instrucoesDecodificadas)[*contador].rs);
-        strcpy(Target, (*instrucoesDecodificadas)[*contador].rt);
-        strcpy(Dest, (*instrucoesDecodificadas)[*contador].rd);
+        char Target[9];
+        char Dest[9];
+        char Source[9];
+        Target[8] = '\0';
+        Dest[8] = '\0';
+        Source[8] = '\0';
 
         rs = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
         rt = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
 
         if (strcmp((*instrucoesDecodificadas)[*contador].funct, "000") == 0 ){
             rd = rs + rt;
+            if (rd > 127 || rd < -128){
+                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                return -1;
+            }
             int local_decimal = rd;
 
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR   
@@ -25,24 +29,38 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
 
         else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "010") == 0 ){
             //"sub -> rs - rt = rd";
-            bin_dec(Source, Target, Dest, &rs, &rt, &rd);
             rd = rs - rt;
+            if (rd > 127 || rd < -128){
+                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                return -1;
+            }
 
             return rd; //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
         }
 
         else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "100") == 0 ){
             //"and -> rs and rt = rd";
+            decimalToBinary(rt, Target);
+            decimalToBinary(rs, Source);
             AND(Source, Target, Dest);
-
             rd = bin_to_decimal(Dest);
+            if (rd > 127 || rd < -128){
+                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                return -1;
+            }
             return rd;
         }
 
         else if (strcmp((*instrucoesDecodificadas)[*contador].funct, "101") == 0 ){
             //"or -> rs or rt = rd";
+            decimalToBinary(rt, Target);
+            decimalToBinary(rs, Source);
             OR(Source, Target, Dest);
             rd = bin_to_decimal(Dest);
+            if (rd > 127 || rd < -128){
+                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                return -1;
+            }
             return rd;
         }
     }
@@ -51,6 +69,10 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         int immediate, rs, rt;
         immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         rs = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
+        if ((immediate + rs) > 127 || (immediate + rs) < -128){
+                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                return -1;
+        }
         return (immediate + rs); //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
 
@@ -63,13 +85,17 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         //Agora sei qual o valor contido na posição 4 da memoria em decimal:
         return dados;
     }
+
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"1111") == 0){// sw GRAVA CONTEUDO NA MEMORIA DE DADOS
         //M[$rs + imm] = $rt
         int immediate, conteudo;
         char conteudo_bin[9];
         conteudo_bin[8] = '\0';
-        printf("Valor de rt no SW: %s", (*instrucoesDecodificadas)[*contador].rt);
         conteudo = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
+        if (conteudo > 127 || conteudo < -128){
+            fprintf(stderr, "OVERFLOW. Numero a ser escrito na memoria de dados ultrapassa os 8 bits.");
+            return -1;
+        }
         decimalToBinary(conteudo, conteudo_bin);
         immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         escreveDado(md, &immediate, conteudo_bin);
@@ -78,7 +104,10 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
     else if(strcmp((*instrucoesDecodificadas)[*contador].opcode,"0010") == 0){ // j -> jump to specified address
 
         address = bin_to_decimal((*instrucoesDecodificadas)[*contador].addr);
-        dec_to_bin(address, (*instrucoesDecodificadas)[*contador].addr);
+        if(((*contador)+address) > 255){
+            fprintf(stderr, "OVERFLOW. Salto para posicao de memoria inexistente.");
+            return -1;
+        }
         return address;
     }
 
@@ -87,15 +116,20 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         int reg1 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
         int reg2 = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
         immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
-        if (reg1 == reg2)
-            return ((*contador) += immediate);
+        if (reg1 == reg2){
+            if(((*contador) + immediate) > 255){
+                fprintf(stderr, "OVERFLOW. PC ultrapassou limite de espaços de memória.");
+                return -1;
+            }
+                return ((*contador) += immediate);
+        }
         else
             return (*contador);    
     }
 
 
     else{
-        printf("OPCODE ERROR!");
+        fprintf(stderr, "OPCODE ERROR!");
     }
 }
 

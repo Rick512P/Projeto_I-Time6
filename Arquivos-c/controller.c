@@ -92,7 +92,7 @@ int controller(int op, instrucao **memoriaInst, int tamLinhas, int **regs, Memor
     case 3:
         //Return Run by Step
             if (program_counter <= 0){
-                printf("Estamos no início do código!");
+                fprintf(stderr, "Estamos no início do código!\n");
             }
             else{
                 *program_counter = retorna_estado(md, regs);

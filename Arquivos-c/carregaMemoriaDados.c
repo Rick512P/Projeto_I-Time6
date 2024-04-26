@@ -9,7 +9,7 @@ void carregamd(MemoriaDados **md){
     printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo: ");
     scanf("%d", &opcao);
     if(opcao == 1)
-        setmd = fopen("./memoria/md.dat", "r");
+        setmd = fopen("../memoria/setMD.dat", "r");
     else if(opcao == 2){
         printf("Entre com o caminho/nome do arquivo incluindo a extenção .dat\n");
         scanf(" %[^\n]", nome_arquivo);
@@ -17,7 +17,7 @@ void carregamd(MemoriaDados **md){
     }
     else{
         printf("Opcao inexistente. Utilizando o diretorio padrao.");
-        setmd = fopen("./memoria/md.dat", "r");
+        setmd = fopen("./memoria/setMD.dat", "r");
     }
 
 
@@ -25,8 +25,11 @@ void carregamd(MemoriaDados **md){
         
         //primeiro, conto quantas linhas de dados terei no arquivo
         while(fgets(linha, sizeof(linha), setmd) != NULL){
-            if (strlen(linha) > 8)
-                printf("Linha %d tem mais de 8 bits: %s\n", contador_de_linhas, linha);
+            if (strlen(linha) > 9){
+                fprintf(stderr, "OVERFLOW. Linha %d tem mais de 8 caracteres: %s\n", contador_de_linhas, linha); //FLAG OVERFLOW
+                return;
+            }
+                
             contador_de_linhas++;
         }
 
@@ -52,7 +55,7 @@ void carregamd(MemoriaDados **md){
         
     }
     else
-        printf("Erro ao abrir arquivo md.dat");
+        fprintf(stderr, "Erro ao abrir arquivo md.dat");
 
 
 }

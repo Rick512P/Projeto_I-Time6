@@ -5,9 +5,8 @@
 int retornoRegs(int **regs, char posicao[]){
     int indice;
         indice = bin_to_decimal(posicao);
-        printf("Indice %d\n", indice);
         if(indice >= 8 || indice<0){
-            printf("ERRO. Nenhum Registrador encontrado.");
+            fprintf(stderr, "ERRO. Nenhum Registrador encontrado.");
             return -1;
         }
         return (*regs)[indice];
@@ -17,7 +16,7 @@ int escritaRegistradores(int **regs, int valor, char posicao[]){
        int indice;
         indice = bin_to_decimal(posicao);
         if(indice >= 8){
-            printf("ERRO. Nenhum Registrador encontrado.");
+            fprintf(stderr, "ERRO. Nenhum Registrador encontrado.");
             return -1;
         }
             
