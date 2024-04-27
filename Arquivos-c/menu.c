@@ -8,9 +8,10 @@ int main(){
 int menu(){
     Assembly *AssemblyInst;
     MemoriaDados *md;
-    unsigned int escolha, tamLinhas, program_counter = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
+    unsigned int escolha, tamLinhas, program_counter = 0, state = 0, cont = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     int *regs; //registradores como um inteiro mesmo
+    char dat[300]; //Recebe o nome do arquivo.dat
     regs = (int*)malloc(8 * sizeof(int));
     for (int i=0;i<8;i++){ //zerando registradores, caso contrario dá números inconsistentes
         regs[i] = 0;
@@ -49,7 +50,6 @@ int menu(){
             free(AssemblyInst);
             free(instrucoesDecodificadas);
             system("clear");
-            removeLog();
             printf("Programa Encerrado!\n");
             break;
             
@@ -70,8 +70,15 @@ int menu(){
             break;
 
         case 2: //Carregar Memória de Dados
-            if (program_counter == 0)
-                carregamd(&md);
+            if (program_counter == 0){
+                strcpy(dat,carregamd(&md));
+                printf("\n");
+                puts(dat);
+                printf("\n");
+                if (strcmp(dat,"ERRO")!=0){
+                    cont = 1;
+                }
+            }
             else 
                 printf("Programa nao deve ter sido inicializado.");
             break;
@@ -111,19 +118,25 @@ int menu(){
 
         case 10: //Chamar função responsável pela execução do programa
             program_counter = 0;
-            controller(1, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
+            controller(1, &state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             break;
 
         case 11: //Chamar função responsável pela execução do programa passo a passo
-            controller(2, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
+            controller(2, &state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             AsmCopy(instrucoesDecodificadas, &AssemblyInst, tamLinhas);
             printf("\n");
             puts(AssemblyInst[program_counter-1].InstructsAssembly);
             break;
 
         case 12: //Chamar função responsável por retornar uma instrução (PC--)
-            controller(3, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
+            for (int i = 0; i<256; i++){
+                strcpy(md[i].dados,"");
+            }
+            if (cont == 1){
+                recarregarmd(&md, dat);
+            }
+            backstep(&state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             break;
             
         default:

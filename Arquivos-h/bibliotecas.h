@@ -44,7 +44,6 @@ typedef struct{
   char InstructsAssembly[30];
 } Assembly;
 
-void removeLog();
 
 
 #endif

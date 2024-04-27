@@ -4,7 +4,8 @@
 #include "bibliotecas.h"
 #include "menu.h"
 
-void carregamd(MemoriaDados **md);
+char* carregamd(MemoriaDados **md);
+void recarregarmd(MemoriaDados **md, char *nome_arquivo);
 
 
 #endif
