@@ -19,8 +19,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         if (strcmp((*instrucoesDecodificadas)[*contador].funct, "000") == 0 ){
             rd = rs + rt;
             if (rd > 127 || rd < -128){
-                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
-                return -1;
+                fprintf(stderr, "Overflow. Registrador RD com numero de bits maior que a capacidade suportada.\n");
             }
             int local_decimal = rd;
 
@@ -31,7 +30,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             //"sub -> rs - rt = rd";
             rd = rs - rt;
             if (rd > 127 || rd < -128){
-                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                fprintf(stderr, "Overflow. Registrador RD com numero de bits maior que a capacidade suportada.\n");
                 return -1;
             }
 
@@ -45,7 +44,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             AND(Source, Target, Dest);
             rd = bin_to_decimal(Dest);
             if (rd > 127 || rd < -128){
-                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                fprintf(stderr, "Overflow. Registrador RD com numero de bits maior que a capacidade suportada.\n");
                 return -1;
             }
             return rd;
@@ -58,7 +57,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
             OR(Source, Target, Dest);
             rd = bin_to_decimal(Dest);
             if (rd > 127 || rd < -128){
-                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
+                fprintf(stderr, "Overflow. Registrador RD com numero de bits maior que a capacidade suportada.\n");
                 return -1;
             }
             return rd;
@@ -70,8 +69,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         rs = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rs);
         if ((immediate + rs) > 127 || (immediate + rs) < -128){
-                fprintf(stderr, "Overflow. Registrador RD com numero maior que a capacidade suportada.");
-                return -1;
+                fprintf(stderr, "Overflow. Registrador RD com numero de bits maior que a capacidade suportada.\n");
         }
         return (immediate + rs); //RETORNA PARA O CONTROLLER O INTEIRO PARA O MESMO ARMAZENAR NO REGISTRADOR
     }
@@ -92,12 +90,18 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         char conteudo_bin[9];
         conteudo_bin[8] = '\0';
         conteudo = retornoRegs(regs, (*instrucoesDecodificadas)[*contador].rt);
+        immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         if (conteudo > 127 || conteudo < -128){
-            fprintf(stderr, "OVERFLOW. Numero a ser escrito na memoria de dados ultrapassa os 8 bits.");
+            fprintf(stderr, "OVERFLOW. Numero a ser escrito na memoria de dados ultrapassa os 8 bits.\n");
+            if (conteudo > 127)
+                strcpy(conteudo_bin, "01111111"); //Escreve 32
+            else
+                strcpy(conteudo_bin, "10000001"); //Escreve -32
+            escreveDado(md, &immediate, conteudo_bin);
             return -1;
         }
+
         decimalToBinary(conteudo, conteudo_bin);
-        immediate = bin_to_decimal((*instrucoesDecodificadas)[*contador].imm);
         escreveDado(md, &immediate, conteudo_bin);
     }
 
@@ -108,7 +112,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         }
 
         if(((*contador+1)+address) > 255){
-            fprintf(stderr, "OVERFLOW. Salto para posicao de memoria inexistente.");
+            fprintf(stderr, "OVERFLOW. Salto para posicao de memoria inexistente.\n");
             return -1;
         }
         return address;
@@ -124,7 +128,7 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         }
         if (reg1 == reg2){
             if(((*contador+1) + immediate) > 255){
-                fprintf(stderr, "OVERFLOW. PC ultrapassou limite de espaços de memória.");
+                fprintf(stderr, "OVERFLOW. PC ultrapassou limite de espaços de memória.\n");
                 return -1;
             }
                 return ((*contador) += immediate);
@@ -138,83 +142,6 @@ int ULA(type_instruc **instrucoesDecodificadas, int *contador, MemoriaDados **md
         fprintf(stderr, "OPCODE ERROR!");
     }
 }
-
-
-
-// Função que converte uma string binária para um valor decimal inteiro.
-int bin_to_dec(const char *bin) {
-    int dec = 0;
-    int base = 1;
-    int len = strlen(bin);
-
-    for (int i = len - 1; i >= 0; i--) {
-        if (bin[i] == '1') {
-            dec += base;
-        }
-        base *= 2;
-    }
-
-    return dec;
-}
-
-// Função para converter três strings binárias para valores decimais.
-void bin_dec(const char Source[], const char Target[], const char Dest[], int *rs, int *rt, int *rd) {
-    if (rs) *rs = bin_to_dec(Source); // Converte Source para decimal e armazena em rs.
-    if (rt) *rt = bin_to_dec(Target); // Converte Target para decimal e armazena em rt.
-    if (rd) *rd = bin_to_dec(Dest);   // Converte Dest para decimal e armazena em rd.
-}
-
-void dec_to_bin(int decimal, char *binaryPtr) {
-    // Índice para percorrer o array binário da direita para a esquerda
-    int index = 7;
-
-    // Preenche o array binário da direita para a esquerda
-    while (index >= 0) {
-        binaryPtr[index--] = (decimal % 2) ? '1' : '0';
-        decimal /= 2;
-    }
-
-    // Adiciona o caractere nulo ao final do array
-    binaryPtr[8] = '\0';
-}
-
-
-/*void dec_to_bin(int decimal, char *binary) {
-    int i;
-    // Etapa de verificação de números negativos
-    int Negative = (decimal < 0);
-    
-    // Se for negativo, ajusta o valor para o complemento de dois
-    if (Negative) {
-        decimal = (1 << BITS) + decimal;
-    }
-    
-    // Inicializa a string binária
-    for (i = 0; i < BITS; i++) {
-        binary[i] = '0';
-    }
-    binary[BITS] = '\0';
-    
-    // Converte decimal para binário
-    for (i = BITS - 1; i >= 0; i--) {
-        binary[i] = (decimal % 2) ? '1' : '0';
-        decimal /= 2;
-    }
-    
-    // Se o número original era negativo, complementa os bits
-    if (Negative) {
-        int carry = 1;
-        for (i = BITS - 1; i >= 0; i--) {
-            if (binary[i] == '1' && carry == 1) {
-                binary[i] = '0';
-            } else if (binary[i] == '0' && carry == 1) {
-                binary[i] = '1';
-                carry = 0;
-            }
-        }
-
-    }
-}*/
 
 void AND(char Source[], char Target[], char *Dest){
     int i, LS = strlen(Source);
