@@ -8,7 +8,8 @@ int main(){
 int menu(){
     Assembly *AssemblyInst;
     MemoriaDados *md;
-    unsigned int escolha, tamLinhas, program_counter = 0, state = 0, cont = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
+    unsigned int escolha, tamLinhas, program_counter = 0, cont = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
+    int state = -1;
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     int *regs; //registradores como um inteiro mesmo
     char dat[300]; //Recebe o nome do arquivo.dat
@@ -63,7 +64,7 @@ int menu(){
             
             AssemblyInst = calloc((tamLinhas + 1), sizeof(Assembly));
 
-            if (*instrucoesDecodificadas == NULL) {
+            if (AssemblyInst == NULL) {
                 fprintf(stderr, "Falha ao alocar memória para instrucoes assembly.\n");
                 return -1;
             }
@@ -80,7 +81,7 @@ int menu(){
                 }
             }
             else 
-                printf("Programa nao deve ter sido inicializado.");
+                printf("Programa nao deve ja ter sido inicializado.");
             break;
 
         case 3: //Imprimir memória de instruções e memória de dados
@@ -130,13 +131,18 @@ int menu(){
             break;
 
         case 12: //Chamar função responsável por retornar uma instrução (PC--)
-            for (int i = 0; i<256; i++){
-                strcpy(md[i].dados,"");
+            if (state <= 0){
+                fprintf(stderr, "Usuario ja esta no inicio do programa.");
+                state = -1;
+                break;
             }
+            memset(md, 0, sizeof(md)); //anula todo conteudo de md
+
             if (cont == 1){
                 recarregarmd(&md, dat);
             }
             backstep(&state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
+            puts(AssemblyInst[program_counter].InstructsAssembly);
             break;
             
         default:

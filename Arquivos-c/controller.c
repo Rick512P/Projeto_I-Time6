@@ -2,8 +2,7 @@
 #include "../Arquivos-h/controller.h"
 
 int controller(int op, int *state, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, type_instruc **instrucoesDecodificadas){
-    int numeroLinhas, jump, RD, RT, i, address, a=0;
-    char rd[4];
+    int jump, RD, RT, i, a=0;
 
     for(int j=0;j<tamLinhas;j++){
         (*instrucoesDecodificadas)[j] = memInstruc(j, memoriaInst, &tamLinhas);
@@ -42,13 +41,13 @@ int controller(int op, int *state, instrucao **memoriaInst, int tamLinhas, int *
                 a++;
                 printf("%d jump/loop concluido.\t\t", a);
             }
-            state++;            
+            (*state)++;            
         }
         break;
 
     case 2:
         //Run by Step
-            printf("Instrucao %d", *program_counter);
+            printf("Instrucao %d\n", *program_counter);
             increment_PC(program_counter, 0);  //FUNÇÃO QUE ESTA NO PC.C 
             
             if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0)
@@ -82,7 +81,8 @@ int controller(int op, int *state, instrucao **memoriaInst, int tamLinhas, int *
             else if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"1000")) == 0){ //beq
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
             }
-            state++;
+            (*state)++;
+            printf("Valor de state APOS STEP: %d", *state);
             increment_PC(program_counter, 1);
         break;
     }
@@ -91,19 +91,12 @@ int controller(int op, int *state, instrucao **memoriaInst, int tamLinhas, int *
 }
 
 void backstep(int *state, instrucao **memoriaInst, int tamLinhas, int **regs, MemoriaDados **md, int *program_counter, type_instruc **instrucoesDecodificadas){
-    int numeroLinhas, jump, RD, RT, i, address, a=0;
-    char rd[4];
-    program_counter = 0;
+    int jump, RD, RT, i, a=0;
     for (i = 0; i<8; i++){
-        *regs[i]=0;
+        (*regs)[i]=0;
     }
 
-
-    for(int j=0;j<tamLinhas;j++){
-        (*instrucoesDecodificadas)[j] = memInstruc(j, memoriaInst, &tamLinhas);
-    }
-
-    for (i = 0; i < *state; i++){ 
+    for (*program_counter = 0; *program_counter < (*state - 1); increment_PC(program_counter, 1)){ 
         if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0) // ADD/SUB/OR/AND
         {
             RD = ULA(instrucoesDecodificadas, program_counter, md, regs);
@@ -131,5 +124,6 @@ void backstep(int *state, instrucao **memoriaInst, int tamLinhas, int **regs, Me
             printf("%d jump/loop concluido.\t\t", a);
         }       
     }
-    state--;
+    (*state)--;
+    printf("Valor de state APOS BACK: %d\n", *state);
 }
