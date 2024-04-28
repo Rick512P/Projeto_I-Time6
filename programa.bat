@@ -44,5 +44,8 @@ cls
 goto menu
 
 :sair
-echo Encerrando...
+if exist executavel.exe (
+    del executavel.exe
+)
+cls
 pause
