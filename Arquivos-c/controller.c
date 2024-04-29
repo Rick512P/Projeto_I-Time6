@@ -82,7 +82,6 @@ int controller(int op, int *state, instrucao **memoriaInst, int tamLinhas, int *
                 (*program_counter) = ULA(instrucoesDecodificadas, program_counter, md, regs);
             }
             (*state)++;
-            printf("Valor de state APOS STEP: %d", *state);
             increment_PC(program_counter, 1);
         break;
     }
@@ -95,7 +94,6 @@ void backstep(int *state, instrucao **memoriaInst, int tamLinhas, int **regs, Me
     for (i = 0; i<8; i++){
         (*regs)[i]=0;
     }
-
     for (*program_counter = 0; *program_counter < (*state - 1); increment_PC(program_counter, 1)){ 
         if ((strcmp((*instrucoesDecodificadas)[*program_counter].opcode,"0000")) == 0) // ADD/SUB/OR/AND
         {
@@ -125,5 +123,4 @@ void backstep(int *state, instrucao **memoriaInst, int tamLinhas, int **regs, Me
         }       
     }
     (*state)--;
-    printf("Valor de state APOS BACK: %d\n", *state);
 }

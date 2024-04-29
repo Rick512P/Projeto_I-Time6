@@ -9,7 +9,7 @@ int menu(){
     Assembly *AssemblyInst;
     MemoriaDados *md;
     unsigned int escolha, tamLinhas, program_counter = 0, cont = 0; //UNSIGNED IMPOSSIBILITA QUE PROGRAM_COUNTER CHEGUE A MENOR QUE 0
-    int state = -1;
+    int state = 0;
     instrucao *memoriaInst; //RESPONSAVEL POR COLETAR  A INSTRUÇÃO
     int *regs; //registradores como um inteiro mesmo
     char dat[300]; //Recebe o nome do arquivo.dat
@@ -133,7 +133,6 @@ int menu(){
         case 12: //Chamar função responsável por retornar uma instrução (PC--)
             if (state <= 0){
                 fprintf(stderr, "Usuario ja esta no inicio do programa.");
-                state = -1;
                 break;
             }
             memset(md, 0, sizeof(md)); //anula todo conteudo de md
@@ -141,10 +140,18 @@ int menu(){
             if (cont == 1){
                 recarregarmd(&md, dat);
             }
-            backstep(&state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
-            puts(AssemblyInst[program_counter].InstructsAssembly);
-            break;
             
+            backstep(&state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
+            if (program_counter == 0){
+                printf("Voltamos para o inicio do programa.");
+                break;
+            }
+
+            else{
+                printf("Voltamos para a instrucao: \t"); puts(AssemblyInst[program_counter-1].InstructsAssembly);
+                break;
+            }
+
         default:
             break;
         }
