@@ -140,7 +140,7 @@ int menu(){
             if (cont == 1){
                 recarregarmd(&md, dat);
             }
-            
+
             backstep(&state, &memoriaInst, tamLinhas, &regs, &md, &program_counter, instrucoesDecodificadas);
             if (program_counter == 0){
                 printf("Voltamos para o inicio do programa.");
@@ -153,6 +153,7 @@ int menu(){
             }
 
         default:
+            printf("Opcao invalida.\n");
             break;
         }
     }while(escolha != 0);

@@ -6,19 +6,24 @@ int parser(instrucao **memoriaInst, int *tamanho_linhas){
     int contador_de_linhas = 0, opcao;
     instrucao p;
     FILE *arq;
-    printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo: ");
-    scanf("%d", &opcao);
-    if(opcao == 1)
-        arq = fopen("./memoria/testaTodas.mem", "r");
-    else if(opcao == 2){
-        printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
-        scanf(" %[^\n]", nome_arquivo);
-        arq = fopen(nome_arquivo, "r");
-    }
-    else{
-        printf("Opcao inexistente. Utilizando o diretorio padrao.");
-        arq = fopen("./memoria/instrucoes.mem", "r");
-    }
+        printf("Digite 1 para utilizar o diretorio padrao ou 2 para entrar com o diretorio do arquivo: ");
+        scanf("%d", &opcao);
+        switch (opcao){
+            case 1:
+                arq = fopen("./memoria/testaTodas.mem", "r");
+                break;
+
+            case 2:
+                printf("Entre com o caminho/nome do arquivo incluindo a extenção .mem\n");
+                scanf(" %[^\n]", nome_arquivo);
+                arq = fopen(nome_arquivo, "r");
+                break;
+
+            default:
+                printf("Opcao inexistente. Utilizando o diretorio padrao.\n");
+                arq = fopen("./memoria/testaTodas.mem", "r");
+                break;
+        }
 
     if(arq){
 
