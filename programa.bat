@@ -44,8 +44,6 @@ cls
 goto menu
 
 :sair
-if exist executavel.exe (
-    del executavel.exe
-)
 cls
+echo PROGRAMA FINALIZADO!
 pause
