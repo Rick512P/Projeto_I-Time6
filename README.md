@@ -38,4 +38,4 @@ Universidade Federal do Pampa - UNIPAMPA Campus Bagé
 
 ## Licença
 
-Este projeto está licenciado sob a [Licença MIT](LICENSE).
+Este projeto está licenciado sob a Licença MIT.
