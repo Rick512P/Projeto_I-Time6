@@ -21,25 +21,27 @@ int menu(){
     type_instruc **instrucoesDecodificadas = malloc(sizeof(type_instruc*));
     md = (MemoriaDados*)calloc(256, sizeof(MemoriaDados));
 
-    printf("\n___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
-    printf("| + TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM ESTAR NA PASTA 'memoria' COM O SEGUINTE NOME E EXTENSÂO + |\n");
-    printf("__________________________________________ =INSTRUCT.mem= __________________________________________");
+    printf("\n  ___________________________________________ ==ATENÇÃO== ____________________________________________\n\n");
+    printf("  | +              TODOS OS ARQUIVOS DE INSTRUÇÂO DEVEM POSSUIR A SEGUINTE EXTENSÂO                + |\n");
+    printf("\n");
+    printf("  __________________________________________ =EXEMPLO.mem= __________________________________________");
     do{
         printf("\n\n");
-        printf("                              _____________________________________\n");
-        printf("                              |1  +  Carregar memória instruções   +|\n");
-        printf("                              |2  +    Carregar memoria dados      +|\n");
-        printf("                              |3  +        Imprimir memória        +|\n");
-        printf("                              |4  +      Imprimir registradores    +|\n");
-        printf("                              |5  +      Imprimir estatisticas     +|\n");
-        printf("                              |6  +  Imprimir instrucoes Assembly  +|\n");
-        printf("                              |7  +    Imprimir todo o simulador   +|\n");
-        printf("                              |8  +          Salvar .asm           +|\n");
-        printf("                              |9  +          Salvar .dat           +|\n");
-        printf("                              |10 +     Executa Programa (run)     +|\n");
-        printf("                              |11 +    Executa instrucao (step)    +|\n");
-        printf("                              |12 +   Volta uma instrucao (back)   +|\n");
-        printf("                              |0  +              Sair              +|\n");
+        printf("                                 _____________________________________\n");
+        printf("                                |1  +  Carregar memória instruções   +|\n");
+        printf("                                |2  +    Carregar memoria dados      +|\n");
+        printf("                                |3  +        Imprimir memória        +|\n");
+        printf("                                |4  +      Imprimir registradores    +|\n");
+        printf("                                |5  +      Imprimir estatisticas     +|\n");
+        printf("                                |6  +  Imprimir instrucoes Assembly  +|\n");
+        printf("                                |7  +    Imprimir todo o simulador   +|\n");
+        printf("                                |8  +          Salvar .asm           +|\n");
+        printf("                                |9  +          Salvar .dat           +|\n");
+        printf("                                |10 +     Executa Programa (run)     +|\n");
+        printf("                                |11 +    Executa instrucao (step)    +|\n");
+        printf("                                |12 +   Volta uma instrucao (back)   +|\n");
+        printf("                                |0  +              Sair              +|\n");
+        printf("                                 _____________________________________\n");  
         scanf("%d", &escolha);
 
         switch (escolha)
