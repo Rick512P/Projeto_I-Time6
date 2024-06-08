@@ -30,7 +30,7 @@ Contribuições são bem-vindas! Sinta-se à vontade para fazer sugestões, rela
 
 - Érick Santos Matos
 - Henrique de Lima Bortolomiol
-- Pedro Afonso Barcelos da Silva Simoes Pires
+- Pedro Afonso Barcelos da Silva Simões Pires
 
 ## Instituição
 
